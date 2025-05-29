@@ -316,7 +316,7 @@ function Home() {
 						{serviceCategories.map((category, index) => (
 							<Card
 								key={index}
-								className="group hover:shadow-lg transition-all duration-300 cursor-pointer border shadow-md hover-lift animate-slide-up dark:bg-purple-900/10"
+								className="group hover:shadow-md transition-all duration-300 cursor-pointer border shadow-md hover-lift animate-slide-up dark:bg-purple-900/10"
 								style={{ animationDelay: `${index * 0.1}s` }}
 							>
 								<CardContent className="p-6 text-center">
@@ -541,9 +541,11 @@ function Home() {
 										<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
 											Book Now
 										</Button>
-										<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
-											More Details
-										</Button>
+										<Link href={`/event-details/${event.id}`}>
+											<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
+												More Details
+											</Button>
+										</Link>
 									</div>
 								</CardContent>
 							</Card>

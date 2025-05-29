@@ -1,10 +1,9 @@
 import React from 'react'
-import KidsEventsPage from '@/components/Events/KidsEvents'
-
+import EventDetails from "@/components/Events/EventDetails"
 function page() {
 	return (
 		<>
-			<KidsEventsPage />
+			<EventDetails />
 		</>
 	)
 }
