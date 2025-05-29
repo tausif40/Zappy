@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from "next/image"
 import Link from "next/link"
-import { Calendar, Star, CheckCircle, ArrowRight, Play, StarIcon } from "lucide-react"
+import { Calendar, Star, CheckCircle, ArrowRight, Play, StarIcon, Box, Stars } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -15,12 +15,12 @@ function HeroSection() {
 				<div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 dark:from-purple-900/20 dark:via-pink-900/20 dark:to-yellow-900/20">
 					<div className="absolute top-20 left-10 w-20 h-20 bg-purple-200 rounded-full animate-float opacity-60"></div>
 					<div className="absolute top-40 right-10 w-16 h-16 bg-pink-200 rounded-full animate-bounce-slow opacity-60"></div>
-					<div className="absolute bottom-20 left-20 w-24 h-24 bg-yellow-200 rounded-full animate-pulse-slow opacity-60"></div>
+					<div className="absolute bottom-10 left-16 w-24 h-24 bg-yellow-200 rounded-full animate-pulse-slow opacity-60"></div>
 					<div className="absolute bottom-40 right-10 w-12 h-12 bg-green-200 rounded-full animate-float opacity-60"></div>
 				</div>
 
 				<div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-					<div className="grid lg:grid-cols-2 gap-12 items-end">
+					<div className="grid lg:grid-cols-2 backdrop:gap-12 items-end">
 						{/* Left Content */}
 						<div className={`space-y-8`}>
 							<div className="space-y-4">
@@ -71,18 +71,20 @@ function HeroSection() {
 										<ArrowRight className="ml-2 h-5 w-5" />
 									</Button>
 								</Link>
-								<Button
-									size="lg"
-									variant="outline"
-									className="border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-6 py-4 text-lg"
-								>
-									<StarIcon className="mr-2 h-5 w-5" />
-									Explore Kids Events
-								</Button>
+								<Link href="/kids-events">
+									<Button
+										size="lg"
+										variant="outline"
+										className="border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-6 py-4 text-lg"
+									>
+										<StarIcon className="mr-2 h-5 w-5" />
+										Explore Kids Events
+									</Button>
+								</Link>
 							</div>
 
 							{/* Trust Indicators */}
-							<div className="flex items-center space-x-6 pt-4">
+							{/* <div className="flex items-center space-x-6 pt-4">
 								<div className="flex items-center">
 									<div className="flex -space-x-2">
 										{[1, 2, 3, 4].map((i) => (
@@ -98,11 +100,16 @@ function HeroSection() {
 									<Star className="h-5 w-5 text-yellow-400 fill-current" />
 									<span className="ml-1 font-semibold">4.9/5</span>
 								</div>
+							</div> */}
+
+							<div className='border rounded-md p-4 bg-gradient-to-r from-yellow-100/50 to-orange-100/50'>
+								<p className='flex items-center text-primary font-semibold text-lg mb-2'><Box size={18} />&nbsp;Products <span className='font-normal px-2'>+</span> <Star size={18} />&nbsp;Services</p>
+								<p><span className='font-bold'>Save 15%</span> when you combine our premium party products with professional event services!</p>
 							</div>
 						</div>
 
 						{/* Right Content - Hero Image */}
-						<div className={`relative flex flex-col items-center lg:items-end`}>
+						<div className={`relative flex flex-col items-center lg:items-end pt-24 lg:pt-0`}>
 							<div className="relative">
 
 								<Image

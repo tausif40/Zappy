@@ -349,7 +349,7 @@ function HomePageLayout() {
 			</section>
 
 			{/* created kids event */}
-			<div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 text-gray-900 dark:text-white dark:from-purple-900/10 dark:to-pink-900/10">
+			<div className="bg-gradient-to-br from-purple-50 to-pink-50 py-6 text-gray-900 dark:text-white dark:from-purple-900/10 dark:to-pink-900/10">
 				<div className="container py-6">
 					<div className="text-center mb-12">
 						{/* <!-- Main Heading --> */}
@@ -371,7 +371,7 @@ function HomePageLayout() {
 							>
 								<div className="relative">
 									<Image
-										src={event?.image || "/placeholder.svg"}
+										src="/placeholder.svg"
 										alt={event?.title}
 										width={300}
 										height={300}
@@ -455,7 +455,7 @@ function HomePageLayout() {
 									</div>
 
 									<div className="px-8 pb-8 pt-6 relative">
-										<h3 className="absolute -top-6 left-1/2 -translate-x-1/2 text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+										<h3 className="absolute -top-6 left-1/2 -translate-x-1/2 text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2 min-w-max">
 											{service?.heading}
 										</h3>
 										<h3 className="text-ld font-semibold text-gray-800 dark:text-gray-200 mb-2">{service.title}</h3>

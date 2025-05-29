@@ -28,9 +28,16 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 export function ThemeProvider({ children, defaultTheme = "system", storageKey = "ui-theme", attribute = "class", enableSystem = true, disableTransitionOnChange = true, ...props }: ThemeProviderProps) {
 
-	
-	const [theme, setTheme] = useState<Theme>(() => (localStorage?.getItem(storageKey) as Theme) || defaultTheme);
+	// const [theme, setTheme] = useState<Theme>(() => (localStorage?.getItem(storageKey) as Theme) || defaultTheme)
+	const [theme, setTheme] = useState<Theme>(defaultTheme);
 
+	// Load stored theme after mount (safe for SSR)
+	useEffect(() => {
+		const storedTheme = localStorage.getItem(storageKey) as Theme;
+		if (storedTheme) {
+			setTheme(storedTheme);
+		}
+	}, [storageKey]);
 
 	useEffect(() => {
 		const root = window.document.documentElement
