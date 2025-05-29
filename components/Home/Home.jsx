@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -13,10 +13,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import HeroSection from '@/components/Home/HeroSection'
-import Footer from '@/components/Footer/Footer'
 
-
-function HomePageLayout() {
+function Home() {
 	const { toast } = useToast();
 
 	const events = [
@@ -169,7 +167,7 @@ function HomePageLayout() {
 			city: "Mumbai",
 			discount: "31% OFF",
 			description: "A magical tea party with princess characters, tiara crafting, and royal games.",
-			options: ['Princess character appearances', 'Royal tea party setup', 'Tiara crafting workshop', 'Tiara crafting workshop']
+			options: [ 'Princess character appearances', 'Royal tea party setup', 'Tiara crafting workshop', 'Tiara crafting workshop' ]
 		},
 		{
 			id: 2,
@@ -185,7 +183,7 @@ function HomePageLayout() {
 			city: "Delhi",
 			discount: "30% OFF",
 			description: "An action-packed adventure where kids train to become superheroes with obstacle courses",
-			options: ['Superhero costume station', 'Power training games', 'Obstacle courses', 'Obstacle courses', 'Obstacle courses']
+			options: [ 'Superhero costume station', 'Power training games', 'Obstacle courses', 'Obstacle courses', 'Obstacle courses' ]
 		},
 		{
 			id: 3,
@@ -201,7 +199,7 @@ function HomePageLayout() {
 			city: "Bangalore",
 			discount: "27% OFF",
 			description: "A mind-blowing experience with fascinating experiments and hands-on science activities.",
-			options: ['Interactive experiments', 'Slime-making workshop', 'Rocket launching activity', 'Obstacle courses', 'Obstacle courses', 'Obstacle courses']
+			options: [ 'Interactive experiments', 'Slime-making workshop', 'Rocket launching activity', 'Obstacle courses', 'Obstacle courses', 'Obstacle courses' ]
 		},
 	]
 
@@ -212,7 +210,7 @@ function HomePageLayout() {
 			description: "Team buildings, product launches, conferences, and corporate parties with professional planning and execution.",
 			date: "March 2025",
 			img: "/img/home/event1.png",
-			features: ["360° Gaming", "Educational VR", "Safe Environment"],
+			features: [ "360° Gaming", "Educational VR", "Safe Environment" ],
 		},
 		{
 			heading: "Wedding Services",
@@ -220,7 +218,7 @@ function HomePageLayout() {
 			description: "Complete wedding planning services including venue selection, decoration, catering, entertainment, and more.",
 			date: "April 2026",
 			img: "/img/home/event2.png",
-			features: ["Console Gaming", "Dance", "Group Compotation"],
+			features: [ "Console Gaming", "Dance", "Group Compotation" ],
 		},
 	]
 
@@ -293,7 +291,7 @@ function HomePageLayout() {
 		},
 	]
 
-	const handleContactSubmit = (e: React.FormEvent) => {
+	const handleContactSubmit = (e) => {
 		e.preventDefault()
 		toast({
 			title: "Message Sent!",
@@ -539,9 +537,14 @@ function HomePageLayout() {
 											</div>
 										)}
 									</div>
-									<Button className="mt-4 w-full text-sm px-4 py-1 font-normal cursor-pointer">
-										Book Now
-									</Button>
+									<div className="flex flex-col gap-2 mt-4">
+										<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
+											Book Now
+										</Button>
+										<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
+											More Details
+										</Button>
+									</div>
 								</CardContent>
 							</Card>
 						))}
@@ -629,7 +632,7 @@ function HomePageLayout() {
 							>
 								<CardContent className="p-6">
 									<div className="flex items-center mb-4">
-										{[...Array(testimonial.rating)].map((_, i) => (
+										{[ ...Array(testimonial.rating) ].map((_, i) => (
 											<Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
 										))}
 									</div>
@@ -641,7 +644,7 @@ function HomePageLayout() {
 												<AvatarFallback>
 													{testimonial.name
 														.split(" ")
-														.map((n) => n[0])
+														.map((n) => n[ 0 ])
 														.join("")}
 												</AvatarFallback>
 											</Avatar>
@@ -780,9 +783,8 @@ function HomePageLayout() {
 				</div>
 			</section>
 
-			<Footer />
 		</>
 	)
 }
 
-export default HomePageLayout
+export default Home

@@ -1,12 +1,12 @@
 "use client"
 
-import HomePageLayout from "@/components/Layout/HomePageLayout"
-import type React from "react"
+import type React from "react";
+import Home from "@/components/Home/Home";
 
 function page() {
   return (
     <>
-      <HomePageLayout />
+      <Home />
 
     </>
   )
