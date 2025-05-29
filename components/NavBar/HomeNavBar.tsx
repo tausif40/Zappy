@@ -79,8 +79,8 @@ export default function HomeNavBar() {
 							</div>
 							{/* <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full"></div> */}
 						</div>
-						<div className="hidden sm:block">
-							<span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+						<div className="">
+							<span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
 								Zappy
 							</span>
 							<div className="text-xs text-muted-foreground">Magical Memories</div>
@@ -230,13 +230,14 @@ export default function HomeNavBar() {
 									))}
 
 									{/* Mobile Auth Buttons */}
-									<div className="pt-4 border-t grid grid-cols-2 gap-6">
+									<div className="pt-4 border-t flex flex-col gap-2">
 										<Link href="/login" onClick={() => setIsOpen(false)}>
 											<Button variant="outline" className="w-full justify-start">
 												<LogIn className="w-4 h-4 mr-2" />
-												Login
+												Login	
 											</Button>
 										</Link>
+
 										<Link href="/signup" onClick={() => setIsOpen(false)}>
 											<Button className="w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
 												<UserPlus className="w-4 h-4 mr-2" />
