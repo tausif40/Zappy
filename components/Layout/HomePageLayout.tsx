@@ -455,7 +455,7 @@ function HomePageLayout() {
 									</div>
 
 									<div className="px-8 pb-8 pt-6 relative">
-										<h3 className="absolute -top-6 left-1/2 -translate-x-1/2 text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2 min-w-max">
+										<h3 className="absolute -top-6 left-1/2 -translate-x-1/2 text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2 min-w-max ">
 											{service?.heading}
 										</h3>
 										<h3 className="text-ld font-semibold text-gray-800 dark:text-gray-200 mb-2">{service.title}</h3>
