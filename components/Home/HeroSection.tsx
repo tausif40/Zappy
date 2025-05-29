@@ -104,7 +104,7 @@ function HeroSection() {
 
 							<div className='border rounded-md p-4 bg-gradient-to-r from-yellow-100/50 to-orange-100/50 dark:from-pink-800/20 dark:to-purple-900/10'>
 								<p className='flex items-center text-primary font-semibold text-lg mb-2'><Box size={18} />&nbsp;Products <span className='font-normal px-2'>+</span> <Star size={18} />&nbsp;Services</p>
-								<p><span className='font-bold'>Save 15%</span> when you combine our premium party products with professional event services!</p>
+								<p className='text-sm'><span className='font-bold'>Save 15%</span> when you combine our premium party products with professional event services!</p>
 							</div>
 						</div>
 
