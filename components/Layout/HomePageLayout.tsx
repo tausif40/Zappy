@@ -234,7 +234,7 @@ function HomePageLayout() {
 				"Professional setup service",
 				"Coordinated delivery & timing",
 			],
-			bg: "bg-gradient-to-br from-yellow-100 to-orange-100"
+			bg: "bg-gradient-to-br from-yellow-100 to-orange-100 dark:from-yellow-200/20 dark:to-orange-200/20"
 		},
 		{
 			icon: LucideSparkles,
@@ -245,7 +245,7 @@ function HomePageLayout() {
 				"Unified customer support",
 				"Coordinated timeline",
 			],
-			bg: "bg-gradient-to-br from-pink-100 to-purple-100"
+			bg: "bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-200/20 dark:to-purple-200/20"
 		},
 		{
 			icon: LucideHeart,
@@ -256,7 +256,7 @@ function HomePageLayout() {
 				"Quality assurance standards",
 				"Satisfaction guarantee",
 			],
-			bg: "bg-gradient-to-br from-lime-100 to-yellow-100"
+			bg: "bg-gradient-to-br from-lime-100 to-yellow-100 dark:from-lime-200/20 dark:to-yellow-200/20"
 		},
 	]
 
@@ -354,7 +354,7 @@ function HomePageLayout() {
 					<div className="text-center mb-12">
 						{/* <!-- Main Heading --> */}
 						<h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-							<span className="bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text ">Curated Kids Events</span>
+							<span className="bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text">Curated Kids Events</span>
 						</h1>
 						<p className="text-slate-900 text-lg mt-2 dark:text-gray-300">Extraordinary experiences, handpicked for Indian kids — forget ordinary parties!</p>
 						<p className="text-slate-700 text-base mt-2 dark:text-gray-400">Discover 7 event concepts, crafted by child experts and Indian parents.</p>
@@ -481,7 +481,6 @@ function HomePageLayout() {
 				</div>
 			</section>
 
-
 			{/* Featured Events */}
 			<section className="py-14 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/10 dark:to-pink-900/10">
 				<div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -564,7 +563,7 @@ function HomePageLayout() {
 			{/* Why Choose us */}
 			<section className="container py-16 mx-auto text-center">
 				<h2 className="text-3xl font-bold mb-4">
-					Why Choose Our <span className="text-purple-500">Complete Solutions</span>?
+					Why Choose Our <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Complete Solutions</span>?
 				</h2>
 				<p className="text-gray-600 mb-10 max-w-2xl mx-auto">
 					Get everything you need for your perfect event – from professional services to premium products, all in one place.
@@ -577,9 +576,9 @@ function HomePageLayout() {
 								<div className="px-8 pt-6 pb-4">
 									<div className="mb-4 "><feature.icon className="text-purple-500 w-10 h-10" /></div>
 									<h3 className="font-semibold text-lg mb-1">{feature.title}</h3>
-									<p className="text-gray-700 text-sm mb-4">{feature.description}</p>
+									<p className="text-muted-foreground text-sm mb-4">{feature.description}</p>
 								</div>
-								<ul className="space-y-2 text-sm bg-white p-4">
+								<ul className="space-y-2 text-sm bg-white dark:bg-gray-800 p-4">
 									{feature.points.map((point, i) => (
 										<li key={i} className="flex items-center gap-2">
 											<div className="bg-theme text-2xl rounded-full h-2 w-2"></div>
@@ -593,11 +592,11 @@ function HomePageLayout() {
 				</div>
 
 				<div className="mt-12">
-					<div className="bg-gradient-to-br from-purple-100 to-orange-100 p-8 rounded-2xl shadow-md max-w-3xl mx-auto text-center">
+					<div className="bg-gradient-to-br from-purple-100 to-orange-100 dark:from-purple-200/40 dark:to-orange-200/40 p-8 rounded-2xl shadow-md max-w-3xl mx-auto text-center">
 						<h3 className="text-2xl font-bold mb-2">
 							Save 15% on Combined Bookings!
 						</h3>
-						<p className="text-gray-700 mb-6">
+						<p className="text-muted-foreground mb-6">
 							Book both products and services together and enjoy special bundle pricing. Perfect for stress-free event planning.
 						</p>
 						<div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -667,10 +666,10 @@ function HomePageLayout() {
 
 
 			{/* Custom Package */}
-			<div className="bg-purple-100 text-center flex justify-center py-12">
+			<div className="bg-purple-100 dark:bg-purple-200/10 text-center flex justify-center py-12">
 				<div className="max-w-3xl">
 					<p className="text-3xl px-2 font-bold">
-						Need a Custom Package? <span className="text-purple-500">We can create the perfect event tailored specifically to your requirements and budget</span></p>
+						Need a Custom Package? <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">We can create the perfect event tailored specifically to your requirements and budget</span></p>
 					<p className="text-gray-600 my-6">We can create the perfect combination of products and services tailored specifically to your requirements and budget.</p>
 					<Button>Contact Us for Custom Packages</Button>
 				</div>

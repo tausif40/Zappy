@@ -21,12 +21,13 @@ export default function Footer() {
 
 	const services = [
 		{ name: "Birthday Parties", href: "/kids-events?category=birthday" },
-		{ name: "Themed Events", href: "/kids-events?category=themed" },
-		{ name: "Educational Events", href: "/kids-events?category=educational" },
-		{ name: "Outdoor Adventures", href: "/kids-events?category=outdoor" },
-		{ name: "Photography", href: "/products?category=photography" },
-		{ name: "Entertainment", href: "/products?category=entertainment" },
+		{ name: "Baby Showers", href: "/kids-events?category=themed" },
+		{ name: "School Events", href: "/kids-events?category=educational" },
+		{ name: "Holiday Parties", href: "/kids-events?category=outdoor" },
 	]
+
+
+
 
 	const cities = [
 		{ name: "Mumbai", href: "/kids-events?city=mumbai" },
@@ -47,7 +48,7 @@ export default function Footer() {
 	]
 
 	return (
-		<footer className="bg-background border-t">
+		<footer className="bg-[#111827] border-t">
 			{/* Newsletter Section */}
 			{/* <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
 				<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -82,12 +83,12 @@ export default function Footer() {
 								Zappy
 							</span>
 						</Link>
-						<p className="text-muted-foreground mb-6 max-w-md">
+						<p className="text-slate-300 mb-6 max-w-md">
 							Creating magical and memorable events for children of all ages.
 						</p>
 
 						{/* Contact Info */}
-						<div className="space-y-3 text-muted-foreground">
+						<div className="space-y-3 text-slate-300">
 							<div className="flex items-center space-x-3">
 								<Phone className="w-4 h-4 text-purple-600" />
 								<span className="text-sm">+91 98765 43210</span>
@@ -104,16 +105,16 @@ export default function Footer() {
 
 						{/* Social Links */}
 						<div className="flex space-x-8 mt-6">
-							<div className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+							<div className="text-slate-300 hover:text-purple-300">
 								<Facebook className="w-4 h-4" />
 							</div>
-							<div className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+							<div className="text-slate-300 hover:text-purple-300">
 								<Twitter className="w-4 h-4" />
 							</div>
-							<div className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+							<div className="text-slate-300 hover:text-purple-300">
 								<Instagram className="w-4 h-4" />
 							</div>
-							<div className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+							<div className="text-slate-300 hover:text-purple-300">
 								<Youtube className="w-4 h-4" />
 							</div>
 						</div>
@@ -121,13 +122,13 @@ export default function Footer() {
 
 					{/* Quick Links */}
 					<div>
-						<h4 className="font-semibold text-foreground mb-4">Quick Links</h4>
+						<h4 className="font-semibold text-white mb-4">Quick Links</h4>
 						<ul className="space-y-3">
 							{quickLinks.map((link) => (
 								<li key={link.name}>
 									<Link
 										href={link.href}
-										className="text-muted-foreground hover:text-purple-600 transition-colors text-sm"
+										className="text-slate-300 hover:text-purple-600 transition-colors text-sm"
 									>
 										{link.name}
 									</Link>
@@ -138,13 +139,13 @@ export default function Footer() {
 
 					{/* Services */}
 					<div>
-						<h4 className="font-semibold text-foreground mb-4">Services</h4>
+						<h4 className="font-semibold text-white mb-4">Services</h4>
 						<ul className="space-y-3">
 							{services.map((service) => (
 								<li key={service.name}>
 									<Link
 										href={service.href}
-										className="text-muted-foreground hover:text-purple-600 transition-colors text-sm"
+										className="text-slate-300 hover:text-purple-600 transition-colors text-sm"
 									>
 										{service.name}
 									</Link>
@@ -155,18 +156,8 @@ export default function Footer() {
 
 					{/* Support */}
 					<div>
-						<h4 className="font-semibold text-foreground mb-4">Support</h4>
-						<ul className="space-y-3 text-sm text-muted-foreground">
-							{/* {support.map((item) => (
-								<li key={item.name}>
-									<Link
-										href={item.href}
-										className="text-muted-foreground hover:text-purple-600 transition-colors text-sm"
-									>
-										{item.name}
-									</Link>
-								</li>
-							))} */}
+						<h4 className="font-semibold text-white mb-4">Support</h4>
+						<ul className="space-y-3 text-sm text-slate-300">
 							<li>1234 Party Lane, Celebration City</li>
 							<li>info@zappy.com</li>
 							<li>(555) 123-4567</li>
