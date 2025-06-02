@@ -2,9 +2,6 @@
 
 import Link from "next/link"
 import { Gift, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube, Heart } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 
 export default function Footer() {
@@ -16,7 +13,7 @@ export default function Footer() {
 		{ name: "Products", href: "/products" },
 		{ name: "Vendors", href: "/vendors" },
 		{ name: "About", href: "/about" },
-		{ name: "Contact", href: "/contact" },
+		{ name: "Contact", href: "/contact-us" },
 	]
 
 	const services = [

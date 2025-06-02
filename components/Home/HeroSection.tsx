@@ -43,9 +43,11 @@ function HeroSection() {
 										Magical
 									</span>
 									<br />
-									<span className="bg-gradient-to-r from-pink-600 to-yellow-600 bg-clip-text text-transparent animate-slide-up">Kids Events</span>
+									<span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 bg-clip-text text-transparent animate-slide-up">
+										Events For
+									</span>
 									<br />
-									<span className="dark:text-foreground text-gray-800 dark:text-gray-200">For Special Moments</span>
+									<span className=" bg-gradient-to-r from-pink-600 to-yellow-600 bg-clip-text text-transparent animate-slide-up">Special Moments</span>
 								</h1>
 								{/* <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold space-y-2">
 									<span className="bg-gradient-to-r from-purple-600 via-pink-600 to-pink-600 bg-clip-text text-transparent animate-slide-up">
@@ -67,7 +69,7 @@ function HeroSection() {
 										className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-xl transition-all duration-300 px-6 py-4 text-lg"
 									>
 										<StarIcon className="mr-1 h-5 w-5" />
-										Explore Kids Events
+										Explore Events
 										{/* <ArrowRight className="ml-2 h-5 w-5" /> */}
 									</Button>
 								</Link>
@@ -121,7 +123,7 @@ function HeroSection() {
 								/>
 
 								{/* Floating Cards */}
-								<Card className="absolute -top-6 -left-6 bg-background/90 backdrop-blur-sm shadow-xl">
+								{/* <Card className="absolute -top-6 -left-6 bg-background/90 backdrop-blur-sm shadow-xl">
 									<CardContent className="p-4">
 										<div className="flex items-center space-x-3">
 											<div className="w-12 h-12 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center">
@@ -133,7 +135,7 @@ function HeroSection() {
 											</div>
 										</div>
 									</CardContent>
-								</Card>
+								</Card> */}
 
 								<Card className="absolute -bottom-6 -right-6 bg-background/90 backdrop-blur-sm shadow-xl">
 									<CardContent className="p-4">

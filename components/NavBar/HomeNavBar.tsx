@@ -13,11 +13,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 const navigation = [
 	{ name: "Home", href: "/" },
-	{ name: "Kids Events", href: "/kids-events" },
+	{ name: "Events", href: "/events" },
+	{ name: "Curated", href: "/curated" },
 	{ name: "Products", href: "/products" },
 	{ name: "Vendors", href: "/vendors" },
-	{ name: "About", href: "/about" },
-	{ name: "Contact", href: "/contact" },
 ]
 
 const cities = [
@@ -234,7 +233,7 @@ export default function HomeNavBar() {
 										<Link href="/login" onClick={() => setIsOpen(false)}>
 											<Button variant="outline" className="w-full justify-start">
 												<LogIn className="w-4 h-4 mr-2" />
-												Login	
+												Login
 											</Button>
 										</Link>
 
