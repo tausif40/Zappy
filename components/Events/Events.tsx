@@ -19,7 +19,7 @@ import EventFilter from "@/components/Events/EventFilter"
 export default function Events() {
 	const [searchQuery, setSearchQuery] = useState("")
 
-	const event = [
+	const events = [
 		{
 			id: 1,
 			title: "Princess Theme Party",
@@ -190,104 +190,104 @@ export default function Events() {
 		}
 	]
 
-	const events = [
-		{
-			id: 1,
-			title: "Princess Theme Birthday Party",
-			vendor: "Magic Moments Events",
-			rating: 4.9,
-			reviews: 156,
-			price: "₹8,999",
-			originalPrice: "₹12,999",
-			image: "/placeholder.svg?height=300&width=400",
-			badge: "Most Popular",
-			city: "Mumbai",
-			category: "birthday",
-			ageGroup: "3-8 years",
-			duration: "3 hours",
-			includes: ["Decorations", "Entertainment", "Photography", "Cake"],
-		},
-		{
-			id: 2,
-			title: "Superhero Adventure Party",
-			vendor: "Hero Events Co.",
-			rating: 4.8,
-			reviews: 203,
-			price: "₹9,499",
-			originalPrice: "₹13,499",
-			image: "/placeholder.svg?height=300&width=400",
-			badge: "New",
-			city: "Delhi",
-			category: "birthday",
-			ageGroup: "4-10 years",
-			duration: "4 hours",
-			includes: ["Costumes", "Games", "Entertainment", "Snacks"],
-		},
-		{
-			id: 3,
-			title: "Jungle Safari Adventure",
-			vendor: "Wild Celebrations",
-			rating: 4.7,
-			reviews: 89,
-			price: "₹7,999",
-			originalPrice: "₹10,999",
-			image: "/placeholder.svg?height=300&width=400",
-			badge: "Trending",
-			city: "Bangalore",
-			category: "themed",
-			ageGroup: "5-12 years",
-			duration: "3.5 hours",
-			includes: ["Animal Shows", "Face Painting", "Games", "Refreshments"],
-		},
-		{
-			id: 4,
-			title: "Unicorn Magic Party",
-			vendor: "Dreamland Events",
-			rating: 4.9,
-			reviews: 124,
-			price: "₹8,499",
-			originalPrice: "₹11,999",
-			image: "/placeholder.svg?height=300&width=400",
-			badge: "Premium",
-			city: "Pune",
-			category: "birthday",
-			ageGroup: "3-9 years",
-			duration: "3 hours",
-			includes: ["Unicorn Performer", "Crafts", "Magic Show", "Treats"],
-		},
-		{
-			id: 5,
-			title: "Space Explorer Mission",
-			vendor: "Cosmic Kids",
-			rating: 4.6,
-			reviews: 67,
-			price: "₹10,999",
-			originalPrice: "₹14,999",
-			image: "/placeholder.svg?height=300&width=400",
-			badge: "Interactive",
-			city: "Hyderabad",
-			category: "educational",
-			ageGroup: "6-12 years",
-			duration: "4 hours",
-			includes: ["Planetarium", "Experiments", "Astronaut Training", "Lunch"],
-		},
-		{
-			id: 6,
-			title: "Frozen Winter Wonderland",
-			vendor: "Ice Queen Events",
-			rating: 4.8,
-			reviews: 198,
-			price: "₹9,999",
-			originalPrice: "₹13,999",
-			image: "/placeholder.svg?height=300&width=400",
-			badge: "Seasonal",
-			city: "Chennai",
-			category: "themed",
-			ageGroup: "3-10 years",
-			duration: "3.5 hours",
-			includes: ["Elsa Performer", "Snow Machine", "Crafts", "Themed Cake"],
-		},
-	]
+	// const events = [
+	// 	{
+	// 		id: 1,
+	// 		title: "Princess Theme Birthday Party",
+	// 		vendor: "Magic Moments Events",
+	// 		rating: 4.9,
+	// 		reviews: 156,
+	// 		price: "₹8,999",
+	// 		originalPrice: "₹12,999",
+	// 		image: "/placeholder.svg?height=300&width=400",
+	// 		badge: "Most Popular",
+	// 		city: "Mumbai",
+	// 		category: "birthday",
+	// 		ageGroup: "3-8 years",
+	// 		duration: "3 hours",
+	// 		includes: ["Decorations", "Entertainment", "Photography", "Cake"],
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		title: "Superhero Adventure Party",
+	// 		vendor: "Hero Events Co.",
+	// 		rating: 4.8,
+	// 		reviews: 203,
+	// 		price: "₹9,499",
+	// 		originalPrice: "₹13,499",
+	// 		image: "/placeholder.svg?height=300&width=400",
+	// 		badge: "New",
+	// 		city: "Delhi",
+	// 		category: "birthday",
+	// 		ageGroup: "4-10 years",
+	// 		duration: "4 hours",
+	// 		includes: ["Costumes", "Games", "Entertainment", "Snacks"],
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		title: "Jungle Safari Adventure",
+	// 		vendor: "Wild Celebrations",
+	// 		rating: 4.7,
+	// 		reviews: 89,
+	// 		price: "₹7,999",
+	// 		originalPrice: "₹10,999",
+	// 		image: "/placeholder.svg?height=300&width=400",
+	// 		badge: "Trending",
+	// 		city: "Bangalore",
+	// 		category: "themed",
+	// 		ageGroup: "5-12 years",
+	// 		duration: "3.5 hours",
+	// 		includes: ["Animal Shows", "Face Painting", "Games", "Refreshments"],
+	// 	},
+	// 	{
+	// 		id: 4,
+	// 		title: "Unicorn Magic Party",
+	// 		vendor: "Dreamland Events",
+	// 		rating: 4.9,
+	// 		reviews: 124,
+	// 		price: "₹8,499",
+	// 		originalPrice: "₹11,999",
+	// 		image: "/placeholder.svg?height=300&width=400",
+	// 		badge: "Premium",
+	// 		city: "Pune",
+	// 		category: "birthday",
+	// 		ageGroup: "3-9 years",
+	// 		duration: "3 hours",
+	// 		includes: ["Unicorn Performer", "Crafts", "Magic Show", "Treats"],
+	// 	},
+	// 	{
+	// 		id: 5,
+	// 		title: "Space Explorer Mission",
+	// 		vendor: "Cosmic Kids",
+	// 		rating: 4.6,
+	// 		reviews: 67,
+	// 		price: "₹10,999",
+	// 		originalPrice: "₹14,999",
+	// 		image: "/placeholder.svg?height=300&width=400",
+	// 		badge: "Interactive",
+	// 		city: "Hyderabad",
+	// 		category: "educational",
+	// 		ageGroup: "6-12 years",
+	// 		duration: "4 hours",
+	// 		includes: ["Planetarium", "Experiments", "Astronaut Training", "Lunch"],
+	// 	},
+	// 	{
+	// 		id: 6,
+	// 		title: "Frozen Winter Wonderland",
+	// 		vendor: "Ice Queen Events",
+	// 		rating: 4.8,
+	// 		reviews: 198,
+	// 		price: "₹9,999",
+	// 		originalPrice: "₹13,999",
+	// 		image: "/placeholder.svg?height=300&width=400",
+	// 		badge: "Seasonal",
+	// 		city: "Chennai",
+	// 		category: "themed",
+	// 		ageGroup: "3-10 years",
+	// 		duration: "3.5 hours",
+	// 		includes: ["Elsa Performer", "Snow Machine", "Crafts", "Themed Cake"],
+	// 	},
+	// ]
 
 
 
@@ -399,11 +399,10 @@ export default function Events() {
 
 						{/* Events Grid */}
 						<div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-							{/* {events.map((event, index) => (
+							{events.map((event, index) => (
 								<Card
 									key={event?.id}
-									className="group hover:shadow-md transition-all duration-300 overflow-hidden bg-white dark:bg-card hover-lift animate-slide-up"
-									style={{ animationDelay: `${index * 0.1}s` }}
+									className="group hover:shadow-lg transition-all duration-300 overflow-hidden bg-white dark:bg-card"
 								>
 									<div className="relative">
 										<Image
@@ -411,15 +410,15 @@ export default function Events() {
 											alt={event?.title}
 											width={300}
 											height={200}
-											className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+											className="w-full h-48 object-cover transition-transform duration-300"
 										/>
 										<Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
 											{event?.badge}
 										</Badge>
 										<Badge className="absolute top-3 right-3 bg-green-500 text-white border-0">{event?.discount}</Badge>
-										<Button size="icon" variant="ghost" className="absolute bottom-3 right-3 bg-white/80 hover:bg-white">
+										<div className="absolute bottom-3 right-3 ">
 											<Heart className="h-4 w-4" />
-										</Button>
+										</div>
 									</div>
 									<CardContent className="p-6">
 										<div className="flex items-center justify-between mb-2">
@@ -458,8 +457,8 @@ export default function Events() {
 										</div>
 									</CardContent>
 								</Card>
-							))} */}
-							{events.map((event, index) => (
+							))}
+							{/* {events.map((event, index) => (
 								<Card
 									key={event.id}
 									className="group hover-lift overflow-hidden border-0 shadow-lg animate-slide-up"
@@ -540,7 +539,7 @@ export default function Events() {
 										</div>
 									</CardContent>
 								</Card>
-							))}
+							))} */}
 						</div>
 
 						{/* Load More */}

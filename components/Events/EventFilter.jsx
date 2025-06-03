@@ -19,7 +19,7 @@ function EventFilter() {
 
 	// Convert value to % position
 	const getAgePercent = (val) => ((val - min) / (max - min)) * 100;
-
+	console.log(getAgePercent(ageValue[ 1 ]));
 
 	const categories = [
 		{ value: "all", label: "All Categories" },
@@ -104,7 +104,7 @@ function EventFilter() {
 					<div>
 						<label className="block text-sm font-medium mb-3">Age Group</label>
 						<div className="space-y-2">
-							<Slider defaultValue={ageValue} 
+							<Slider defaultValue={ageValue}
 								value={ageValue}
 								min={min}
 								max={max}
@@ -113,13 +113,22 @@ function EventFilter() {
 							<div className="relative h-6">
 								<span
 									className="absolute text-sm text-muted-foreground top-1"
-									style={{ left: `calc(${getAgePercent(ageValue[ 0 ])}% - 10px)` }}
+									// style={{ left: `calc(${getAgePercent(ageValue[ 0 ])}% - 10px)` }}
+									style={{
+										left: getAgePercent(ageValue[ 0 ]) >= 80
+											? `calc(${getAgePercent(ageValue[ 0 ])}% - 22px)`
+											: `calc(${getAgePercent(ageValue[ 0 ])}% - 10px)`
+									}}
 								>
 									{ageValue[ 0 ]}
 								</span>
 								<span
 									className="absolute text-sm text-muted-foreground top-1"
-									style={{ left: `calc(${getAgePercent(ageValue[ 1 ])}% - 10px)` }}
+									style={{
+										left: getAgePercent(ageValue[ 1 ]) <= 20
+											? `calc(${getAgePercent(ageValue[ 1 ])}% + 10px)`
+											: `calc(${getAgePercent(ageValue[ 1 ])}% - 10px)`
+									}}
 								>
 									{ageValue[ 1 ]}
 								</span>

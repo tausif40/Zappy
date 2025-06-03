@@ -14,7 +14,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 const navigation = [
 	{ name: "Home", href: "/" },
 	{ name: "Events", href: "/events" },
-	{ name: "Curated", href: "/curated" },
+	{ name: "Curated", href: "/curated-event" },
 	{ name: "Products", href: "/products" },
 	{ name: "Vendors", href: "/vendors" },
 ]
@@ -65,7 +65,7 @@ export default function HomeNavBar() {
 
 	return (
 		<nav
-			className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-md border-b shadow-lg" : "bg-transparent"
+			className={`fixed top-0 w-[100vw] z-50 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-md border-b shadow-lg" : "bg-transparent"
 				}`}
 		>
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -159,7 +159,7 @@ export default function HomeNavBar() {
 
 						{/* Auth Buttons - Desktop */}
 						<div className="hidden md:flex items-center space-x-2">
-							<Link href="/login">
+							<Link href="/auth/login">
 								<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
 									<LogIn className="w-4 h-4 mr-2" />
 									Login

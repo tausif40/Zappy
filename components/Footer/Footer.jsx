@@ -12,7 +12,7 @@ export default function Footer() {
 		{ name: "Kids Events", href: "/kids-events" },
 		{ name: "Products", href: "/products" },
 		{ name: "Vendors", href: "/vendors" },
-		{ name: "About", href: "/about" },
+		{ name: "About US", href: "/about-us" },
 		{ name: "Contact", href: "/contact-us" },
 	]
 
@@ -22,9 +22,12 @@ export default function Footer() {
 		{ name: "School Events", href: "/kids-events?category=educational" },
 		{ name: "Holiday Parties", href: "/kids-events?category=outdoor" },
 	]
-
-
-
+	const vendors = [
+		{ name: "Join as Vendor", href: "/" },
+		{ name: "Vendor Login", href: "/" },
+		// { name: "	Resources", href: "/" },
+		// { name: "Success Stories", href: "/" },
+	]
 
 	const cities = [
 		{ name: "Mumbai", href: "/kids-events?city=mumbai" },
@@ -153,11 +156,18 @@ export default function Footer() {
 
 					{/* Support */}
 					<div>
-						<h4 className="font-semibold text-white mb-4">Support</h4>
-						<ul className="space-y-3 text-sm text-slate-300">
-							<li>1234 Party Lane, Celebration City</li>
-							<li>info@zappy.com</li>
-							<li>(555) 123-4567</li>
+						<h4 className="font-semibold text-white mb-4">For Vendors</h4>
+						<ul className="space-y-3">
+							{vendors.map((vendor) => (
+								<li key={vendor.name}>
+									<Link
+										href={vendor.href}
+										className="text-slate-300 hover:text-purple-600 transition-colors text-sm"
+									>
+										{vendor.name}
+									</Link>
+								</li>
+							))}
 						</ul>
 					</div>
 				</div>

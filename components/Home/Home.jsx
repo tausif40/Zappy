@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import HeroSection from '@/components/Home/HeroSection'
+import EventCard from "@/components/Events/CuratedEvent/EventCard"
 
 function Home() {
 	const { toast } = useToast();
@@ -345,11 +346,11 @@ function Home() {
 
 			{/* created event */}
 			<div className="bg-gradient-to-br from-purple-50 to-pink-50 py-6 text-gray-900 dark:text-white dark:from-purple-900/10 dark:to-pink-900/10">
-				<div className="container py-6">
+				<div className="container mx-auto px-4 sm:px-6 lg:px-8  py-6">
 					<div className="text-center mb-12">
 						{/* <!-- Main Heading --> */}
 						<h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-							<span className="bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text">Curated Kids Events</span>
+							<span className="bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text">Curated Events</span>
 						</h1>
 						<p className="text-slate-900 text-lg mt-2 dark:text-gray-300">Extraordinary experiences, handpicked for Indian kids — forget ordinary parties!</p>
 						<p className="text-slate-700 text-base mt-2 dark:text-gray-400">Discover 7 event concepts, crafted by child experts and Indian parents.</p>
@@ -357,36 +358,15 @@ function Home() {
 
 					</div>
 
-					<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-						{events.map((event, i) => (
-							<Card
-								key={i}
-								className="group hover:shadow-xl transition-all duration-300 overflow-hidden bg-white dark:bg-card hover-lift "
-							// style={{ animationDelay: `${i * 0.1}s` }}
-							>
-								<div className="relative">
-									<Image
-										src="/placeholder.svg"
-										alt={event?.title}
-										width={300}
-										height={300}
-										className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-									/>
-								</div>
-								<CardContent className="p-6">
-									<div className="flex items-center justify-between mb-2">
-										<h3 className="text-xl font-semibold text-gray-900 dark:text-white">{event?.heading}</h3>
-
-									</div>
-									<p className="text-primary font-normal mb-1">{event?.title}</p>
-									<p className="text-muted-foreground font-light mb-4">{event?.description}</p>
-									{/* bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white */}
-									<Button className="w-full ">
-										Book Now
-									</Button>
-								</CardContent>
-							</Card>
-						))}
+					<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+						<EventCard />
+					</div>
+					<div className="text-center mt-12 col-span-3">
+						<Link href='/curated-event'>
+							<Button variant='outline' size="lg" className="px-8">
+								More Events
+							</Button>
+						</Link>
 					</div>
 
 					{/* <div className="text-center mb-8">
@@ -562,7 +542,7 @@ function Home() {
 			</section> */}
 
 			{/* Why Choose us */}
-			<section className="container py-16 mx-auto text-center">
+			<section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
 				<h2 className="text-3xl font-bold mb-4">
 					Why Choose Our <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Complete Solutions</span>?
 				</h2>
@@ -667,7 +647,7 @@ function Home() {
 
 
 			{/* Custom Package */}
-			<div className="bg-purple-100 dark:bg-purple-200/10 text-center flex justify-center py-12">
+			<div className="bg-purple-100 dark:bg-purple-200/10 text-center flex justify-center py-12 my-12">
 				<div className="max-w-3xl">
 					<p className="text-3xl px-2 font-bold">
 						Need a Custom Package? <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">We can create the perfect event tailored specifically to your requirements and budget</span></p>

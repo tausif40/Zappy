@@ -43,11 +43,11 @@ function HeroSection() {
 										Magical
 									</span>
 									<br />
-									<span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 bg-clip-text text-transparent animate-slide-up">
+									<span className="bg-gradient-to-r from-pink-600 to-yellow-600 bg-clip-text text-transparent animate-slide-up">
 										Events For
 									</span>
 									<br />
-									<span className=" bg-gradient-to-r from-pink-600 to-yellow-600 bg-clip-text text-transparent animate-slide-up">Special Moments</span>
+									<span className=" bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 bg-clip-text text-transparent animate-slide-up">Special Moments</span>
 								</h1>
 								{/* <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold space-y-2">
 									<span className="bg-gradient-to-r from-purple-600 via-pink-600 to-pink-600 bg-clip-text text-transparent animate-slide-up">
