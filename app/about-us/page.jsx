@@ -4,10 +4,7 @@ import AboutUs from '@/components/AboutUs/AboutUs'
 function page() {
 	return (
 		<>
-			<div className='min-h-[50vh]'>
-
-			</div>
-			{/* <AboutUs /> */}
+		 	<AboutUs />
 		</>
 	)
 }

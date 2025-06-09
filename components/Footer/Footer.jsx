@@ -9,7 +9,7 @@ export default function Footer() {
 
 	const quickLinks = [
 		{ name: "Home", href: "/" },
-		{ name: "Kids Events", href: "/kids-events" },
+		{ name: "Events", href: "/events" },
 		{ name: "Products", href: "/products" },
 		{ name: "Vendors", href: "/vendors" },
 		{ name: "About US", href: "/about-us" },
@@ -24,7 +24,7 @@ export default function Footer() {
 	]
 	const vendors = [
 		{ name: "Join as Vendor", href: "/" },
-		{ name: "Vendor Login", href: "/" },
+		{ name: "Vendor Login", href: "/auth/login" },
 		// { name: "	Resources", href: "/" },
 		// { name: "Success Stories", href: "/" },
 	]
