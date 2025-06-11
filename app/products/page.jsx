@@ -1,12 +1,12 @@
 import React from 'react'
-import Login from '@/components/Login/Login'
+import Products from '@/components/Products/Products'
 import HomeNavBar from "@/components/NavBar/HomeNavBar"
 
 function page() {
 	return (
 		<>
 			<HomeNavBar />
-			<Login />
+			<Products />
 		</>
 	)
 }

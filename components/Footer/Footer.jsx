@@ -23,7 +23,7 @@ export default function Footer() {
 		{ name: "Holiday Parties", href: "/kids-events?category=outdoor" },
 	]
 	const vendors = [
-		{ name: "Join as Vendor", href: "/" },
+		{ name: "Join as Vendor", href: "/vendor/register" },
 		{ name: "Vendor Login", href: "/auth/login" },
 		// { name: "	Resources", href: "/" },
 		// { name: "Success Stories", href: "/" },
@@ -126,10 +126,7 @@ export default function Footer() {
 						<ul className="space-y-3">
 							{quickLinks.map((link) => (
 								<li key={link.name}>
-									<Link
-										href={link.href}
-										className="text-slate-300 hover:text-purple-600 transition-colors text-sm"
-									>
+									<Link href={link.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm" >
 										{link.name}
 									</Link>
 								</li>
@@ -143,10 +140,7 @@ export default function Footer() {
 						<ul className="space-y-3">
 							{services.map((service) => (
 								<li key={service.name}>
-									<Link
-										href={service.href}
-										className="text-slate-300 hover:text-purple-600 transition-colors text-sm"
-									>
+									<Link href={service.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm">
 										{service.name}
 									</Link>
 								</li>
@@ -160,10 +154,7 @@ export default function Footer() {
 						<ul className="space-y-3">
 							{vendors.map((vendor) => (
 								<li key={vendor.name}>
-									<Link
-										href={vendor.href}
-										className="text-slate-300 hover:text-purple-600 transition-colors text-sm"
-									>
+									<Link href={vendor.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm"	>
 										{vendor.name}
 									</Link>
 								</li>

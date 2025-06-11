@@ -32,6 +32,8 @@ export default function VendorRegister() {
 		businessType: "",
 		experience: "",
 		city: "",
+		state: "",
+		Zip: "",
 		address: "",
 		description: "",
 
@@ -110,6 +112,20 @@ export default function VendorRegister() {
 		"Kanpur",
 		"Nagpur",
 	]
+	const stateList = [
+		"Mumbai",
+		"Delhi",
+		"Bangalore",
+		"Pune",
+		"Hyderabad",
+		"Chennai",
+		"Kolkata",
+		"Ahmedabad",
+		"Jaipur",
+		"Lucknow",
+		"Kanpur",
+		"Nagpur",
+	]
 
 	const nextStep = () => {
 		if (currentStep < 3) setCurrentStep(currentStep + 1)
@@ -175,7 +191,7 @@ export default function VendorRegister() {
 
 									<div className="grid grid-cols-2 gap-4">
 										<div className="space-y-2">
-											<label className="text-sm font-medium">First Name *</label>
+											<label className="text-sm font-medium">First Name <span className="text-red-500">*</span></label>
 											<div className="relative">
 												<User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 												<Input
@@ -188,7 +204,7 @@ export default function VendorRegister() {
 											</div>
 										</div>
 										<div className="space-y-2">
-											<label className="text-sm font-medium">Last Name *</label>
+											<label className="text-sm font-medium">Last Name <span className="text-red-500">*</span></label>
 											<div className="relative">
 												<User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 												<Input
@@ -203,7 +219,7 @@ export default function VendorRegister() {
 									</div>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Email *</label>
+										<label className="text-sm font-medium">Email <span className="text-red-500">*</span></label>
 										<div className="relative">
 											<Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 											<Input
@@ -218,7 +234,7 @@ export default function VendorRegister() {
 									</div>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Phone *</label>
+										<label className="text-sm font-medium">Phone <span className="text-red-500">*</span></label>
 										<div className="relative">
 											<Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 											<Input
@@ -232,7 +248,7 @@ export default function VendorRegister() {
 									</div>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Password *</label>
+										<label className="text-sm font-medium">Password <span className="text-red-500">*</span></label>
 										<div className="relative">
 											<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 											<Input
@@ -254,7 +270,7 @@ export default function VendorRegister() {
 									</div>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Confirm Password *</label>
+										<label className="text-sm font-medium">Confirm Password <span className="text-red-500">*</span></label>
 										<div className="relative">
 											<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 											<Input
@@ -283,7 +299,7 @@ export default function VendorRegister() {
 									<h3 className="text-lg font-semibold">Business Information</h3>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Business Name *</label>
+										<label className="text-sm font-medium">Business Name <span className="text-red-500">*</span></label>
 										<div className="relative">
 											<Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 											<Input
@@ -298,7 +314,7 @@ export default function VendorRegister() {
 
 									<div className="grid grid-cols-2 gap-4">
 										<div className="space-y-2">
-											<label className="text-sm font-medium">Business Type *</label>
+											<label className="text-sm font-medium">Business Type <span className="text-red-500">*</span></label>
 											<Select
 												value={formData.businessType}
 												onValueChange={(value) => setFormData({ ...formData, businessType: value })}
@@ -317,7 +333,7 @@ export default function VendorRegister() {
 										</div>
 
 										<div className="space-y-2">
-											<label className="text-sm font-medium">Experience *</label>
+											<label className="text-sm font-medium">Experience <span className="text-red-500">*</span></label>
 											<Select
 												value={formData.experience}
 												onValueChange={(value) => setFormData({ ...formData, experience: value })}
@@ -337,7 +353,7 @@ export default function VendorRegister() {
 									</div>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Primary City *</label>
+										<label className="text-sm font-medium">Primary City <span className="text-red-500">*</span></label>
 										<div className="relative">
 											<MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 											<Select
@@ -358,6 +374,38 @@ export default function VendorRegister() {
 										</div>
 									</div>
 
+									<div className="grid grid-cols-2 gap-4">
+										<div className="space-y-2">
+											<label className="text-sm font-medium">State <span className="text-red-500">*</span></label>
+											<Select
+												value={formData.state}
+												onValueChange={(value) => setFormData({ ...formData, state: value })}
+											>
+												<SelectTrigger className="border-2 focus:border-purple-500">
+													<SelectValue placeholder="Select State" />
+												</SelectTrigger>
+												<SelectContent>
+													{stateList.map((type) => (
+														<SelectItem key={type} value={type}>
+															{type}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+										</div>
+
+										<div className="space-y-2">
+											<label className="text-sm font-medium">Zip <span className="text-red-500">*</span></label>
+											<Input
+												placeholder="Zip code"
+												value={formData.Zip}
+												onChange={(e) => setFormData({ ...formData, Zip: e.target.value })}
+												className="border-2 focus:border-purple-500"
+												required
+											/>
+										</div>
+									</div>
+
 									<div className="space-y-2">
 										<label className="text-sm font-medium">Business Address</label>
 										<Textarea
@@ -369,7 +417,7 @@ export default function VendorRegister() {
 									</div>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Business Description *</label>
+										<label className="text-sm font-medium">Business Description <span className="text-red-500">*</span></label>
 										<Textarea
 											placeholder="Describe your business and what makes you special..."
 											value={formData.description}
@@ -387,7 +435,7 @@ export default function VendorRegister() {
 									<h3 className="text-lg font-semibold">Services & Final Review</h3>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Services Offered *</label>
+										<label className="text-sm font-medium">Services Offered <span className="text-red-500">*</span></label>
 										<div className="grid grid-cols-3 gap-2">
 											{serviceOptions.map((service) => (
 												<div key={service} className="flex items-center space-x-2">
@@ -405,7 +453,7 @@ export default function VendorRegister() {
 									</div>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">Price Range *</label>
+										<label className="text-sm font-medium">Price Range <span className="text-red-500">*</span></label>
 										<Select
 											value={formData.priceRange}
 											onValueChange={(value) => setFormData({ ...formData, priceRange: value })}
