@@ -136,12 +136,14 @@ export default function HomeNavBar() {
 						</DropdownMenu>
 
 						{/* Shopping Cart */}
-						<Button variant="ghost" size="icon" className="relative hover:bg-purple-50 dark:hover:bg-purple-900/20">
-							<ShoppingCart className="h-5 w-5" />
-							<Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-purple-600 text-white text-xs">
-								3
-							</Badge>
-						</Button>
+						<Link href='/cart'>
+							<Button variant="ghost" size="icon" className="relative hover:bg-purple-50 dark:hover:bg-purple-900/20">
+								<ShoppingCart className="h-5 w-5" />
+								<Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-purple-600 text-white text-xs">
+									3
+								</Badge>
+							</Button>
+						</Link>
 
 						{/* Theme Toggle */}
 						<Button
