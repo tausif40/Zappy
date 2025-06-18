@@ -130,7 +130,7 @@ export default function UserCart() {
 					{/* Cart Items */}
 					<div className="lg:col-span-2 space-y-6">
 						{cartItems.map((item) => (
-							<Card key={item.id} className="border dark:border-0 shadow-md hover:shadow-xl transition-all duration-300">
+							<Card key={item.id} className="border dark:border-0 shadow hover:shadow-md transition-all duration-300">
 								<CardContent className="p-6">
 									<div className="flex flex-col md:flex-row gap-6">
 										{/* Image */}

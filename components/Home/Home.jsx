@@ -13,7 +13,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import HeroSection from '@/components/Home/HeroSection'
-import EventCard from "@/components/Events/CuratedEvent/EventCard"
+import Testimonials from "./Testimonials"
+import CuratedEventHome from "./CuratedEventHome"
 
 function Home() {
 	const { toast } = useToast();
@@ -261,38 +262,6 @@ function Home() {
 		},
 	]
 
-	const testimonials = [
-		{
-			name: "Priya Sharma",
-			location: "Mumbai",
-			rating: 5,
-			comment:
-				"Absolutely amazing experience! My daughter's princess party was beyond our expectations. The team was professional and the kids had a blast!",
-			avatar: "/placeholder.svg?height=40&width=40",
-			event: "Princess Theme Party",
-			date: "2 weeks ago",
-		},
-		{
-			name: "Rajesh Kumar",
-			location: "Delhi",
-			rating: 5,
-			comment:
-				"Booked a superhero theme party for my son's 7th birthday. Everything was perfectly organized and the entertainment was top-notch!",
-			avatar: "/placeholder.svg?height=40&width=40",
-			event: "Superhero Adventure",
-			date: "1 month ago",
-		},
-		{
-			name: "Anita Patel",
-			location: "Pune",
-			rating: 5,
-			comment:
-				"The jungle safari theme was incredible! Great attention to detail and the kids were engaged throughout. Highly recommend!",
-			avatar: "/placeholder.svg?height=40&width=40",
-			event: "Jungle Safari Party",
-			date: "3 weeks ago",
-		},
-	]
 
 	return (
 		<>
@@ -358,40 +327,16 @@ function Home() {
 
 					</div>
 
-					<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-						<EventCard />
-					</div>
-					<div className="text-center mt-12 col-span-3">
+
+					<CuratedEventHome />
+
+					<div className="text-center col-span-3">
 						<Link href='/curated-event'>
 							<Button variant='outline' size="lg" className="px-8">
 								More Events
 							</Button>
 						</Link>
 					</div>
-
-					{/* <div className="text-center mb-8">
-						<h2 className="text-2xl font-bold mb-2">Our Kid's Event Services</h2>
-						<p className="text-gray-600 dark:text-gray-300">
-							We offer a complete range of services to make your child's special day perfect
-						</p>
-					</div>
-
-					<div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
-						{services.map((service, i) => (
-							<Card key={i} className="rounded-xl text-center py-6 px-4 bg-white dark:bg-gray-800">
-								<CardContent>
-									<h3 className="text-lg font-semibold mb-2">{service.title}</h3>
-									{service.tag && (
-										<span className="inline-block bg-yellow-300 text-black text-xs px-2 py-1 rounded-full mb-2">
-											{service.tag}
-										</span>
-									)}
-									<Button variant="default">{service.button}</Button>
-								</CardContent>
-							</Card>
-						))}
-					</div> */}
-
 				</div>
 			</div>
 
@@ -601,7 +546,7 @@ function Home() {
 							Real experiences from families who trusted us with their special moments
 						</p>
 					</div>
-					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+					{/* <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{testimonials.map((testimonial, index) => (
 							<Card
 								key={index}
@@ -641,7 +586,10 @@ function Home() {
 								</CardContent>
 							</Card>
 						))}
-					</div>
+					</div> */}
+					{/* <div className="mx-2"> */}
+					<Testimonials />
+					{/* </div> */}
 				</div>
 			</section>
 

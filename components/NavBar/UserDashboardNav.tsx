@@ -13,11 +13,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 
 const navigation = [
 	{ name: "Overview", href: "/dashboard", icon: Home },
-	{ name: "My Bookings", href: "/dashboard/bookings", icon: Calendar },
-	{ name: "Favorites", href: "/dashboard/favorites", icon: Heart },
-	{ name: "Cart", href: "/dashboard/cart", icon: ShoppingCart },
-	{ name: "Payments", href: "/dashboard/payments", icon: CreditCard },
-	{ name: "Loyalty Program", href: "/dashboard/loyalty", icon: Award },
+	{ name: "My Bookings", href: "/bookings", icon: Calendar },
+	{ name: "Favorites", href: "/favorites", icon: Heart },
+	{ name: "Cart", href: "/cart", icon: ShoppingCart },
+	{ name: "Payments", href: "/payments", icon: CreditCard },
+	{ name: "Loyalty Program", href: "/loyalty", icon: Award },
 ]
 
 export function UserDashboardNav() {

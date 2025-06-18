@@ -162,8 +162,8 @@ export default function EventDetails() {
 							Home
 						</Link>
 						<ChevronRight className="h-4 w-4 text-muted-foreground" />
-						<Link href="/kids-events" className="text-muted-foreground hover:text-foreground">
-							Kids Events
+						<Link href="/events" className="text-muted-foreground hover:text-foreground">
+							Events
 						</Link>
 						<ChevronRight className="h-4 w-4 text-muted-foreground" />
 						<span className="text-foreground">{event.title}</span>
@@ -174,7 +174,7 @@ export default function EventDetails() {
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
 				{/* Header */}
 				<div className="flex items-center justify-between mb-6">
-					<Link href="/kids-events">
+					<Link href="/events">
 						<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
 							<ArrowLeft className="mr-2 h-4 w-4" />
 							Back to Events

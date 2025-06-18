@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "swiper/css";
+@import "swiper/css/pagination";
 
 @layer base {
 	:root {
@@ -197,4 +199,21 @@
 		hsl(var(--purple-accent)) 0%,
 		hsl(var(--purple-primary)) 100%
 	);
+}
+
+.swiper-pagination-bullet {
+	transition: all 0.3s ease;
+	opacity: 0.5;
+	transform: scale(1);
+}
+
+.swiper-pagination-bullet-active {
+	opacity: 1;
+	transform: scale(1.5);
+	background-color: black;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+	display: none !important;
 }
