@@ -14,7 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link"
 import { Slider } from "@/components/ui/slider"
-import EventFilter from "@/components/Events/EventFilter"
+import EventFilter from "@/components/Events/Birthday/EventFilter"
 
 export default function Events() {
 	const [searchQuery, setSearchQuery] = useState("")
@@ -290,7 +290,6 @@ export default function Events() {
 	// ]
 
 
-
 	const performers = [
 		{
 			title: "Character Actors",
@@ -332,11 +331,11 @@ export default function Events() {
 					<div className="text-center animate-slide-up">
 						<h1 className="text-4xl md:text-5xl font-bold mb-4">
 							<span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-								Events
+								Birthday Events
 							</span>
 						</h1>
 						<p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-							Discover amazing themed parties and events designed to create magical memories for your children
+							Discover amazing themed parties and events designed to create magical memories for you
 						</p>
 
 						{/* Search Bar */}
@@ -449,7 +448,7 @@ export default function Events() {
 											<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
 												Book Now
 											</Button>
-											<Link href={`/event-details/${event.id}`}>
+											<Link href={`/birthday/details/${event.id}`}>
 												<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
 													More Details
 												</Button>

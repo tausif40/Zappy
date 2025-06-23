@@ -232,9 +232,9 @@ function Testimonials() {
 						</Card>
 					</SwiperSlide>
 				))}
-			</Swiper>
+			</Swiper>	
 		</div>
-	)
+	);
 }
 
 export default Testimonials

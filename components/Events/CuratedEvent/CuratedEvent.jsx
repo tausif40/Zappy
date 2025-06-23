@@ -14,7 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link"
 import { Slider } from "@/components/ui/slider"
-import EventFilter from "@/components/Events/EventFilter"
+import EventFilter from "@/components/Events/Birthday/EventFilter"
 import EventCard from "./EventCard"
 
 export default function CuratedEvent() {

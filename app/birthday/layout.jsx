@@ -1,14 +1,13 @@
 import React from 'react'
-import Events from '@/components/Events/Events'
 import HomeNavBar from "@/components/NavBar/HomeNavBar"
 
-function page() {
+function layout({ children }) {
 	return (
 		<>
 			<HomeNavBar />
-			<Events />
+			{children}
 		</>
 	)
 }
 
-export default page
+export default layout

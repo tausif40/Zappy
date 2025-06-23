@@ -13,7 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 const navigation = [
 	{ name: "Home", href: "/" },
-	{ name: "Events", href: "/events" },
+	{ name: "Birthday", href: "/birthday" },
 	{ name: "Curated", href: "/curated-event" },
 	{ name: "Products", href: "/products" },
 	{ name: "Vendors", href: "/vendors" },

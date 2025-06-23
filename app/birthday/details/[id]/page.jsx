@@ -1,11 +1,9 @@
 import React from 'react'
 import EventDetails from "@/components/Events/Birthday/EventDetails"
-import HomeNavBar from "@/components/NavBar/HomeNavBar"
 
 function page() {
 	return (
 		<>
-			<HomeNavBar />
 			<EventDetails />
 		</>
 	)

@@ -197,7 +197,7 @@ export default function UserDashboard() {
 		// 	description: "8 vendors",
 		// 	icon: Heart,
 		// 	color: "bg-gradient-to-r from-purple-500 to-pink-500",
-		// 	href: "/events",
+		// 	href: "/birthday",
 		// },
 		{
 			title: "Find Vendors",
@@ -467,7 +467,7 @@ export default function UserDashboard() {
 								<Target className="h-5 w-5 mr-2 text-purple-600" />
 								Recommended for You
 							</CardTitle>
-							<Link href="/events">
+							<Link href="/birthday">
 								<Button variant="outline" size="sm">
 									Browse All
 									<ArrowUpRight className="ml-1 h-3 w-3" />

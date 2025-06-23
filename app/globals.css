@@ -9,6 +9,7 @@
 		--background: 0 0% 100%;
 		--foreground: 222.2 84% 4.9%;
 		--card: 0 0% 100%;
+		--highlights: 0 0% 98%;
 		--card-foreground: 222.2 84% 4.9%;
 		--popover: 0 0% 100%;
 		--popover-foreground: 222.2 84% 4.9%;
@@ -47,6 +48,7 @@
 		--background: 222.2 84% 4.9%;
 		--foreground: 210 40% 98%;
 		--card: 223 67% 7%;
+		--highlights: 223 60% 8%;
 		--card-foreground: 210 40% 98%;
 		--popover: 222.2 84% 4.9%;
 		--popover-foreground: 210 40% 98%;
@@ -210,7 +212,7 @@
 .swiper-pagination-bullet-active {
 	opacity: 1;
 	transform: scale(1.5);
-	background-color: black;
+	background-color: red;
 }
 
 .swiper-button-prev,

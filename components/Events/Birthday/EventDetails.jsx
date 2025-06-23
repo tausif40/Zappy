@@ -3,25 +3,8 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
-import {
-	Star,
-	Heart,
-	MapPin,
-	Users,
-	Clock,
-	CheckCircle,
-	ArrowLeft,
-	Share2,
-	Phone,
-	Mail,
-	Award,
-	Shield,
-	Gift,
-	MessageCircle,
-	ChevronRight,
-} from "lucide-react"
-
+import { useParams, useRouter } from "next/navigation"
+import { Star, Heart, MapPin, Users, Clock, CheckCircle, ArrowLeft, Share2, Phone, Mail, Award, Shield, Gift, MessageCircle, ChevronRight, } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -29,9 +12,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
+import Reviews from "../Reviews"
+import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb"
 
 export default function EventDetails() {
-	const params = useParams()
+	const params = useParams();
+	const route = useRouter();
 	const eventId = params.id
 	const { toast } = useToast()
 	const [ selectedImageIndex, setSelectedImageIndex ] = useState(0)
@@ -108,42 +94,12 @@ export default function EventDetails() {
 		},
 	}
 
-	const reviews = [
-		{
-			name: "Priya Sharma",
-			rating: 5,
-			date: "2 weeks ago",
-			comment:
-				"Absolutely magical experience! My daughter felt like a real princess. The performer was amazing and kept all the kids engaged throughout. Highly recommend!",
-			avatar: "/placeholder.svg?height=40&width=40",
-			helpful: 12,
-		},
-		{
-			name: "Rajesh Kumar",
-			rating: 5,
-			date: "1 month ago",
-			comment:
-				"Perfect organization and attention to detail. The decoration was stunning and the activities were age-appropriate. Worth every penny!",
-			avatar: "/placeholder.svg?height=40&width=40",
-			helpful: 8,
-		},
-		{
-			name: "Anita Patel",
-			rating: 4,
-			date: "3 weeks ago",
-			comment:
-				"Great experience overall. The kids loved the princess performer and the activities. Only minor issue was the setup took a bit longer than expected.",
-			avatar: "/placeholder.svg?height=40&width=40",
-			helpful: 5,
-		},
-	]
+	const breadcrumb = [
+		{ name: 'Home', href: '/' },
+		{ name: 'Birthday', href: '/birthday' },
+		{ name: 'Princess Theme Birthday Party', href: '' },
 
-	const handleBookNow = () => {
-		toast({
-			title: "Booking Initiated!",
-			description: "Redirecting to booking page...",
-		})
-	}
+	];
 
 	const handleShare = () => {
 		toast({
@@ -157,24 +113,28 @@ export default function EventDetails() {
 			{/* Breadcrumb */}
 			<div className="bg-muted/30 py-4">
 				<div className="container mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex items-center space-x-2 text-sm">
-						<Link href="/" className="text-muted-foreground hover:text-foreground">
-							Home
-						</Link>
-						<ChevronRight className="h-4 w-4 text-muted-foreground" />
-						<Link href="/events" className="text-muted-foreground hover:text-foreground">
-							Events
-						</Link>
-						<ChevronRight className="h-4 w-4 text-muted-foreground" />
-						<span className="text-foreground">{event.title}</span>
-					</div>
+					<nav className="flex items-center text-sm text-muted-foreground space-x-1">
+						{breadcrumb.map((item, index) => (
+							<div key={index} className="flex items-center">
+								{index !== 0 && <ChevronRight className="w-4 h-4 mx-1" />}
+								{item.href ? (
+									<Link href={item.href}>
+										<span className="hover:text-primary">{item.name}</span>
+									</Link>
+								) : (
+									<span className="font-medium text-foreground">{item.name}</span>
+								)}
+							</div>
+						))}
+					</nav>
 				</div>
+
 			</div>
 
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
 				{/* Header */}
 				<div className="flex items-center justify-between mb-6">
-					<Link href="/events">
+					<Link href="/birthday">
 						<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
 							<ArrowLeft className="mr-2 h-4 w-4" />
 							Back to Events
@@ -191,7 +151,7 @@ export default function EventDetails() {
 					<div className="lg:col-span-2">
 
 						{/* Event Details */}
-						<Card className="shadow-lg overflow-hidden">
+						<Card className="shadow overflow-hidden">
 							<CardContent className="p-0 ">
 								<div className="relative">
 									<Image
@@ -317,57 +277,15 @@ export default function EventDetails() {
 						</Card>
 
 						{/* Reviews */}
-						{/* <Card className="border shadow-lg mt-8">
-							<CardContent className="p-8">
-								<h3 className="text-2xl font-bold mb-6">Customer Reviews</h3>
-								<div className="space-y-6">
-									{reviews.map((review, index) => (
-										<div key={index}>
-											<div className="flex items-start space-x-4">
-												<Avatar>
-													<AvatarImage src={review.avatar || "/placeholder.svg"} />
-													<AvatarFallback>
-														{review.name
-															.split(" ")
-															.map((n) => n[ 0 ])
-															.join("")}
-													</AvatarFallback>
-												</Avatar>
-												<div className="flex-1">
-													<div className="flex items-center justify-between mb-2">
-														<h4 className="font-semibold">{review.name}</h4>
-														<span className="text-sm text-muted-foreground">{review.date}</span>
-													</div>
-													<div className="flex items-center mb-2">
-														{[ ...Array(review.rating) ].map((_, i) => (
-															<Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-														))}
-													</div>
-													<p className="text-muted-foreground mb-3">{review.comment}</p>
-													<div className="flex items-center space-x-4 text-sm text-muted-foreground">
-														<button className="hover:text-foreground">Helpful ({review.helpful})</button>
-														<button className="hover:text-foreground">Reply</button>
-													</div>
-												</div>
-											</div>
-											{index < reviews.length - 1 && <Separator className="mt-6" />}
-										</div>
-									))}
-								</div>
-								<div className="mt-6">
-									<Button variant="outline" className="w-full">
-										View All Reviews
-									</Button>
-								</div>
-							</CardContent>
-						</Card> */}
+						<Reviews />
 					</div>
+
 
 					{/* Sidebar */}
 					<div className="space-y-6">
 						{/* Pricing Card */}
 						{/* sticky top-24 */}
-						<Card className="shadow-lg">
+						<Card className="shadow-lg sticky top-20">
 							<CardContent className="p-6">
 								<div className="text-center mb-6">
 									<div className="flex items-center justify-center space-x-2 mb-2">
@@ -378,12 +296,11 @@ export default function EventDetails() {
 								</div>
 
 								<div className="space-y-4 mb-6">
-									<Button
-										onClick={handleBookNow}
-										className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-6 text-lg"
-									>
-										Book Now
-									</Button>
+									<Link href={`/birthday/booking/${eventId}/themes`}>
+										<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-6 text-lg"	>
+											Book Now
+										</Button>
+									</Link>
 									{/* <Button variant="outline" className="w-full">
 										<MessageCircle className="mr-2 h-4 w-4" />
 										Chat with Vendor
@@ -408,7 +325,7 @@ export default function EventDetails() {
 						</Card>
 
 						{/* Vendor Info */}
-						<Card className="shadow-lg">
+						{/* <Card className="shadow-lg">
 							<CardContent className="p-6">
 								<h3 className="text-lg font-semibold mb-4">About the Vendor</h3>
 								<div className="flex items-start space-x-4 mb-4">
@@ -463,7 +380,7 @@ export default function EventDetails() {
 									</Link>
 								</div>
 							</CardContent>
-						</Card>
+						</Card> */}
 
 						{/* Safety Features */}
 						<Card className="shadow-lg">
