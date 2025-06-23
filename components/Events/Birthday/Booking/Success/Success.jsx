@@ -133,7 +133,7 @@ Book your events at Zappy.com`
 					</div>
 					<h1 className="text-3xl font-bold text-green-800 mb-2">Booking Confirmed! 🎉</h1>
 					<p className="text-muted-foreground">
-						Your princess party has been successfully booked. Get ready for a magical celebration!
+						Your event has been successfully booked. Get ready for a magical celebration!
 					</p>
 				</div>
 

@@ -159,7 +159,7 @@ export default function Payment() {
 		{ name: 'Birthday', href: '/birthday' },
 		{ name: 'Princess Theme Birthday Party', href: '/' },
 		{ name: 'Choose Theme', href: '/birthday/booking/1/themes' },
-		{ name: 'Date & Address', href: '/' },
+		{ name: 'Date & Address', href: '/birthday/booking/1/schedule' },
 		{ name: 'Payment', href: '' },
 	];
 
