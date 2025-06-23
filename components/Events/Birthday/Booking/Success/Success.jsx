@@ -376,7 +376,7 @@ Book your events at Zappy.com`
 					</CardContent>
 				</Card> */}
 				<div className="flex gap-6 mt-12 justify-center">
-					<Link href="/dashboard/bookings">
+					<Link href="/">
 						<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
 							<Home className="mr-2 h-4 w-4" />
 							Go to Dashboard

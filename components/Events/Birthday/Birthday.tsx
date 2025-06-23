@@ -445,9 +445,11 @@ export default function Events() {
 											)}
 										</div>
 										<div className="flex flex-col gap-2 mt-4">
-											<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
-												Book Now
-											</Button>
+											<Link href={`/birthday/details/${event.id}`}>
+												<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
+													Book Now
+												</Button>
+											</Link>
 											<Link href={`/birthday/details/${event.id}`}>
 												<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
 													More Details
