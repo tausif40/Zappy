@@ -13,8 +13,10 @@ import { Separator } from "@/components/ui/separator"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
 export default function VendorRegister() {
+	const route = useRouter();
 	const [ showPassword, setShowPassword ] = useState(false)
 	const [ showConfirmPassword, setShowConfirmPassword ] = useState(false)
 	const [ currentStep, setCurrentStep ] = useState(1)
@@ -39,7 +41,7 @@ export default function VendorRegister() {
 
 		// Services
 		services: [],
-		priceRange: "",
+		// priceRange: "",
 
 		// Agreement
 		agreeToTerms: false,
@@ -68,7 +70,8 @@ export default function VendorRegister() {
 
 		// Redirect to vendor dashboard after a short delay
 		setTimeout(() => {
-			window.location.href = "/vendor/dashboard"
+			// window.location.href = "/vendor/dashboard"
+			route.push('/vendor/dashboard')
 		}, 2000)
 	}
 
@@ -452,7 +455,7 @@ export default function VendorRegister() {
 										</div>
 									</div>
 
-									<div className="space-y-2">
+									{/* <div className="space-y-2">
 										<label className="text-sm font-medium">Price Range <span className="text-red-500">*</span></label>
 										<Select
 											value={formData.priceRange}
@@ -469,7 +472,7 @@ export default function VendorRegister() {
 												<SelectItem value="above-50000">Above ₹50,000</SelectItem>
 											</SelectContent>
 										</Select>
-									</div>
+									</div> */}
 
 									<div className="space-y-4 pt-4">
 										<div className="flex items-center space-x-2">
