@@ -119,8 +119,9 @@ export default function AboutUs() {
 							</p>
 							{/* <div className="flex flex-col sm:flex-row gap-4">
 								<Button
+								  variant='highlight'
 									size="lg"
-									className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+									className="text-white"
 								>
 									Our Story
 								</Button>

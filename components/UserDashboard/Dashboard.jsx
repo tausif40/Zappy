@@ -420,7 +420,7 @@ export default function UserDashboard() {
 										{user.nextReward - user.loyaltyPoints} points to next reward
 									</p>
 									<Link href="/loyalty">
-										<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+										<Button variant='highlight' className="w-full text-white">
 											<Gift className="mr-2 h-4 w-4" />
 											View Rewards
 										</Button>

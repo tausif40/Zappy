@@ -183,7 +183,8 @@ export default function Signup() {
 
 						<Button
 							type="submit"
-							className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+							variant='highlight'
+							className="w-full text-white"
 							disabled={!formData.agreeToTerms}
 						>
 							Create Account

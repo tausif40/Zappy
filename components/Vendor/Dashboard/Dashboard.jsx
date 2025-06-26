@@ -254,7 +254,7 @@ export default function VendorDashboard() {
 							</Button>
 						</Link>
 						<Link href="/vendor/dashboard/packages/new">
-							<Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+							<Button variant='highlight' className="text-white">
 								<Plus className="mr-2 h-4 w-4" />
 								Add Package
 							</Button>
@@ -367,7 +367,7 @@ export default function VendorDashboard() {
 											<span className="text-sm text-muted-foreground">Pending</span>
 											<span className="font-semibold text-yellow-600">{earnings.pending}</span>
 										</div>
-										<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+										<Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white ">
 											<Wallet className="mr-2 h-4 w-4" />
 											Transfer Funds
 										</Button>
@@ -436,7 +436,7 @@ export default function VendorDashboard() {
 											</SelectContent>
 										</Select>
 										<Link href="/vendor/dashboard/packages/new">
-											<Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+											<Button variant='highlight' className="text-white">
 												<Plus className="mr-2 h-4 w-4" />
 												Add Package
 											</Button>
@@ -629,7 +629,8 @@ export default function VendorDashboard() {
 											<div className="text-3xl font-bold text-green-600">{earnings.available}</div>
 											<div className="text-sm text-muted-foreground">Ready to transfer</div>
 										</div>
-										<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+										<Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 transition-all
+										 text-white">
 											<CreditCard className="mr-2 h-4 w-4" />
 											Transfer to Bank
 										</Button>

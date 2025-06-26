@@ -303,8 +303,9 @@ export default function UserCart() {
 											onChange={(e) => setPromoCode(e.target.value)}
 										/>
 										<Button
+											variant='highlight'
 											onClick={applyPromoCode}
-											className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+											className="text-white"
 										>
 											Apply
 										</Button>

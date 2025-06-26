@@ -371,8 +371,9 @@ export default function UserOverview() {
 											</div>
 											<div className="flex flex-col space-y-2">
 												<Button
+													variant='highlight'
 													size="sm"
-													className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+													className="text-white"
 												>
 													<Eye className="h-3 w-3 mr-1" />
 													View Details
@@ -391,7 +392,7 @@ export default function UserOverview() {
 					{/* Loyalty Progress */}
 					<div>
 						<Card className="border-0 shadow-lg mb-6 overflow-hidden">
-							<div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 text-white">
+							<div className="bg-gradient-to-r from-pink-600 to-red-600 p-6 text-white">
 								<div className="flex items-center justify-between mb-4">
 									<div>
 										<h3 className="font-semibold text-lg">Loyalty Program</h3>
@@ -511,7 +512,7 @@ export default function UserOverview() {
 												<span className="text-xs text-muted-foreground ml-1">({event.reviews})</span>
 											</div>
 										</div>
-										<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+										<Button className="w-full text-white bg-primary">
 											<Plus className="mr-2 h-4 w-4" />
 											Book Now
 										</Button>

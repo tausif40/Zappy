@@ -91,7 +91,8 @@ export default function Login() {
 
 							<Button
 								type="submit"
-								className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+								variant='highlight'
+								className="w-full"
 							>
 								Sign In
 								<ArrowRight className="ml-2 h-4 w-4" />

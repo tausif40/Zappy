@@ -252,11 +252,12 @@ export default function Schedule() {
 														Cancel
 													</Button>
 													<Button
+														variant='highlight'
 														onClick={() => {
 															setShowAddAddress(false)
 															toast({ title: "Address Added", description: "New address has been saved." })
 														}}
-														className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+														className="flex-1 text-white"
 													>
 														Save Address
 													</Button>

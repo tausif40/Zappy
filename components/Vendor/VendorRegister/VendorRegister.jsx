@@ -521,17 +521,19 @@ export default function VendorRegister() {
 
 								{currentStep < 3 ? (
 									<Button
+										variant='highlight'
 										type="button"
 										onClick={nextStep}
-										className="ml-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+										className="ml-auto text-white"
 									>
 										Next
 										<ArrowRight className="ml-2 h-4 w-4" />
 									</Button>
 								) : (
 									<Button
+										variant='highlight'
 										type="submit"
-										className="ml-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+										className="ml-auto text-white"
 										disabled={!formData.agreeToTerms || !formData.agreeToBackground}
 									>
 										Create Vendor Account

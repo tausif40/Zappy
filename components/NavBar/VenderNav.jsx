@@ -128,7 +128,7 @@ export default function VenderNav() {
 								</Button>
 							</Link>
 							<Link href="/signup">
-								<Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+								<Button variant='highlight' className="text-white shadow-lg hover:shadow-xl transition-all duration-300">
 									<UserPlus className="w-4 h-4 mr-2" />
 									Sign Up
 								</Button>
@@ -200,7 +200,7 @@ export default function VenderNav() {
 										</Link>
 
 										<Link href="/signup" onClick={() => setIsOpen(false)}>
-											<Button className="w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+											<Button className="w-full justify-start text-white">
 												<UserPlus className="w-4 h-4 mr-2" />
 												Sign Up
 											</Button>

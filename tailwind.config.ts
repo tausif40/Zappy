@@ -22,6 +22,7 @@ const config: Config = {
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",
 				highlights: "hsl(var(--highlights))",
+				highlight: "var(--highlight)",
 				card: {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))"
@@ -105,6 +106,7 @@ const config: Config = {
 				"accordion-up": "accordion-up 0.2s ease-out"
 			}
 		}
+		
 	},
 	plugins: [require("tailwindcss-animate")]
 };

@@ -362,7 +362,7 @@ Book your events at Zappy.com`
 					<CardContent className="p-6">
 						<div className="flex gap-6">
 							<Link href="/dashboard/bookings">
-								<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+								<Button variant='highlight' className="w-full text-white">
 									<Home className="mr-2 h-4 w-4" />
 									Go to Dashboard
 								</Button>
@@ -377,7 +377,7 @@ Book your events at Zappy.com`
 				</Card> */}
 				<div className="flex gap-6 mt-12 justify-center">
 					<Link href="/">
-						<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+						<Button variant='highlight' className="w-full text-white">
 							<Home className="mr-2 h-4 w-4" />
 							Go to Dashboard
 						</Button>
