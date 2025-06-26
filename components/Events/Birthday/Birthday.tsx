@@ -33,6 +33,7 @@ export default function Events() {
 			badge: "Most Popular",
 			city: "Mumbai",
 			discount: "31% OFF",
+			ageGroup: "3-9 years",
 			description: "A magical tea party with princess characters, tiara crafting, and royal games.",
 			options: [
 				"Princess character appearances",
@@ -54,6 +55,7 @@ export default function Events() {
 			badge: "Editor's Choice",
 			city: "Delhi",
 			discount: "30% OFF",
+			ageGroup: "12-16 years",
 			description: "Action-packed party with superhero training, obstacle courses, and themed games.",
 			options: [
 				"Superhero training camp",
@@ -75,6 +77,7 @@ export default function Events() {
 			badge: "Top Rated",
 			city: "Bangalore",
 			discount: "27% OFF",
+			ageGroup: "2-5 years",
 			description: "Dive into a mermaid-themed party with ocean decor and underwater games.",
 			options: [
 				"Mermaid character meet & greet",
@@ -96,6 +99,7 @@ export default function Events() {
 			badge: "New Arrival",
 			city: "Hyderabad",
 			discount: "26% OFF",
+			ageGroup: "20-25 years",
 			description: "Exciting carnival party with game booths, popcorn machines, and entertainers.",
 			options: [
 				"Game booths",
@@ -117,6 +121,7 @@ export default function Events() {
 			badge: "Educational",
 			city: "Chennai",
 			discount: "27% OFF",
+			ageGroup: "3-9 years",
 			description: "Fun and educational science party with live experiments and take-home kits.",
 			options: [
 				"Live science demos",
@@ -138,6 +143,7 @@ export default function Events() {
 			badge: "Budget Friendly",
 			city: "Pune",
 			discount: "26% OFF",
+			ageGroup: "13-19 years",
 			description: "An animal-themed adventure party with jungle decor and safari games.",
 			options: [
 				"Safari tent setup",
@@ -159,6 +165,7 @@ export default function Events() {
 			badge: "Creative Pick",
 			city: "Ahmedabad",
 			discount: "31% OFF",
+			ageGroup: "3-9 years",
 			description: "Creative party with painting, clay modeling, and fun DIY crafts for all ages.",
 			options: [
 				"All materials included",
@@ -180,6 +187,7 @@ export default function Events() {
 			badge: "Party Vibe",
 			city: "Kolkata",
 			discount: "26% OFF",
+			ageGroup: "10-12 years",
 			description: "High-energy glow party with neon lights, glow accessories, and a dance floor.",
 			options: [
 				"Glow accessories for guests",
@@ -190,104 +198,110 @@ export default function Events() {
 		}
 	]
 
-	// const events = [
-	// 	{
-	// 		id: 1,
-	// 		title: "Princess Theme Birthday Party",
-	// 		vendor: "Magic Moments Events",
-	// 		rating: 4.9,
-	// 		reviews: 156,
-	// 		price: "₹8,999",
-	// 		originalPrice: "₹12,999",
-	// 		image: "/placeholder.svg?height=300&width=400",
-	// 		badge: "Most Popular",
-	// 		city: "Mumbai",
-	// 		category: "birthday",
-	// 		ageGroup: "3-8 years",
-	// 		duration: "3 hours",
-	// 		includes: ["Decorations", "Entertainment", "Photography", "Cake"],
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		title: "Superhero Adventure Party",
-	// 		vendor: "Hero Events Co.",
-	// 		rating: 4.8,
-	// 		reviews: 203,
-	// 		price: "₹9,499",
-	// 		originalPrice: "₹13,499",
-	// 		image: "/placeholder.svg?height=300&width=400",
-	// 		badge: "New",
-	// 		city: "Delhi",
-	// 		category: "birthday",
-	// 		ageGroup: "4-10 years",
-	// 		duration: "4 hours",
-	// 		includes: ["Costumes", "Games", "Entertainment", "Snacks"],
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		title: "Jungle Safari Adventure",
-	// 		vendor: "Wild Celebrations",
-	// 		rating: 4.7,
-	// 		reviews: 89,
-	// 		price: "₹7,999",
-	// 		originalPrice: "₹10,999",
-	// 		image: "/placeholder.svg?height=300&width=400",
-	// 		badge: "Trending",
-	// 		city: "Bangalore",
-	// 		category: "themed",
-	// 		ageGroup: "5-12 years",
-	// 		duration: "3.5 hours",
-	// 		includes: ["Animal Shows", "Face Painting", "Games", "Refreshments"],
-	// 	},
-	// 	{
-	// 		id: 4,
-	// 		title: "Unicorn Magic Party",
-	// 		vendor: "Dreamland Events",
-	// 		rating: 4.9,
-	// 		reviews: 124,
-	// 		price: "₹8,499",
-	// 		originalPrice: "₹11,999",
-	// 		image: "/placeholder.svg?height=300&width=400",
-	// 		badge: "Premium",
-	// 		city: "Pune",
-	// 		category: "birthday",
-	// 		ageGroup: "3-9 years",
-	// 		duration: "3 hours",
-	// 		includes: ["Unicorn Performer", "Crafts", "Magic Show", "Treats"],
-	// 	},
-	// 	{
-	// 		id: 5,
-	// 		title: "Space Explorer Mission",
-	// 		vendor: "Cosmic Kids",
-	// 		rating: 4.6,
-	// 		reviews: 67,
-	// 		price: "₹10,999",
-	// 		originalPrice: "₹14,999",
-	// 		image: "/placeholder.svg?height=300&width=400",
-	// 		badge: "Interactive",
-	// 		city: "Hyderabad",
-	// 		category: "educational",
-	// 		ageGroup: "6-12 years",
-	// 		duration: "4 hours",
-	// 		includes: ["Planetarium", "Experiments", "Astronaut Training", "Lunch"],
-	// 	},
-	// 	{
-	// 		id: 6,
-	// 		title: "Frozen Winter Wonderland",
-	// 		vendor: "Ice Queen Events",
-	// 		rating: 4.8,
-	// 		reviews: 198,
-	// 		price: "₹9,999",
-	// 		originalPrice: "₹13,999",
-	// 		image: "/placeholder.svg?height=300&width=400",
-	// 		badge: "Seasonal",
-	// 		city: "Chennai",
-	// 		category: "themed",
-	// 		ageGroup: "3-10 years",
-	// 		duration: "3.5 hours",
-	// 		includes: ["Elsa Performer", "Snow Machine", "Crafts", "Themed Cake"],
-	// 	},
-	// ]
+	const event = [
+		{
+			id: 1,
+			title: "Princess Theme Birthday Party",
+			vendor: "Magic Moments Events",
+			rating: 4.9,
+			reviews: 156,
+			price: "₹8,999",
+			originalPrice: "₹12,999",
+			discount: "31% OFF",
+			image: "/placeholder.svg?height=300&width=400",
+			badge: "Most Popular",
+			city: "Mumbai",
+			category: "birthday",
+			ageGroup: "3-8 years",
+			duration: "3 hours",
+			includes: ["Decorations", "Entertainment", "Photography", "Cake"],
+		},
+		{
+			id: 2,
+			title: "Superhero Adventure Party",
+			vendor: "Hero Events Co.",
+			rating: 4.8,
+			reviews: 203,
+			price: "₹9,499",
+			originalPrice: "₹13,499",
+			discount: "29% OFF",
+			image: "/placeholder.svg?height=300&width=400",
+			badge: "New",
+			city: "Delhi",
+			category: "birthday",
+			ageGroup: "4-10 years",
+			duration: "4 hours",
+			includes: ["Costumes", "Games", "Entertainment", "Snacks"],
+		},
+		{
+			id: 3,
+			title: "Jungle Safari Adventure",
+			vendor: "Wild Celebrations",
+			rating: 4.7,
+			reviews: 89,
+			price: "₹7,999",
+			originalPrice: "₹10,999",
+			discount: "20% OFF",
+			image: "/placeholder.svg?height=300&width=400",
+			badge: "Trending",
+			city: "Bangalore",
+			category: "themed",
+			ageGroup: "5-12 years",
+			duration: "3.5 hours",
+			includes: ["Animal Shows", "Face Painting", "Games", "Refreshments"],
+		},
+		{
+			id: 4,
+			title: "Unicorn Magic Party",
+			vendor: "Dreamland Events",
+			reviews: 124,
+			price: "₹8,499",
+			originalPrice: "₹11,999",
+			discount: "13% OFF",
+			image: "/placeholder.svg?height=300&width=400",
+			badge: "Premium",
+			city: "Pune",
+			category: "birthday",
+			rating: 4.9,
+			ageGroup: "3-9 years",
+			duration: "3 hours",
+			includes: ["Unicorn Performer", "Crafts", "Magic Show", "Treats"],
+		},
+		{
+			id: 5,
+			title: "Space Explorer Mission",
+			vendor: "Cosmic Kids",
+			rating: 4.6,
+			reviews: 67,
+			price: "₹10,999",
+			originalPrice: "₹14,999",
+			discount: "06% OFF",
+			image: "/placeholder.svg?height=300&width=400",
+			badge: "Interactive",
+			city: "Hyderabad",
+			category: "educational",
+			ageGroup: "6-12 years",
+			duration: "4 hours",
+			includes: ["Planetarium", "Experiments", "Astronaut Training", "Lunch"],
+		},
+		{
+			id: 6,
+			title: "Frozen Winter Wonderland",
+			vendor: "Ice Queen Events",
+			rating: 4.8,
+			reviews: 198,
+			price: "₹9,999",
+			originalPrice: "₹13,999",
+			discount: "40% OFF",
+			image: "/placeholder.svg?height=300&width=400",
+			badge: "Seasonal",
+			city: "Chennai",
+			category: "themed",
+			ageGroup: "3-10 years",
+			duration: "3.5 hours",
+			includes: ["Elsa Performer", "Snow Machine", "Crafts", "Themed Cake"],
+		},
+	]
 
 
 	const performers = [
@@ -401,7 +415,7 @@ export default function Events() {
 							{events.map((event, index) => (
 								<Card
 									key={event?.id}
-									className="group hover:shadow-lg transition-all duration-300 overflow-hidden bg-white dark:bg-card"
+									className="group hover:shadow-md transition-all duration-300 overflow-hidden bg-white dark:bg-card"
 								>
 									<div className="relative">
 										<Image
@@ -414,32 +428,50 @@ export default function Events() {
 										<Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
 											{event?.badge}
 										</Badge>
-										<Badge className="absolute top-3 right-3 bg-green-500 text-white border-0">{event?.discount}</Badge>
-										<div className="absolute bottom-3 right-3 ">
+
+										{/* <div className="absolute top-3 right-3">
 											<Heart className="h-4 w-4" />
+										</div> */}
+										<Badge className="absolute top-3 right-3 bg-green-500 text-white border-0">{event?.discount}</Badge>
+
+										<div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs">
+											{event.time}
 										</div>
 									</div>
 									<CardContent className="p-6">
 										<div className="flex items-center justify-between mb-2">
-											<Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badge>
+											{/* <Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badge> */}
+											<p className="text-muted-foreground text-xl font-semibold">Price: </p>
 											<div className="text-right flex gap-2 items-baseline">
 												<div className="text-sm text-muted-foreground line-through">{event?.originalPrice}</div>
 												<span className="text-xl font-bold text-purple-600">{event?.price}</span>
 											</div>
 										</div>
-										<h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">{event?.title}</h3>
-										<p className="text-muted-foreground text-sm mb-3">{event?.description}</p>
+										<h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1 line-clamp-1">{event?.title}</h3>
+										<p className="text-muted-foreground text-sm mb-3 line-clamp-2">{event?.description}</p>
+
+										<div className="flex items-center justify-between mb-3">
+											<div className="flex items-center text-sm text-muted-foreground">
+												<Users className="h-3 w-3 mr-1 text-purple-600" />
+												<span className="font-semibold">Age:&nbsp;</span> {event.ageGroup}
+											</div>
+											<div className="flex items-center">
+												<Star className="h-4 w-4 text-yellow-400 fill-current" />
+												<span className="ml-1 font-medium text-sm">{event.rating}</span>
+												<span className="ml-1 text-xs text-muted-foreground">({event.reviews})</span>
+											</div>
+										</div>
 
 										<div className="space-y-2">
 											{event?.options?.slice(0, 3).map((option, i) => (
-												<div key={i} className="flex text-muted-foreground items-center">
+												<div key={i} className="flex text-muted-foreground items-center text-sm">
 													<Check className="w-4 h-4 mr-2 text-green-500" />
 													{option}
 												</div>
 											))}
 
 											{event?.options?.length > 3 && (
-												<div className="flex text-primary hover:text-purple-600 cursor-pointer">
+												<div className="flex text-primary hover:text-purple-600 cursor-pointer text-sm">
 													+{event.options.length - 3} more features
 												</div>
 											)}
@@ -450,20 +482,19 @@ export default function Events() {
 													Book Now
 												</Button>
 											</Link>
-											<Link href={`/birthday/details/${event.id}`}>
+											{/* <Link href={`/birthday/details/${event.id}`}>
 												<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
 													More Details
 												</Button>
-											</Link>
+											</Link> */}
 										</div>
 									</CardContent>
 								</Card>
 							))}
-							{/* {events.map((event, index) => (
+							{/* {event.map((event, index) => (
 								<Card
 									key={event.id}
-									className="group hover-lift overflow-hidden border-0 shadow-lg animate-slide-up"
-									style={{ animationDelay: `${index * 0.1}s` }}
+									className="group hover:shadow-md transition-all duration-300 overflow-hidden bg-white dark:bg-card"
 								>
 									<div className="relative">
 										<Image
@@ -471,29 +502,32 @@ export default function Events() {
 											alt={event.title}
 											width={400}
 											height={300}
-											className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+											className="w-full h-48 object-cover transition-transform duration-300"
 										/>
 										<Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
 											{event.badge}
 										</Badge>
-										<Button size="icon" variant="ghost" className="absolute top-3 right-3 bg-white/80 hover:bg-white">
+										<button className="absolute top-3 right-3">
 											<Heart className="h-4 w-4" />
-										</Button>
+										</button>
 										<div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs">
 											{event.duration}
 										</div>
 									</div>
 
-									<CardContent className="p-6">
+									<CardContent className="p-5">
 										<div className="flex items-start justify-between mb-2">
 											<h3 className="text-lg font-semibold line-clamp-2 group-hover:text-purple-600 transition-colors">
 												{event.title}
 											</h3>
-											<div className="text-right">
-												<div className="text-lg font-bold text-purple-600">{event.price}</div>
-												<div className="text-sm text-muted-foreground line-through">{event.originalPrice}</div>
+										</div>
+										<div className="text-right flex gap-2 justify-between">
+											<div className="flex items-baseline gap-2">
+												<p className="text-xl font-semibold">Price: </p><p className="text-xl font-bold text-purple-600">{event?.price}</p>
+												<div className="text-sm text-muted-foreground line-through">{event?.originalPrice}</div>
 											</div>
 										</div>
+
 
 										<p className="text-sm text-muted-foreground mb-3">by {event.vendor}</p>
 

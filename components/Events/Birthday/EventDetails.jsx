@@ -51,14 +51,15 @@ export default function EventDetails() {
 		city: "Mumbai",
 		duration: "3-4 hours",
 		availableOn: "Weekends",
-		maxGuests: "20-25 kids",
+		maxGuests: "20-25 people",
+		ageGroup: "15-20 years",
 		description:
 			"Transform your little princess's special day into a magical fairy tale experience! Our Princess Theme Birthday Party package includes everything needed to create an enchanting celebration that will make your child feel like royalty.",
 		highlights: [
 			"Professional princess performer for 2 hours",
 			"Complete royal decoration setup",
 			"Princess costume for birthday child",
-			"Crown-making activity for all kids",
+			"Crown-making activity for all people",
 			"Royal photo booth with props",
 			"Princess-themed games and activities",
 			"Magical storytelling session",
@@ -78,7 +79,7 @@ export default function EventDetails() {
 			{ name: "Professional Photography", price: "₹2,999", description: "2-hour photo session with edited photos" },
 			{ name: "Princess Cake", price: "₹1,499", description: "Custom princess-themed cake (2kg)" },
 			{ name: "Return Gifts", price: "₹199/child", description: "Princess-themed return gift bags" },
-			{ name: "Face Painting", price: "₹999", description: "Professional face painting for all kids" },
+			{ name: "Face Painting", price: "₹999", description: "Professional face painting for all people" },
 		],
 		availability: [
 			{ date: "2024-02-10", slots: [ "10:00 AM", "2:00 PM", "4:00 PM" ] },
@@ -197,7 +198,7 @@ export default function EventDetails() {
 											<span className="ml-1 font-semibold">{event.rating}</span>
 											<span className="ml-1 text-muted-foreground">({event.reviews} reviews)</span>
 										</div>
-										<Badge variant="secondary">Max {event.maxGuests}</Badge>
+										<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">Max {event.maxGuests}</Badge>
 									</div>
 
 									<p className="text-muted-foreground leading-relaxed mb-6">{event.description}</p>
@@ -317,13 +318,12 @@ export default function EventDetails() {
 										<span className="font-medium">{event.maxGuests}</span>
 									</div>
 									<div className="flex items-center justify-between">
-										<span className="text-muted-foreground">Available on:</span>
-										<span className="font-medium">{event.availableOn}</span>
+										<span className="text-muted-foreground">Age Group</span>
+										<span className="font-medium">{event.ageGroup}</span>
 									</div>
 								</div>
 							</CardContent>
 						</Card>
-
 						{/* Vendor Info */}
 						{/* <Card className="shadow-lg">
 							<CardContent className="p-6">

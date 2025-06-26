@@ -3,22 +3,19 @@
 import React from "react"
 import { useState } from "react"
 import Link from "next/link"
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Store, MapPin, Building } from "lucide-react"
-
+import { ArrowRight, Store} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
+import PersonalInfo from './PersonalInfo'
+import BusinessInfo from './BusinessInfo'
+import Services from './Services'
 
 export default function VendorRegister() {
 	const route = useRouter();
-	const [ showPassword, setShowPassword ] = useState(false)
-	const [ showConfirmPassword, setShowConfirmPassword ] = useState(false)
+
 	const [ currentStep, setCurrentStep ] = useState(1)
 	const [ formData, setFormData ] = useState({
 		// Personal Info
@@ -75,61 +72,6 @@ export default function VendorRegister() {
 		}, 2000)
 	}
 
-	const businessTypes = [
-		"Event Planning Company",
-		"Entertainment Service",
-		"Photography/Videography",
-		"Catering Service",
-		"Decoration Service",
-		"Equipment Rental",
-		"Individual Performer",
-		"Other",
-	]
-
-	const serviceOptions = [
-		"Birthday Parties",
-		"Themed Events",
-		"Entertainment",
-		"Photography",
-		"Videography",
-		"Decoration",
-		"Catering",
-		"Face Painting",
-		"Magic Shows",
-		"Balloon Art",
-		"Games & Activities",
-		"Character Performances",
-	]
-
-	const cities = [
-		"Mumbai",
-		"Delhi",
-		"Bangalore",
-		"Pune",
-		"Hyderabad",
-		"Chennai",
-		"Kolkata",
-		"Ahmedabad",
-		"Jaipur",
-		"Lucknow",
-		"Kanpur",
-		"Nagpur",
-	]
-	const stateList = [
-		"Mumbai",
-		"Delhi",
-		"Bangalore",
-		"Pune",
-		"Hyderabad",
-		"Chennai",
-		"Kolkata",
-		"Ahmedabad",
-		"Jaipur",
-		"Lucknow",
-		"Kanpur",
-		"Nagpur",
-	]
-
 	const nextStep = () => {
 		if (currentStep < 3) setCurrentStep(currentStep + 1)
 	}
@@ -138,11 +80,7 @@ export default function VendorRegister() {
 		if (currentStep > 1) setCurrentStep(currentStep - 1)
 	}
 
-	const toggleService = (service) => {
-		setFormData((prev) => ({
-			...prev, services: prev.services.includes(service) ? prev.services.filter((s) => s !== service) : [ ...prev.services, service ],
-		}))
-	}
+
 
 	return (
 		<div className="min-h-screen pt-28 pb-16 bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 dark:from-purple-900/10 dark:via-pink-900/10 dark:to-yellow-900/10 flex items-center justify-center p-4">
@@ -163,7 +101,7 @@ export default function VendorRegister() {
 								<div key={step} className="flex items-center">
 									<div
 										className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step <= currentStep
-											? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
+											? "bg-pink-600 text-white"
 											: "bg-gray-200 text-gray-500"
 											}`}
 									>
@@ -171,7 +109,7 @@ export default function VendorRegister() {
 									</div>
 									{step < 3 && (
 										<div
-											className={`w-12 h-1 mx-2 ${step < currentStep ? "bg-gradient-to-r from-purple-600 to-pink-600" : "bg-gray-200"
+											className={`w-12 h-1 mx-2 ${step < currentStep ? "bg-pink-600" : "bg-gray-200"
 												}`}
 										/>
 									)}
@@ -189,326 +127,17 @@ export default function VendorRegister() {
 						<form onSubmit={handleSubmit} className="space-y-6">
 							{/* Step 1: Personal Information */}
 							{currentStep === 1 && (
-								<div className="space-y-4">
-									<h3 className="text-lg font-semibold">Personal Information</h3>
-
-									<div className="grid grid-cols-2 gap-4">
-										<div className="space-y-2">
-											<label className="text-sm font-medium">First Name <span className="text-red-500">*</span></label>
-											<div className="relative">
-												<User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-												<Input
-													placeholder="John"
-													value={formData.firstName}
-													onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-													className="pl-10 border-2 focus:border-purple-500"
-													required
-												/>
-											</div>
-										</div>
-										<div className="space-y-2">
-											<label className="text-sm font-medium">Last Name <span className="text-red-500">*</span></label>
-											<div className="relative">
-												<User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-												<Input
-													placeholder="Doe"
-													value={formData.lastName}
-													onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-													className="pl-10 border-2 focus:border-purple-500"
-													required
-												/>
-											</div>
-										</div>
-									</div>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Email <span className="text-red-500">*</span></label>
-										<div className="relative">
-											<Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-											<Input
-												type="email"
-												placeholder="john@example.com"
-												value={formData.email}
-												onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-												className="pl-10 border-2 focus:border-purple-500"
-												required
-											/>
-										</div>
-									</div>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Phone <span className="text-red-500">*</span></label>
-										<div className="relative">
-											<Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-											<Input
-												placeholder="+91 98765 43210"
-												value={formData.phone}
-												onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-												className="pl-10 border-2 focus:border-purple-500"
-												required
-											/>
-										</div>
-									</div>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Password <span className="text-red-500">*</span></label>
-										<div className="relative">
-											<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-											<Input
-												type={showPassword ? "text" : "password"}
-												placeholder="Create a strong password"
-												value={formData.password}
-												onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-												className="pl-10 pr-10 border-2 focus:border-purple-500"
-												required
-											/>
-											<button
-												type="button"
-												onClick={() => setShowPassword(!showPassword)}
-												className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-											>
-												{showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-											</button>
-										</div>
-									</div>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Confirm Password <span className="text-red-500">*</span></label>
-										<div className="relative">
-											<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-											<Input
-												type={showConfirmPassword ? "text" : "password"}
-												placeholder="Confirm your password"
-												value={formData.confirmPassword}
-												onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-												className="pl-10 pr-10 border-2 focus:border-purple-500"
-												required
-											/>
-											<button
-												type="button"
-												onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-												className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-											>
-												{showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-											</button>
-										</div>
-									</div>
-								</div>
+								<PersonalInfo />
 							)}
 
 							{/* Step 2: Business Information */}
 							{currentStep === 2 && (
-								<div className="space-y-4">
-									<h3 className="text-lg font-semibold">Business Information</h3>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Business Name <span className="text-red-500">*</span></label>
-										<div className="relative">
-											<Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-											<Input
-												placeholder="Magic Moments Events"
-												value={formData.businessName}
-												onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-												className="pl-10 border-2 focus:border-purple-500"
-												required
-											/>
-										</div>
-									</div>
-
-									<div className="grid grid-cols-2 gap-4">
-										<div className="space-y-2">
-											<label className="text-sm font-medium">Business Type <span className="text-red-500">*</span></label>
-											<Select
-												value={formData.businessType}
-												onValueChange={(value) => setFormData({ ...formData, businessType: value })}
-											>
-												<SelectTrigger className="border-2 focus:border-purple-500">
-													<SelectValue placeholder="Select business type" />
-												</SelectTrigger>
-												<SelectContent>
-													{businessTypes.map((type) => (
-														<SelectItem key={type} value={type}>
-															{type}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-										</div>
-
-										<div className="space-y-2">
-											<label className="text-sm font-medium">Experience <span className="text-red-500">*</span></label>
-											<Select
-												value={formData.experience}
-												onValueChange={(value) => setFormData({ ...formData, experience: value })}
-											>
-												<SelectTrigger className="border-2 focus:border-purple-500">
-													<SelectValue placeholder="Years of experience" />
-												</SelectTrigger>
-												<SelectContent>
-													<SelectItem value="0-1">0-1 years</SelectItem>
-													<SelectItem value="1-3">1-3 years</SelectItem>
-													<SelectItem value="3-5">3-5 years</SelectItem>
-													<SelectItem value="5-10">5-10 years</SelectItem>
-													<SelectItem value="10+">10+ years</SelectItem>
-												</SelectContent>
-											</Select>
-										</div>
-									</div>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Primary City <span className="text-red-500">*</span></label>
-										<div className="relative">
-											<MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-											<Select
-												value={formData.city}
-												onValueChange={(value) => setFormData({ ...formData, city: value })}
-											>
-												<SelectTrigger className="pl-10 border-2 focus:border-purple-500">
-													<SelectValue placeholder="Select your primary city" />
-												</SelectTrigger>
-												<SelectContent>
-													{cities.map((city) => (
-														<SelectItem key={city} value={city}>
-															{city}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-										</div>
-									</div>
-
-									<div className="grid grid-cols-2 gap-4">
-										<div className="space-y-2">
-											<label className="text-sm font-medium">State <span className="text-red-500">*</span></label>
-											<Select
-												value={formData.state}
-												onValueChange={(value) => setFormData({ ...formData, state: value })}
-											>
-												<SelectTrigger className="border-2 focus:border-purple-500">
-													<SelectValue placeholder="Select State" />
-												</SelectTrigger>
-												<SelectContent>
-													{stateList.map((type) => (
-														<SelectItem key={type} value={type}>
-															{type}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-										</div>
-
-										<div className="space-y-2">
-											<label className="text-sm font-medium">Zip <span className="text-red-500">*</span></label>
-											<Input
-												placeholder="Zip code"
-												value={formData.Zip}
-												onChange={(e) => setFormData({ ...formData, Zip: e.target.value })}
-												className="border-2 focus:border-purple-500"
-												required
-											/>
-										</div>
-									</div>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Business Address</label>
-										<Textarea
-											placeholder="Enter your business address"
-											value={formData.address}
-											onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-											className="border-2 focus:border-purple-500"
-										/>
-									</div>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Business Description <span className="text-red-500">*</span></label>
-										<Textarea
-											placeholder="Describe your business and what makes you special..."
-											value={formData.description}
-											onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-											className="border-2 focus:border-purple-500 min-h-[100px]"
-											required
-										/>
-									</div>
-								</div>
+								<BusinessInfo />
 							)}
 
 							{/* Step 3: Services & Review */}
 							{currentStep === 3 && (
-								<div className="space-y-4">
-									<h3 className="text-lg font-semibold">Services & Final Review</h3>
-
-									<div className="space-y-2">
-										<label className="text-sm font-medium">Services Offered <span className="text-red-500">*</span></label>
-										<div className="grid grid-cols-3 gap-2">
-											{serviceOptions.map((service) => (
-												<div key={service} className="flex items-center space-x-2">
-													<Checkbox
-														id={service}
-														checked={formData.services.includes(service)}
-														onCheckedChange={() => toggleService(service)}
-													/>
-													<label htmlFor={service} className="text-sm">
-														{service}
-													</label>
-												</div>
-											))}
-										</div>
-									</div>
-
-									{/* <div className="space-y-2">
-										<label className="text-sm font-medium">Price Range <span className="text-red-500">*</span></label>
-										<Select
-											value={formData.priceRange}
-											onValueChange={(value) => setFormData({ ...formData, priceRange: value })}
-										>
-											<SelectTrigger className="border-2 focus:border-purple-500">
-												<SelectValue placeholder="Select your typical price range" />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="under-5000">Under ₹5,000</SelectItem>
-												<SelectItem value="5000-10000">₹5,000 - ₹10,000</SelectItem>
-												<SelectItem value="10000-20000">₹10,000 - ₹20,000</SelectItem>
-												<SelectItem value="20000-50000">₹20,000 - ₹50,000</SelectItem>
-												<SelectItem value="above-50000">Above ₹50,000</SelectItem>
-											</SelectContent>
-										</Select>
-									</div> */}
-
-									<div className="space-y-4 pt-4">
-										<div className="flex items-center space-x-2">
-											<Checkbox
-												id="terms"
-												checked={formData.agreeToTerms}
-												onCheckedChange={(checked) => setFormData({ ...formData, agreeToTerms: checked })}
-												required
-											/>
-											<label htmlFor="terms" className="text-sm">
-												I agree to the{" "}
-												<Link href="/vendor/terms" className="text-purple-600 hover:underline">
-													Vendor Terms of Service
-												</Link>{" "}
-												and{" "}
-												<Link href="/vendor/privacy" className="text-purple-600 hover:underline">
-													Privacy Policy
-												</Link>
-											</label>
-										</div>
-
-										<div className="flex items-center space-x-2">
-											<Checkbox
-												id="background"
-												checked={formData.agreeToBackground}
-												onCheckedChange={(checked) =>
-													setFormData({ ...formData, agreeToBackground: checked })
-												}
-												required
-											/>
-											<label htmlFor="background" className="text-sm">
-												I consent to background verification and quality checks
-											</label>
-										</div>
-									</div>
-								</div>
+								<Services />
 							)}
 
 							{/* Navigation Buttons */}
