@@ -140,7 +140,7 @@ export default function Schedule() {
 						<ArrowLeft className="mr-2 h-4 w-4" />
 						Back to Themes
 					</Button>
-					<div className="text-sm text-muted-foreground">Step 2 of 3: Schedule & Address</div>
+					<div className="text-sm text-muted-foreground">Step 3 of : Schedule & Address</div>
 				</div>
 
 

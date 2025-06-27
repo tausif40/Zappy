@@ -1,10 +1,10 @@
 import React from 'react'
-import ThemeSelection from "@/components/Events/Birthday/Booking/ThemeSelection"
+import Themes from "@/components/Events/Birthday/Booking/Themes/Themes"
 
 function page() {
 	return (
 		<>
-			<ThemeSelection />
+			<Themes />
 		</>
 	)
 }

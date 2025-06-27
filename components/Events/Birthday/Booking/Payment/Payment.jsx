@@ -193,7 +193,7 @@ export default function Payment() {
 						<ArrowLeft className="mr-2 h-4 w-4" />
 						Back to Date & Time
 					</Button>
-					<div className="text-sm text-muted-foreground">Step 3 of 3: Payment</div>
+					<div className="text-sm text-muted-foreground">Step 4 of 4: Payment</div>
 				</div>
 
 				<div className="mb-8">
