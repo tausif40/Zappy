@@ -2,26 +2,56 @@
 
 import React, { useState } from "react"
 import Link from "next/link"
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Gift } from "lucide-react"
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Gift, LoaderCircle, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { loginSchema } from "@/schema/registerSchema"
+import { useDispatch } from "react-redux"
+import { login } from "@/store/features/auth-slice"
+import { useSession, signOut, signIn } from 'next-auth/react';
+import { useRouter } from "next/navigation"
 
 export default function Login() {
-	const [ showPassword, setShowPassword ] = useState(false)
-	const [ email, setEmail ] = useState("")
-	const [ password, setPassword ] = useState("")
 	const { toast } = useToast()
+	const route = useRouter();
+	const dispatch = useDispatch();
+	const [ showPassword, setShowPassword ] = useState(false)
+	const [ isLoading, setIsLoading ] = useState(false)
+	const { data: session, status } = useSession();
 
-	const handleSubmit = (e) => {
-		e.preventDefault()
-		toast({
-			title: "Login Successful!",
-			description: "Welcome back to Zappy.",
-		})
+	console.log(session, status);
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm({ resolver: zodResolver(loginSchema) })
+
+	console.log(errors)
+	const onSubmit = async (data) => {
+		console.log(data);
+		try {
+			setIsLoading(true);
+			const res = await dispatch(login(data)).unwrap();
+			console.log(res);
+			// if (res.status === 200) {
+			// 	toast({ variant: "success", title: "Login Successful!", description: "Welcome back to Zappy." });
+			// 	route.push("/dashboard");
+			// } else {
+			// 	throw new Error(res.data.message || "Login failed. Please try again.");
+			// }
+		} catch (error) {
+			console.log("Error logging in: ", error);
+			toast({ variant: "destructive", title: "Login failed!", description: error?.message || "Something went wrong. Please try again." });
+		} finally {
+			setIsLoading(false);
+		}
 	}
 
 	return (
@@ -39,33 +69,30 @@ export default function Login() {
 					</CardHeader>
 
 					<CardContent className="space-y-6">
-						<form onSubmit={handleSubmit} className="space-y-4">
-							<div className="space-y-2">
-								<label className="text-sm font-medium">Email</label>
+						<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+							<div className="space-y-1">
+								<label className="text-sm font-medium">Phone No</label>
 								<div className="relative">
-									<Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+									<Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 									<Input
-										type="email"
-										placeholder="Enter your email"
-										value={email}
-										onChange={(e) => setEmail(e.target.value)}
+										{...register("mobile")}
+										type="number"
+										placeholder="Enter your mobile"
 										className="pl-10 border-2 focus:border-purple-500"
-										required
 									/>
 								</div>
+								{errors.mobile && <p className="text-sm text-red-500">{errors.mobile.message}</p>}
 							</div>
 
-							<div className="space-y-2">
+							<div className="space-y-1">
 								<label className="text-sm font-medium">Password</label>
 								<div className="relative">
 									<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 									<Input
+										{...register("password")}
 										type={showPassword ? "text" : "password"}
 										placeholder="Enter your password"
-										value={password}
-										onChange={(e) => setPassword(e.target.value)}
 										className="pl-10 pr-10 border-2 focus:border-purple-500"
-										required
 									/>
 									<button
 										type="button"
@@ -75,6 +102,7 @@ export default function Login() {
 										{showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
 									</button>
 								</div>
+								{errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
 							</div>
 
 							<div className="flex items-center justify-between">
@@ -93,9 +121,10 @@ export default function Login() {
 								type="submit"
 								variant='highlight'
 								className="w-full"
+								disabled={isLoading}
 							>
-								Sign In
-								<ArrowRight className="ml-2 h-4 w-4" />
+								LogIn
+								{isLoading ? <LoaderCircle className='animate-spin h-5 w-5 ml-2' /> : <ArrowRight className="ml-2 h-4 w-4" />}
 							</Button>
 						</form>
 
@@ -106,7 +135,7 @@ export default function Login() {
 							</span>
 						</div>
 
-						<Button variant="outline" className="border-2 w-full">
+						<Button variant="outline" className="border-2 w-full" onClick={() => signIn('google')}>
 							<img src="/img/google.png" alt="" className="w-6" />
 							<p className="text-muted-foreground">Continue with Google</p>
 						</Button>

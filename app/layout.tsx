@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/Providers/theme-provider";
 import Footer from "@/components/Footer/Footer";
+import ReduxProvider from "@/store/ReduxProvider";
+import { Toaster } from "@/components/ui/toaster";
+import AuthProvider from "@/components/Providers/auth-provider";
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -12,21 +15,19 @@ export const metadata: Metadata = {
     "Create unforgettable birthday parties and themed events for kids with professional vendors and curated experiences.",
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true} disableTransitionOnChange={false}>
-
-          <main >{children}</main>
-          {/* <Footer />
-          <Toaster /> */}
-          <Footer />
-        </ThemeProvider>
+        <AuthProvider>
+          <ReduxProvider>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true} disableTransitionOnChange={false}>
+              <main >{children}</main>
+              <Toaster />
+              <Footer />
+            </ThemeProvider>
+          </ReduxProvider>
+        </AuthProvider>
       </body>
     </html>
   );

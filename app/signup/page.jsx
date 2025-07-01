@@ -41,7 +41,9 @@ export default function page() {
 						</div>
 					</div>
 
-					<Signup />
+					<div className="col-span-2 lg:col-span-1 max-w-2xl mx-auto">
+						<Signup />
+					</div>
 
 					<div className="col-span-2">
 						<Card className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-600/30 dark:to-pink-600/30 text-white border-0">
