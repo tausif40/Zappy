@@ -86,6 +86,9 @@ export default function HomeNavBar() {
 
 	const handleLogout = () => {
 		setIsLoggedIn(false)
+		Object.keys(Cookies.get()).forEach(cookieName => {
+			Cookies.remove(cookieName)
+		})
 		console.log("User logged out")
 	}
 
