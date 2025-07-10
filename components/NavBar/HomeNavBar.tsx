@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-
+import Cookies from "js-cookie";
 
 const navigation = [
 	{ name: "Home", href: "/" },
@@ -54,8 +54,8 @@ const cities = [
 ]
 
 const user = {
-	name: "Priya Sharma",
-	email: "priya.sharma@email.com",
+	name: "User name",
+	email: "user.name@email.com",
 	avatar: "/placeholder.svg?height=40&width=40",
 	role: "user", // user, vendor, admin
 }
@@ -68,17 +68,21 @@ export default function HomeNavBar() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
 	const { theme, setTheme } = useTheme()
 	const pathname = usePathname()
+	const token = Cookies.get("token");
 
 	useEffect(() => {
 		setMounted(true)
-		// setIsLoggedIn(true)
 		const handleScroll = () => {
 			setScrolled(window.scrollY > 20)
 		}
-
 		window.addEventListener("scroll", handleScroll)
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
+
+
+	useEffect(() => {
+		setIsLoggedIn(true)
+	}, [token])
 
 	const handleLogout = () => {
 		setIsLoggedIn(false)
@@ -274,7 +278,7 @@ export default function HomeNavBar() {
 										Login
 									</Button>
 								</Link>
-								<Link href="/signup">
+								<Link href="/auth/signup">
 									<Button variant='highlight' className=" text-white shadow hover:shadow-md transition-all duration-300">
 										<UserPlus className="w-4 h-4 mr-2" />
 										Sign Up
@@ -392,14 +396,14 @@ export default function HomeNavBar() {
 											</>
 										) : (
 											<>
-												<Link href="/login" onClick={() => setIsOpen(false)}>
-													<Button variant="outline" className="w-full justify-start bg-transparent">
+												<Link href="/auth/login" onClick={() => setIsOpen(false)}>
+													<Button variant="outline" className="w-full justify-start bg-transparent mb-2">
 														<LogIn className="w-4 h-4 mr-2" />
 														Login
 													</Button>
 												</Link>
-												<Link href="/signup" onClick={() => setIsOpen(false)}>
-													<Button className="w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+												<Link href="/auth/signup" onClick={() => setIsOpen(false)}>
+													<Button variant='highlight' className="w-full justify-start text-white">
 														<UserPlus className="w-4 h-4 mr-2" />
 														Sign Up
 													</Button>
