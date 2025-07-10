@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import Link from "next/link"
-
 import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from '@/components/ui/button'
+import { ArrowRight } from 'lucide-react'
 
-function Services() {
+function Services({ currentStep }) {
 
 	const [ formData, setFormData ] = useState({
 		services: [],
@@ -88,6 +89,22 @@ function Services() {
 							I consent to background verification and quality checks
 						</label>
 					</div>
+				</div>
+
+				<div className="flex justify-between pt-6">
+					<Button type="button" variant="outline" onClick={() => currentStep((prev) => prev - 1)}>
+						Previous
+					</Button>
+
+					<Button
+						variant='highlight'
+						type="button"
+						onClick={() => currentStep((prev) => prev + 1)}
+						className="ml-auto text-white"
+					>
+						Next
+						<ArrowRight className="ml-2 h-4 w-4" />
+					</Button>
 				</div>
 			</div>
 		</>

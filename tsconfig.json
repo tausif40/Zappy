@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "store/features/auth-slice.js"  ],
+, "store/features/auth-slice.js", "middleware.js"  ],
   "exclude": [
     "node_modules"
   ]

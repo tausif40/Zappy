@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { MapPin, Building } from "lucide-react"
+import { MapPin, Building, ArrowRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from '@/components/ui/button'
 
-function BusinessInfo() {
+function BusinessInfo({ currentStep }) {
 
 	const [ formData, setFormData ] = useState({
 		businessName: "",
@@ -182,6 +183,21 @@ function BusinessInfo() {
 						className="border-2 focus:border-purple-500 min-h-[100px]"
 						required
 					/>
+				</div>
+				<div className="flex justify-between pt-6">
+					<Button type="button" variant="outline" onClick={() => currentStep((prev) => prev - 1)}>
+						Previous
+					</Button>
+
+					<Button
+						variant='highlight'
+						type="button"
+						onClick={() => currentStep((prev) => prev + 1)}
+						className="ml-auto text-white"
+					>
+						Next
+						<ArrowRight className="ml-2 h-4 w-4" />
+					</Button>
 				</div>
 			</div>
 		</>

@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
-import { registerSchema } from "@/schema/registerSchema"
+import { registerSchema } from "@/schema/userSchema"
 import { useDispatch } from "react-redux"
 import { registerUser } from "@/store/features/auth-slice"
 import { useSession, signOut, signIn } from 'next-auth/react';
@@ -53,12 +53,13 @@ export default function Signup() {
 			const res = await dispatch(registerUser(payload)).unwrap();
 			console.log(res);
 			if (res.status === 201) {
-				toast({ variant: "success", title: "Account Created!", description: "Welcome to Zappy. Please check your email to verify your account." });
 				route.push("/dashboard");
+				Cookies.set("token", res.data.accessToken);
+				toast({ variant: "success", title: "Account Created!", description: "Welcome to Zappy. Please check your email to verify your account." });
 			} else {
 				throw new Error(res.data.message || "Login failed. Please try again.");
 			}
-			toast({ variant: "success", title: "Account Created!", description: "Welcome to Zappy. Please check your email to verify your account." });
+			// toast({ variant: "success", title: "Account Created!", description: "Welcome to Zappy. Please check your email to verify your account." });
 		} catch (error) {
 			console.log("Error in registration: ", error)
 			toast({

@@ -11,11 +11,12 @@ import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { loginSchema } from "@/schema/registerSchema"
+import { loginSchema } from "@/schema/userSchema"
 import { useDispatch } from "react-redux"
 import { login } from "@/store/features/auth-slice"
 import { useSession, signOut, signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation"
+import Cookies from "js-cookie";
 
 export default function Login() {
 	const { toast } = useToast()
@@ -25,7 +26,7 @@ export default function Login() {
 	const [ isLoading, setIsLoading ] = useState(false)
 	const { data: session, status } = useSession();
 
-	console.log(session, status);
+	// console.log(session, status);
 
 	const {
 		register,
@@ -40,12 +41,13 @@ export default function Login() {
 			setIsLoading(true);
 			const res = await dispatch(login(data)).unwrap();
 			console.log(res);
-			// if (res.status === 200) {
-			// 	toast({ variant: "success", title: "Login Successful!", description: "Welcome back to Zappy." });
-			// 	route.push("/dashboard");
-			// } else {
-			// 	throw new Error(res.data.message || "Login failed. Please try again.");
-			// }
+			if (res.status === 200) {
+				route.push("/dashboard");
+				Cookies.set("token", res.data.accessToken);
+				toast({ variant: "success", title: "Login Successful!", description: "Welcome back to Zappy." });
+			} else {
+				throw new Error(res.data.message || "Login failed. Please try again.");
+			}
 		} catch (error) {
 			console.log("Error logging in: ", error);
 			toast({ variant: "destructive", title: "Login failed!", description: error?.message || "Something went wrong. Please try again." });
