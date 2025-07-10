@@ -6,7 +6,7 @@ export function middleware(request) {
 
 	const token = request.cookies.get("token");
 
-	if (pathname.startsWith("/vendor/dashboard") || pathname.startsWith("/dashboard")) {
+	if (pathname.startsWith("/vendor") || pathname.startsWith("/dashboard")) {
 		if (!token) {
 			return NextResponse.redirect(new URL("/auth/login", request.url));
 		}
@@ -16,8 +16,7 @@ export function middleware(request) {
 
 export const config = {
 	matcher: [
-		"/vendor/dashboard/:path*",
-		"/vendor/profile/:path*",
+		"/vendor/:path*",
 		"/dashboard/:path*"
 	]
 };
