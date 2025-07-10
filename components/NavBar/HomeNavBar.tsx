@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Moon, Sun, Menu, X, Gift, LogIn, UserPlus, ShoppingCart, MapPin, ChevronDown, User, Settings, Calendar, Heart, CreditCard, Award, LogOut, Bell, User2, ArrowRight } from "lucide-react"
 import { useTheme } from "@/components/Providers/theme-provider"
 import { Button } from "@/components/ui/button"
@@ -61,6 +61,7 @@ const user = {
 }
 
 export default function HomeNavBar() {
+	const route = useRouter()
 	const [isOpen, setIsOpen] = useState(false)
 	const [mounted, setMounted] = useState(false)
 	const [scrolled, setScrolled] = useState(false)
@@ -81,15 +82,17 @@ export default function HomeNavBar() {
 
 
 	useEffect(() => {
+		console.log("token - ", token)
 		token === undefined ? setIsLoggedIn(false) : setIsLoggedIn(true)
 	}, [token])
 
 	const handleLogout = () => {
-		setIsLoggedIn(false)
+		// setIsLoggedIn(false)
 		setIsOpen(false)
 		Object.keys(Cookies.get()).forEach(cookieName => {
 			Cookies.remove(cookieName)
 		})
+		route.push('/')
 		console.log("User logged out")
 	}
 

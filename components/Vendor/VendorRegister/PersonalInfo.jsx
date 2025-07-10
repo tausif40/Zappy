@@ -8,7 +8,7 @@ import { registerVendor } from '@/store/vendor/vendorAuth-slice'
 import { useToast } from "@/hooks/use-toast"
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
-import OTPVerification from "./OTPVerification"
+import OTPVerification from "@/components/SignUp/OTPVerification"
 import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, LoaderCircle } from "lucide-react"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
