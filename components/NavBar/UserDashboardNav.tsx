@@ -65,7 +65,7 @@ export function UserDashboardNav() {
 							<span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
 								Zappy
 							</span>
-							<div className="text-xs text-muted-foreground">Magical Memories</div>
+							<div className="text-xs text-muted-foreground min-w-max">Magical Memories</div>
 						</div>
 					</Link>
 

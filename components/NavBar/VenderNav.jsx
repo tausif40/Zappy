@@ -176,19 +176,21 @@ export default function VenderNav() {
 									</div>
 
 									{/* Mobile Navigation */}
-									{navigation.map((item) => (
-										<Link
-											key={item.name}
-											href={item.href}
-											onClick={() => setIsOpen(false)}
-											className={`flex items-center px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${pathname === item.href
-												? "text-purple-600 bg-purple-50 dark:bg-purple-900/20"
-												: "text-muted-foreground hover:text-purple-600 hover:bg-purple-50/50"
-												}`}
-										>
-											{item.name}
-										</Link>
-									))}
+									<div className="space-y-2">
+										{navigation.map((item) => (
+											<Link
+												key={item.name}
+												href={item.href}
+												onClick={() => setIsOpen(false)}
+												className={`flex items-center px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${pathname === item.href
+													? "text-purple-600 bg-purple-50 dark:bg-purple-900/20"
+													: "text-muted-foreground hover:text-purple-600 hover:bg-purple-50/50"
+													}`}
+											>
+												{item.name}
+											</Link>
+										))}
+									</div>
 
 									{/* Mobile Auth Buttons */}
 									<div className="pt-4 border-t flex flex-col gap-2">
@@ -200,7 +202,7 @@ export default function VenderNav() {
 										</Link>
 
 										<Link href="/signup" onClick={() => setIsOpen(false)}>
-											<Button className="w-full justify-start text-white">
+											<Button variant='highlight' className="w-full justify-start text-white">
 												<UserPlus className="w-4 h-4 mr-2" />
 												Sign Up
 											</Button>

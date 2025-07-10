@@ -14,13 +14,13 @@ export default function VendorRegister() {
 	const [ currentStep, setCurrentStep ] = useState(1)
 
 	useEffect(() => {
-		window.scrollTo({ top: 150, behavior: "instant" });
+		window.scrollTo({ top: 40, behavior: "instant" });
 	}, [ currentStep ])
 
 	return (
 		<div className="min-h-screen pt-28 pb-16 bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 dark:from-purple-900/10 dark:via-pink-900/10 dark:to-yellow-900/10 flex items-center justify-center p-4">
 			<div className="w-full max-w-4xl">
-				<Card className="border-0 shadow-2xl animate-slide-up">
+				<Card className="border-0 shadow-md animate-slide-up">
 					<CardHeader className="text-center pb-6">
 						<div className="flex justify-center mb-4">
 							<div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">

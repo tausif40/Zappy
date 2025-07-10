@@ -129,9 +129,9 @@ function VendorCard() {
 							src={vendor.coverImage || "/placeholder.svg"}
 							alt={`${vendor.name} cover`}
 							fill
-							className="object-cover group-hover:scale-105 transition-transform duration-300"
+							className="object-cover"
 						/>
-						<div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+						{/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" /> */}
 						<div className="absolute top-4 right-4 flex gap-2">
 							{vendor.verified && (
 								<Badge className="bg-green-500 text-white border-0">
@@ -151,7 +151,7 @@ function VendorCard() {
 					<CardContent className="p-6">
 						{/* Vendor Info */}
 						<div className="flex items-start gap-4 mb-4">
-							<Avatar className="w-20 h-20 border-4 border-white -mt-10 relative z-10">
+							<Avatar className="w-20 h-20 border-4 border-card -mt-10 relative z-10">
 								<AvatarImage src={vendor.avatar || "/placeholder.svg"} />
 								<AvatarFallback>
 									{vendor.name

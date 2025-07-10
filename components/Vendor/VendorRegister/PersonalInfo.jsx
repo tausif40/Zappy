@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, LoaderCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
 import { registerSchema } from '@/schema/userSchema'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registerVendor } from '@/store/vendor/vendorAuth-slice'
-import { useToast } from '@/components/ui/use-toast'
+import { useToast } from "@/hooks/use-toast"
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
+import OTPVerification from "./OTPVerification"
+import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, LoaderCircle } from "lucide-react"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 function PersonalInformation({ currentStep }) {
 	const route = useRouter();
 	const { toast } = useToast();
 	const dispatch = useDispatch();
+	const [ otpVerify, setOtpVerify ] = useState(false);
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ showPassword, setShowPassword ] = useState(false)
 	const [ showConfirmPassword, setShowConfirmPassword ] = useState(false);
@@ -22,6 +25,7 @@ function PersonalInformation({ currentStep }) {
 		resolver: zodResolver(registerSchema)
 	});
 	console.log(errors);
+	// onClick = {() => currentStep((prev) => prev + 1)
 
 	// currentStep((prev) => prev + 1)
 	const onSubmit = async (data) => {
@@ -34,12 +38,13 @@ function PersonalInformation({ currentStep }) {
 			if (res?.statusCode === 400) {
 				toast({ variant: "warning", title: "Please verify!", description: "Welcome to Zappy. Please verify your account." });
 			}
-			// if (res.status === 201) {
-			// 	route.push("/vendor/dashboard");
-			// 	Cookies.set("token", res.data.accessToken);
-			// } else {
-			// 	throw new Error(res.data.message || "Login failed. Please try again.");
-			// }
+			if (res.status === 201) {
+				// Cookies.set("token", res.data.accessToken);
+				// route.push("/vendor/dashboard");
+				setOtpVerify(true)
+			} else {
+				throw new Error(res.data.message || "Login failed. Please try again.");
+			}
 		} catch (error) {
 			console.log("Error in registration: ", error)
 			toast({ variant: "destructive", title: "Registration failed!", description: error?.message || "Something went wrong. Please try again." })
@@ -50,6 +55,7 @@ function PersonalInformation({ currentStep }) {
 
 	return (
 		<>
+			{otpVerify && <OTPVerification />}
 			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				<h3 className="text-lg font-semibold">Personal Information</h3>
 
@@ -101,7 +107,7 @@ function PersonalInformation({ currentStep }) {
 						<Input
 							{...register("mobile")}
 							type='number'
-							placeholder="+91 98765 43210"
+							placeholder="ex- +91 98765 43210"
 							className="pl-10 border-2 focus:border-purple-500"
 						/>
 						{errors.mobile && <p className="text-sm text-red-500">{errors.mobile.message}</p>}

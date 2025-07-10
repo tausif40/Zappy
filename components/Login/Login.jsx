@@ -24,7 +24,8 @@ export default function Login() {
 	const dispatch = useDispatch();
 	const [ showPassword, setShowPassword ] = useState(false)
 	const [ isLoading, setIsLoading ] = useState(false)
-	const { data: session, status } = useSession();
+
+	// const { data: session, status } = useSession();
 
 	// console.log(session, status);
 
@@ -35,6 +36,7 @@ export default function Login() {
 	} = useForm({ resolver: zodResolver(loginSchema) })
 
 	console.log(errors)
+
 	const onSubmit = async (data) => {
 		console.log(data);
 		try {
@@ -44,7 +46,7 @@ export default function Login() {
 			if (res.status === 200) {
 				route.push("/dashboard");
 				Cookies.set("token", res.data.accessToken);
-				toast({ variant: "success", title: "Login Successful!", description: "Welcome back to Zappy." });
+				toast({ variant: "success", title: "Login Successful!", description: "Welcome back to Zappy."});
 			} else {
 				throw new Error(res.data.message || "Login failed. Please try again.");
 			}
