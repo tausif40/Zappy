@@ -81,11 +81,12 @@ export default function HomeNavBar() {
 
 
 	useEffect(() => {
-		setIsLoggedIn(true)
+		token === undefined ? setIsLoggedIn(false) : setIsLoggedIn(true)
 	}, [token])
 
 	const handleLogout = () => {
 		setIsLoggedIn(false)
+		setIsOpen(false)
 		Object.keys(Cookies.get()).forEach(cookieName => {
 			Cookies.remove(cookieName)
 		})
@@ -387,10 +388,7 @@ export default function HomeNavBar() {
 													<Button
 														variant="outline"
 														className="w-full justify-start text-red-600 border-red-200 hover:bg-red-50 bg-transparent"
-														onClick={() => {
-															handleLogout()
-															setIsOpen(false)
-														}}
+														onClick={handleLogout}
 													>
 														<LogOut className="w-4 h-4 mr-2" />
 														Logout
