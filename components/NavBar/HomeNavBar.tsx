@@ -282,7 +282,7 @@ export default function HomeNavBar() {
 										Login
 									</Button>
 								</Link>
-								<Link href="/auth/signup">
+								<Link href="/signup">
 									<Button variant='highlight' className=" text-white shadow hover:shadow-md transition-all duration-300">
 										<UserPlus className="w-4 h-4 mr-2" />
 										Sign Up
@@ -403,7 +403,7 @@ export default function HomeNavBar() {
 														Login
 													</Button>
 												</Link>
-												<Link href="/auth/signup" onClick={() => setIsOpen(false)}>
+												<Link href="/signup" onClick={() => setIsOpen(false)}>
 													<Button variant='highlight' className="w-full justify-start text-white">
 														<UserPlus className="w-4 h-4 mr-2" />
 														Sign Up
