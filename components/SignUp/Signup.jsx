@@ -2,7 +2,7 @@
 
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -19,7 +19,6 @@ import { registerUser } from "@/store/features/auth-slice"
 import { useSession, signOut, signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation"
 import OTPVerification from "./OTPVerification"
-import Cookies from "js-cookie";
 
 export default function Signup() {
 	const { toast } = useToast();
@@ -28,16 +27,21 @@ export default function Signup() {
 	const [ showPassword, setShowPassword ] = useState(false)
 	const [ showConfirmPassword, setShowConfirmPassword ] = useState(false)
 	const [ isLoading, setIsLoading ] = useState(false)
-	const [ otpVerify, setOtpVerify ] = useState(false);
+	const [ isOtpVerify, setIsOtpVerify ] = useState(false)
+	const [ otpVerifyPopup, setOtpVerifyPopup ] = useState(false);
+
 	const { data: session, status } = useSession();
 	console.log(session, status);
+
 	const {
 		control,
 		register,
 		handleSubmit,
+		watch,
 		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(registerSchema),
+		mode: "onChange",
 		defaultValues: {
 			firstName: "",
 			lastName: "",
@@ -49,6 +53,15 @@ export default function Signup() {
 		},
 	})
 
+	const mobileNum = watch("mobile");
+
+
+	useEffect(() => {
+		if (isOtpVerify) {
+			route.push("/dashboard");
+		}
+	}, [ isOtpVerify ])
+
 	const onSubmit = async (data) => {
 		console.log("Submit: ", data)
 		const { confirmPassword, ...payload } = data
@@ -58,9 +71,7 @@ export default function Signup() {
 			const res = await dispatch(registerUser(payload)).unwrap();
 			console.log(res);
 			if (res.status === 201) {
-				// route.push("/dashboard");
-				// Cookies.set("token", res.data.accessToken);
-				setOtpVerify(true);
+				setOtpVerifyPopup(true);
 				toast({ variant: "success", title: "Account Created!", description: "Welcome to Zappy. Please check your email to verify your account." });
 			} else {
 				throw new Error(res.data.message || "Login failed. Please try again.");
@@ -80,7 +91,13 @@ export default function Signup() {
 
 	return (
 		<>
-			{otpVerify && <OTPVerification />}
+			{otpVerifyPopup &&
+				<OTPVerification
+					role='user'
+					number={mobileNum}
+					open={setOtpVerifyPopup}
+					isOtpVerify={setIsOtpVerify} />
+			}
 			<Card className="border-0 shadow-xl animate-slide-in-right">
 				<CardHeader className="text-center pb-6">
 					<div className="flex justify-center mb-4 lg:hidden">
@@ -97,7 +114,7 @@ export default function Signup() {
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
 							<div className="space-y-1">
-								<label className="text-sm font-medium">First Name</label>
+								<label className="text-sm font-medium">First Name <span className="text-red-500">*</span></label>
 								<div className="relative">
 									<User className="absolute left-3 top-5 -translate-y-1/2 text-muted-foreground h-4 w-4" />
 									<Input
@@ -109,7 +126,7 @@ export default function Signup() {
 							</div>
 
 							<div className="space-y-1">
-								<label className="text-sm font-medium">Last Name</label>
+								<label className="text-sm font-medium">Last Name <span className="text-red-500">*</span></label>
 								<div className="relative">
 									<User className="absolute left-3 top-5 -translate-y-1/2 text-muted-foreground h-4 w-4" />
 									<Input
@@ -122,7 +139,7 @@ export default function Signup() {
 						</div>
 
 						<div className="space-y-1">
-							<label className="text-sm font-medium">Email</label>
+							<label className="text-sm font-medium">Email <span className="text-red-500">*</span></label>
 							<div className="relative">
 								<Mail className="absolute left-3 top-5 -translate-y-1/2 text-muted-foreground h-4 w-4" />
 								<Input
@@ -134,20 +151,21 @@ export default function Signup() {
 						</div>
 
 						<div className="space-y-1">
-							<label className="text-sm font-medium">Phone</label>
+							<label className="text-sm font-medium">Phone <span className="text-red-500">*</span></label>
 							<div className="relative">
 								<Phone className="absolute left-3 top-5 -translate-y-1/2 text-muted-foreground h-4 w-4" />
 								<Input
 									{...register("mobile")}
-									type="number"
-									placeholder="+91 98765 43210"
-									className="pl-10 border-2 focus:border-purple-500" />
+									type="tel"
+									placeholder="+91 98765 43***"
+									className="pl-10 border-2 focus:border-purple-500"
+								/>
 								{errors.mobile && <p className="text-sm text-red-500">{errors.mobile.message}</p>}
 							</div>
 						</div>
 
 						<div className="space-y-1">
-							<label className="text-sm font-medium">Password</label>
+							<label className="text-sm font-medium">Password <span className="text-red-500">*</span></label>
 							<div className="relative">
 								<Lock className="absolute left-3 top-5 -translate-y-1/2 text-muted-foreground h-4 w-4" />
 								<Input
@@ -166,7 +184,7 @@ export default function Signup() {
 						</div>
 
 						<div className="space-y-1">
-							<label className="text-sm font-medium">Confirm Password</label>
+							<label className="text-sm font-medium">Confirm Password <span className="text-red-500">*</span></label>
 							<div className="relative">
 								<Lock className="absolute left-3 top-5 -translate-y-1/2 text-muted-foreground h-4 w-4" />
 								<Input
@@ -174,11 +192,11 @@ export default function Signup() {
 									type={showConfirmPassword ? "text" : "password"}
 									placeholder="Confirm your password"
 									className="pl-10 pr-10 border-2 focus:border-purple-500"
-								/>
+								/> 
 								<button
 									type="button"
 									onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-									className="absolute right-3 top-5 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+									className="absolute right-3 top-5 -translate-y-1/2 text-muted-foreground   hover:text-foreground">
 									{showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
 								</button>
 								{errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>}

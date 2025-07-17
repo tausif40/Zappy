@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
 import { registerSchema } from '@/schema/userSchema'
@@ -10,26 +10,37 @@ import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import OTPVerification from "@/components/SignUp/OTPVerification"
 import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, LoaderCircle } from "lucide-react"
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 function PersonalInformation({ currentStep }) {
 	const route = useRouter();
 	const { toast } = useToast();
 	const dispatch = useDispatch();
-	const [ otpVerify, setOtpVerify ] = useState(false);
+	const [ otpVerifyPopup, setOtpVerifyPopup ] = useState(false);
+	const [ isOtpVerify, setIsOtpVerify ] = useState(false);
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ showPassword, setShowPassword ] = useState(false)
 	const [ showConfirmPassword, setShowConfirmPassword ] = useState(false);
 
-	const { register, handleSubmit, formState: { errors }, } = useForm({
-		resolver: zodResolver(registerSchema)
+	const { register, handleSubmit, watch, trigger, formState: { errors }, } = useForm({
+		resolver: zodResolver(registerSchema),
+		defaultValues: { agreeToTerms: true },
+		mode: "onChange",
 	});
-	console.log(errors);
-	// onClick = {() => currentStep((prev) => prev + 1)
+	const password = watch("password");
+	const mobileNum = watch("mobile");
 
-	// currentStep((prev) => prev + 1)
+	useEffect(() => {
+		trigger("confirmPassword");
+	}, [ password, trigger ]);
+
+	useEffect(() => {
+		if (isOtpVerify) {
+			currentStep((prev) => prev + 1)
+		}
+	}, [ isOtpVerify ])
+
 	const onSubmit = async (data) => {
-		const { confirmPassword, ...payload } = data
+		const { confirmPassword, agreeToTerms, ...payload } = data
 		console.log("Submit: ", payload)
 		try {
 			setIsLoading(true)
@@ -41,7 +52,7 @@ function PersonalInformation({ currentStep }) {
 			if (res.status === 201) {
 				// Cookies.set("token", res.data.accessToken);
 				// route.push("/vendor/dashboard");
-				setOtpVerify(true)
+				setOtpVerifyPopup(true)
 			} else {
 				throw new Error(res.data.message || "Login failed. Please try again.");
 			}
@@ -55,7 +66,13 @@ function PersonalInformation({ currentStep }) {
 
 	return (
 		<>
-			{otpVerify && <OTPVerification />}
+			{otpVerifyPopup &&
+				<OTPVerification
+					role='vendor'
+					number={mobileNum}
+					open={setOtpVerifyPopup}
+					isOtpVerify={setIsOtpVerify} />
+			}
 			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				<h3 className="text-lg font-semibold">Personal Information</h3>
 
@@ -106,8 +123,8 @@ function PersonalInformation({ currentStep }) {
 						<Phone className="absolute left-3 top-5 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 						<Input
 							{...register("mobile")}
-							type='number'
-							placeholder="ex- +91 98765 43210"
+							type="tel"
+							placeholder="ex- +91 98765 43***"
 							className="pl-10 border-2 focus:border-purple-500"
 						/>
 						{errors.mobile && <p className="text-sm text-red-500">{errors.mobile.message}</p>}

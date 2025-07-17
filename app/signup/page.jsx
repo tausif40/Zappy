@@ -21,7 +21,7 @@ export default function page() {
 		<>
 			<HomeNavBar />
 			<div className="min-h-screen pt-16 bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 dark:from-purple-900/10 dark:via-pink-900/10 dark:to-yellow-900/10 flex items-center justify-center p-4">
-				<div className="w-full container mx-auto px-0 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 py-16">
+				<div className="w-full container mx-auto px-0 sm:px-6 lg:px-8 lg:grid grid-cols-2 gap-8 py-16">
 					{/* Left Side - Benefits */}
 					<div className="hidden lg:flex flex-col justify-start animate-slide-in-left">
 						<div className="space-y-6 lg:pt-16">
@@ -41,7 +41,7 @@ export default function page() {
 						</div>
 					</div>
 
-					<div className="col-span-2 lg:col-span-1 max-w-2xl mx-auto">
+					<div className="max-w-2xl mx-auto">
 						<Signup />
 					</div>
 

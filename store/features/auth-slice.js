@@ -10,11 +10,22 @@ export const login = createAsyncThunk("auth/login", async (credentials, thunkAPI
 		console.log(error);
 		return thunkAPI.rejectWithValue(error);
 	}
-}
-);
+});
+
 export const registerUser = createAsyncThunk("auth/registerUser", async (formData, thunkAPI) => {
 	try {
 		const response = await apiClient.post("/auth/register-user", formData);
+		return { status: response.status, data: response.data, };
+	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error);
+	}
+});
+
+export const otpVerify = createAsyncThunk("auth/otpVerify", async (formData, thunkAPI) => {
+	try {
+		const response = await apiClient.post("/auth/verify-mobile-otp", formData);
+		console.log(response);
 		return { status: response.status, data: response.data, };
 	} catch (error) {
 		console.log(error);

@@ -11,7 +11,7 @@ import BusinessInfo from './BusinessInfo'
 import Services from './Services'
 
 export default function VendorRegister() {
-	const [ currentStep, setCurrentStep ] = useState(1)
+	const [ currentStep, setCurrentStep ] = useState(3)
 
 	useEffect(() => {
 		window.scrollTo({ top: 40, behavior: "instant" });

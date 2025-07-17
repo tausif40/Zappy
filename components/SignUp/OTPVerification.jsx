@@ -5,12 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast"
+import { useDispatch } from "react-redux";
+import { otpVerify } from "@/store/features/auth-slice";
+import Cookies from "js-cookie";
 
-export default function VerifyOtpPage({ number }) {
+export default function VerifyOtpPage({ role, number, open, isOtpVerify }) {
 	const { toast } = useToast();
+	const dispatch = useDispatch();
 	const [ otp, setOtp ] = useState(new Array(6).fill(""));
 	const [ timer, setTimer ] = useState(0);
-	// const [ mobile, setMobile ] = useState("+91 98765 43210");
 	const inputsRef = useRef([]);
 
 	useEffect(() => {
@@ -60,7 +63,23 @@ export default function VerifyOtpPage({ number }) {
 			return;
 		}
 
-		toast({ variant: "success", title: "OTP Verified", description: `Please follow next step.` });
+		const submitData = { mobile: number, otp: finalOtp, role: role }
+
+		try {
+			console.log(submitData);
+			const res = dispatch(otpVerify(submitData)).unwrap();
+			console.log(res);
+			isOtpVerify(true);
+			open(false);
+			if (res.status === 204) {
+				Cookies.set("token", res.data.accessToken);
+				toast({ variant: "success", title: "OTP Verified", description: `Please follow next step.` });
+			}
+
+		} catch (error) {
+			console.log(res);
+		}
+
 	};
 
 	const handleResend = () => {
@@ -68,9 +87,6 @@ export default function VerifyOtpPage({ number }) {
 		setTimer(60);
 	};
 
-	const handleEditNumber = () => {
-
-	};
 
 	return (
 		<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -89,7 +105,7 @@ export default function VerifyOtpPage({ number }) {
 							<Button
 								variant="link"
 								className="p-0 h-auto text-blue-600 text-sm"
-								onClick={handleEditNumber}
+								onClick={() => open(false)}
 							>
 								Edit
 							</Button>

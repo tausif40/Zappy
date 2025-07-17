@@ -4,19 +4,17 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from '@/components/ui/button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { businessSchema } from '@/schema/vendorSchema'
 
 function BusinessInfo({ currentStep }) {
 
-	const [ formData, setFormData ] = useState({
-		businessName: "",
-		businessType: "",
-		experience: "",
-		city: "",
-		state: "",
-		Zip: "",
-		address: "",
-		description: "",
-	})
+	const { register, handleSubmit, setValue, formState: { errors }, } = useForm({
+		resolver: zodResolver(businessSchema),
+		mode: "onChange",
+	});
+	console.log(errors);
 
 	const businessTypes = [
 		"Event Planning Company",
@@ -59,32 +57,63 @@ function BusinessInfo({ currentStep }) {
 		"Nagpur",
 	]
 
+	const onSubmit = async (data) => {
+		const { ...payload } = data
+		console.log("Submit: ", payload)
+		// try {
+		// 	setIsLoading(true)
+		// 	const res = await dispatch(registerVendor(payload)).unwrap();
+		// 	console.log(res);
+		// 	if (res?.statusCode === 400) {
+		// 		toast({ variant: "warning", title: "Please verify!", description: "Welcome to Zappy. Please verify your account." });
+		// 	}
+		// 	if (res.status === 201) {
+		// 		currentStep((prev) => prev + 1)
+		// 		setOtpVerifyPopup(true)
+		// 	} else {
+		// 		throw new Error(res.data.message || "Login failed. Please try again.");
+		// 	}
+		// } catch (error) {
+		// 	console.log("Error in registration: ", error)
+		// 	toast({ variant: "destructive", title: "Registration failed!", description: error?.message || "Something went wrong. Please try again." })
+		// } finally {
+		// 	setIsLoading(false)
+		// }
+	}
+
+	const [ formData, setFormData ] = useState({
+		businessName: "",
+		businessType: "",
+		experience: "",
+		city: "",
+		state: "",
+		Zip: "",
+		address: "",
+		description: "",
+	})
+
 	return (
 		<>
-			<div className="space-y-4">
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				<h3 className="text-lg font-semibold">Business Information</h3>
 
-				<div className="space-y-2">
+				<div className="space-y-1">
 					<label className="text-sm font-medium">Business Name <span className="text-red-500">*</span></label>
 					<div className="relative">
-						<Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+						<Building className="absolute left-3 top-5 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 						<Input
+							{...register("businessName")}
 							placeholder="Business Name"
-							value={formData.businessName}
-							onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
 							className="pl-10 border-2 focus:border-purple-500"
-							required
 						/>
+						{errors.businessName && <p className="text-sm text-red-500">{errors.businessName.message}</p>}
 					</div>
 				</div>
 
 				<div className="grid grid-cols-2 gap-4">
-					<div className="space-y-2">
-						<label className="text-sm font-medium">Business Type <span className="text-red-500">*</span></label>
-						<Select
-							value={formData.businessType}
-							onValueChange={(value) => setFormData({ ...formData, businessType: value })}
-						>
+					<div className="">
+						<label className="text-sm font-medium mb-1">Business Type <span className="text-red-500">*</span></label>
+						<Select onValueChange={(value) => setValue("businessType", value, { shouldValidate: true })}>
 							<SelectTrigger className="border-2 focus:border-purple-500 text-muted-foreground">
 								<SelectValue placeholder="Select business type" />
 							</SelectTrigger>
@@ -96,26 +125,24 @@ function BusinessInfo({ currentStep }) {
 								))}
 							</SelectContent>
 						</Select>
+						{errors.businessType && <p className="text-sm text-red-500">{errors.businessType.message}</p>}
 					</div>
 
-					<div className="space-y-2">
-						<label className="text-sm font-medium">Experience (Year) <span className="text-red-500">*</span></label>
+					<div className="">
+						<label className="text-sm font-medium mb-1">Experience (Year) <span className="text-red-500">*</span></label>
 						<Input
+							{...register("experience")}
+							type='number'
 							placeholder="Years of experience"
-							value={formData.experience}
-							onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
 							className="border-2 focus:border-purple-500"
-							required
 						/>
+						{errors.experience && <p className="text-sm text-red-500">{errors.experience.message}</p>}
 					</div>
 				</div>
 
-				<div className="space-y-2">
-					<label className="text-sm font-medium">State <span className="text-red-500">*</span></label>
-					<Select
-						value={formData.state}
-						onValueChange={(value) => setFormData({ ...formData, state: value })}
-					>
+				<div>
+					<label className="text-sm font-medium mb-1">State <span className="text-red-500">*</span></label>
+					<Select onValueChange={(value) => setValue("state", value, { shouldValidate: true })}>
 						<SelectTrigger className="border-2 focus:border-purple-500 text-muted-foreground">
 							<SelectValue placeholder="Select State" />
 						</SelectTrigger>
@@ -127,17 +154,15 @@ function BusinessInfo({ currentStep }) {
 							))}
 						</SelectContent>
 					</Select>
+					{errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
 				</div>
 
 				<div className="grid grid-cols-2 gap-4">
-					<div className="space-y-2">
-						<label className="text-sm font-medium">City <span className="text-red-500">*</span></label>
+					<div className="">
+						<label className="text-sm font-medium mb-1">City <span className="text-red-500">*</span></label>
 						<div className="relative">
-							<MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-							<Select
-								value={formData.city}
-								onValueChange={(value) => setFormData({ ...formData, city: value })}
-							>
+							<MapPin className="absolute left-3 top-5 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+							<Select onValueChange={(value) => setValue("city", value, { shouldValidate: true })}>
 								<SelectTrigger className="pl-10 border-2 focus:border-purple-500 text-muted-foreground">
 									<SelectValue placeholder="Select your city" />
 								</SelectTrigger>
@@ -149,57 +174,56 @@ function BusinessInfo({ currentStep }) {
 									))}
 								</SelectContent>
 							</Select>
+							{errors.city && <p className="text-sm text-red-500">{errors.city.message}</p>}
 						</div>
 					</div>
 
-					<div className="space-y-2">
-						<label className="text-sm font-medium">Zip <span className="text-red-500">*</span></label>
+					<div>
+						<label className="text-sm font-medium mb-1">Zip <span className="text-red-500">*</span></label>
 						<Input
+							{...register("zip")}
 							placeholder="Zip code"
-							value={formData.Zip}
-							onChange={(e) => setFormData({ ...formData, Zip: e.target.value })}
 							className="border-2 focus:border-purple-500"
-							required
 						/>
+						{errors.zip && <p className="text-sm text-red-500">{errors.zip.message}</p>}
 					</div>
 				</div>
 
-				<div className="space-y-2">
-					<label className="text-sm font-medium">Business Address</label>
+				<div >
+					<label className="text-sm font-medium mb-1">Business Address</label>
 					<Textarea
+						{...register("address")}
 						placeholder="Enter your business address"
-						value={formData.address}
-						onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-						className="border-2 focus:border-purple-500"
+						className="border-2 focus:border-purple-500 "
 					/>
+					{errors.address && <p className="text-sm text-red-500">{errors.address.message}</p>}
 				</div>
 
-				<div className="space-y-2">
-					<label className="text-sm font-medium">Business Description <span className="text-red-500">*</span></label>
+				<div >
+					<label className="text-sm font-medium mb-1">Business Description <span className="text-red-500">*</span></label>
 					<Textarea
+						{...register("description")}
 						placeholder="Describe your business and what makes you special..."
-						value={formData.description}
-						onChange={(e) => setFormData({ ...formData, description: e.target.value })}
 						className="border-2 focus:border-purple-500 min-h-[100px]"
-						required
 					/>
+					{errors.description && <p className="text-sm text-red-500">{errors.description.message}</p>}
 				</div>
+
 				<div className="flex justify-between pt-6">
 					<Button type="button" variant="outline" onClick={() => currentStep((prev) => prev - 1)}>
 						Previous
 					</Button>
 
 					<Button
+						type="submit"
 						variant='highlight'
-						type="button"
-						onClick={() => currentStep((prev) => prev + 1)}
 						className="ml-auto text-white"
 					>
 						Next
 						<ArrowRight className="ml-2 h-4 w-4" />
 					</Button>
 				</div>
-			</div>
+			</form >
 		</>
 	)
 }
