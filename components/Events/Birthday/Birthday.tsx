@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Star, Heart, MapPin, Calendar, Users, Search, SlidersHorizontal, Check } from "lucide-react"
+import { Star, Heart, MapPin, Calendar, Users, Search, SlidersHorizontal, Check, Smile, GraduationCap, Wine, Crown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -18,6 +18,8 @@ import EventFilter from "@/components/Events/Birthday/EventFilter"
 
 export default function Events() {
 	const [searchQuery, setSearchQuery] = useState("")
+
+	const [activeButton, setActiveButton] = useState('Kids');
 
 	const events = [
 		{
@@ -303,6 +305,29 @@ export default function Events() {
 		},
 	]
 
+	const AgeGroup = [
+		{
+			id: 'Kids',
+			text: 'Kids (1-12)',
+			icon: Smile,
+		},
+		{
+			id: 'Teens',
+			text: 'Teens (13-19)',
+			icon: GraduationCap,
+		},
+		{
+			id: 'Adults',
+			text: 'Adults (20+)',
+			icon: Wine,
+		},
+		{
+			id: 'Milestone',
+			text: 'Milestone',
+			icon: Crown,
+		},
+	];
+
 
 	const performers = [
 		{
@@ -353,14 +378,28 @@ export default function Events() {
 						</p>
 
 						{/* Search Bar */}
-						<div className="max-w-2xl mx-auto relative">
-							<Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+						<div className="max-w-2xl mx-auto flex flex-wrap justify-center mt-6 gap-4">
+							{/* <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
 							<Input
 								placeholder="Search for themes, vendors, or locations..."
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								className="pl-12 pr-4 py-6 text-lg border-2 focus:border-purple-500 rounded-full"
-							/>
+							/> */}
+							{AgeGroup.map((button) => {
+								// Determine if the current button is active
+								const isActive = activeButton === button.id;
+								return (
+									<Button key={button.id} onClick={() => setActiveButton(button.id)}
+										className={`${isActive ? 'bg-purple-400 text-white shadow-md'
+											: 'bg-white text-purple-600 border border-purple-300 hover:bg-purple-50 hover:border-purple-400'}`
+										}>
+										{/* Render the icon component */}
+										<button.icon className="w-5 h-5 md:w-6 md:h-6" />
+										<span>{button.text}</span>
+									</Button>
+								);
+							})}
 						</div>
 					</div>
 				</div>

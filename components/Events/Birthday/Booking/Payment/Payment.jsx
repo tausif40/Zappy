@@ -92,8 +92,8 @@ export default function Payment() {
 		},
 		{
 			id: "cod",
-			name: "Cash on Delivery",
-			description: "Pay cash when the service is delivered",
+			name: "Offline Payment",
+			description: "Pay amount before event organized",
 			icon: <Banknote className="h-5 w-5" />,
 			popular: false,
 		},
@@ -279,7 +279,7 @@ export default function Payment() {
 									<div className="mt-6 p-6 border rounded-lg bg-orange-50 dark:bg-orange-900/20">
 										<div className="flex items-center space-x-3 mb-3">
 											<Banknote className="h-5 w-5 text-orange-600" />
-											<h3 className="font-semibold text-orange-800 dark:text-orange-200">Cash on Delivery</h3>
+											<h3 className="font-semibold text-orange-800 dark:text-orange-200">Offline Payment</h3>
 										</div>
 										<ul className="space-y-2 text-sm text-orange-700 dark:text-orange-300">
 											<li>• Pay cash when our team arrives for setup</li>
