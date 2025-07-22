@@ -122,8 +122,8 @@ export default function EventDetails() {
 			duration: "3 hours",
 			ageRange: "Ages 7-13",
 			tier: "GOLD",
-			color: "border-purple-400 bg-purple-50",
-			buttonColor: "bg-purple-500 hover:bg-purple-600",
+			color: "border-yellow-400 bg-yellow-50",
+			buttonColor: "bg-yellow-500 hover:bg-yellow-600",
 		},
 		{
 			name: "Platinum",
@@ -133,9 +133,8 @@ export default function EventDetails() {
 			duration: "4 hours",
 			ageRange: "Ages 8-14",
 			tier: "PLATINUM",
-			color: "border-yellow-400 bg-yellow-50",
-			buttonColor: "bg-yellow-500 hover:bg-yellow-600",
-
+			color: "border-teal-400 bg-teal-50",
+			buttonColor: "bg-teal-500 hover:bg-teal-600",
 		},
 	];
 
