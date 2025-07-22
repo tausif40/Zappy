@@ -4,7 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { Star, Heart, MapPin, Users, Clock, CheckCircle, ArrowLeft, Share2, Phone, Mail, Award, Shield, Gift, MessageCircle, ChevronRight, } from "lucide-react"
+import { Star, Heart, MapPin, Users, Clock, CheckCircle, ArrowLeft, Share2, Phone, Mail, Award, Shield, Gift, MessageCircle, ChevronRight, CalendarDays } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
 import Reviews from "../Reviews"
 import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb"
+import EventsPlan from "./EventsPlan"
 
 export default function EventDetails() {
 	const params = useParams();
@@ -99,8 +100,49 @@ export default function EventDetails() {
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
 		{ name: 'Princess Theme Birthday Party', href: '' },
-
 	];
+
+	const plans = [
+		{
+			name: "Silver",
+			subtitle: "Basic",
+			description: "Essential services with basic venue setup",
+			price: 9999,
+			duration: "2.5 hours",
+			ageRange: "Ages 6-12",
+			tier: "SILVER",
+			color: "border-ring bg-highlights",
+			buttonColor: "bg-primary hover:bg-highlight",
+		},
+		{
+			name: "Gold",
+			subtitle: "Enhanced",
+			description: "Enhanced services with better setup",
+			price: 14999,
+			duration: "3 hours",
+			ageRange: "Ages 7-13",
+			tier: "GOLD",
+			color: "border-purple-400 bg-purple-50",
+			buttonColor: "bg-purple-500 hover:bg-purple-600",
+		},
+		{
+			name: "Platinum",
+			subtitle: "Premium",
+			description: "Premium services with complete setup",
+			price: 19999,
+			duration: "4 hours",
+			ageRange: "Ages 8-14",
+			tier: "PLATINUM",
+			color: "border-yellow-400 bg-yellow-50",
+			buttonColor: "bg-yellow-500 hover:bg-yellow-600",
+
+		},
+	];
+
+
+	const [ selected, setSelected ] = useState("Silver");
+	const selectedTier = plans.find((tier) => tier.name === selected);
+
 
 	const handleShare = () => {
 		toast({
@@ -147,9 +189,9 @@ export default function EventDetails() {
 					</Button>
 				</div>
 
-				<div className="grid lg:grid-cols-3 gap-8">
+				<div className="grid lg:grid-cols-5 gap-8">
 					{/* Main Content */}
-					<div className="lg:col-span-2">
+					<div className="lg:col-span-3">
 
 						{/* Event Details */}
 						<Card className="shadow overflow-hidden">
@@ -168,7 +210,19 @@ export default function EventDetails() {
 									<Badge className="absolute top-4 right-4 bg-green-500 text-white border-0">{event.discount}</Badge>
 								</div>
 
-								<div className="p-8">
+								<div className="grid grid-cols-5 gap-4 p-4">
+									{[ ...Array(3) ].map((_, i) => (
+										<Image
+											key={i}
+											src="/placeholder.svg"
+											alt="placeholder"
+											width={150}
+											height={100}
+											className="w-full h-20 object-cover"
+										/>
+									))}
+								</div>
+								<div className="px-8 py-6">
 									<div className="flex items-start justify-between mb-6">
 										<div>
 											<h1 className="text-3xl font-bold text-foreground mb-2">{event.title}</h1>
@@ -207,7 +261,6 @@ export default function EventDetails() {
 										<TabsList className="grid w-full grid-cols-3">
 											<TabsTrigger value="highlights">Highlights</TabsTrigger>
 											<TabsTrigger value="includes">Includes</TabsTrigger>
-											{/* <TabsTrigger value="addons">Add-ons</TabsTrigger> */}
 											<TabsTrigger value="policies">Policies</TabsTrigger>
 										</TabsList>
 
@@ -228,25 +281,6 @@ export default function EventDetails() {
 													<div key={index} className="flex items-start space-x-3">
 														<CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
 														<span className="text-sm">{item}</span>
-													</div>
-												))}
-											</div>
-										</TabsContent>
-
-										<TabsContent value="addons" className="mt-6">
-											<div className="space-y-4">
-												{event.addOns.map((addon, index) => (
-													<div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-														<div>
-															<h4 className="font-medium">{addon.name}</h4>
-															<p className="text-sm text-muted-foreground">{addon.description}</p>
-														</div>
-														<div className="text-right">
-															<div className="font-semibold text-purple-600">{addon.price}</div>
-															<Button size="sm" variant="outline">
-																Add
-															</Button>
-														</div>
 													</div>
 												))}
 											</div>
@@ -283,47 +317,9 @@ export default function EventDetails() {
 
 
 					{/* Sidebar */}
-					<div className="space-y-6">
-						{/* Pricing Card */}
-						{/* sticky top-24 */}
-						<Card className="shadow-lg sticky top-20">
-							<CardContent className="p-6">
-								<div className="text-center mb-6">
-									<div className="flex items-center justify-center space-x-2 mb-2">
-										<span className="text-3xl font-bold text-purple-600">{event.price}</span>
-										<span className="text-lg text-muted-foreground line-through">{event.originalPrice}</span>
-									</div>
-									<Badge className="bg-green-100 text-green-700 border-0">{event.discount}</Badge>
-								</div>
+					<div className="space-y-6 lg:col-span-2  sticky top-24 ">
+						<EventsPlan event={event} />
 
-								<div className="space-y-4 mb-6">
-									<Link href={`/birthday/booking/${eventId}/themes`}>
-										<Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-6 text-lg"	>
-											Book Now
-										</Button>
-									</Link>
-									{/* <Button variant="outline" className="w-full">
-										<MessageCircle className="mr-2 h-4 w-4" />
-										Chat with Vendor
-									</Button> */}
-								</div>
-
-								<div className="space-y-3 text-sm">
-									<div className="flex items-center justify-between">
-										<span className="text-muted-foreground">Duration:</span>
-										<span className="font-medium">{event.duration}</span>
-									</div>
-									<div className="flex items-center justify-between">
-										<span className="text-muted-foreground">Max Guests:</span>
-										<span className="font-medium">{event.maxGuests}</span>
-									</div>
-									<div className="flex items-center justify-between">
-										<span className="text-muted-foreground">Age Group</span>
-										<span className="font-medium">{event.ageGroup}</span>
-									</div>
-								</div>
-							</CardContent>
-						</Card>
 						{/* Vendor Info */}
 						{/* <Card className="shadow-lg">
 							<CardContent className="p-6">

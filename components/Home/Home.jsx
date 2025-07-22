@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import HeroSection from '@/components/Home/HeroSection'
 import Testimonials from "./Testimonials"
-// import CuratedEventHome from "./CuratedEventHome"
+import CuratedEventHome from "./CuratedEventHome"
 
 function Home() {
 	const { toast } = useToast();
