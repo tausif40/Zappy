@@ -172,7 +172,7 @@ export default function AddOns() {
 							<h2 className="text-xl font-semibold pb-2">Category</h2>
 							<ScrollArea className="border py-2 pl-2 pr-3 rounded h-[80vh] min-w-xl">
 								{addons.map((value) => (
-									<p className="border p-2 rounded-md bg-background mb-2">{value.icon}&nbsp;{value.name}</p>
+									<p className="border p-2 rounded-md bg-background mb-2 cursor-pointer">{value.icon}&nbsp;{value.name}</p>
 								))}
 							</ScrollArea>
 						</div>

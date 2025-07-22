@@ -1,11 +1,17 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
 import { Slider } from "@/components/ui/slider"
+import { Calendar } from "@/components/ui/calendar"
+import { Label } from "@/components/ui/label"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
+import { ChevronDownIcon } from "lucide-react"
+import { Input } from "@/components/ui/input"
 
 function EventFilter() {
 	const [ selectedCategory, setSelectedCategory ] = useState("all")
@@ -13,6 +19,8 @@ function EventFilter() {
 	const [ priceRange, setPriceRange ] = useState("all")
 	const [ ageValue, setAgeValue ] = useState([ 1, 100 ]);
 
+	const [ open, setOpen ] = useState(false)
+	const [ date, setDate ] = useState(undefined)
 
 	const min = 0;
 	const max = 100;
@@ -53,6 +61,12 @@ function EventFilter() {
 				<h3 className="text-lg font-semibold mb-4">Filters</h3>
 
 				<div className="space-y-6">
+
+					<div>
+						<label className="block text-sm font-medium mb-2">Select Date</label>
+						<Input type='date' />
+					</div>
+
 					<div>
 						<label className="block text-sm font-medium mb-2">Category</label>
 						<Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -101,7 +115,7 @@ function EventFilter() {
 						</Select>
 					</div>
 
-					<div>
+					{/* <div>
 						<label className="block text-sm font-medium mb-3">Age Group</label>
 						<div className="space-y-2">
 							<Slider defaultValue={ageValue}
@@ -134,7 +148,7 @@ function EventFilter() {
 								</span>
 							</div>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</Card>
 		</>
