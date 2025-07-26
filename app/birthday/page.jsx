@@ -1,11 +1,11 @@
 import React from 'react'
-import Birthday from '@/components/Events/Birthday/Birthday'
+import BirthdayEvents from '@/components/BirthdayEvents/BirthdayEvents'
 
 
 function page() {
 	return (
 		<>
-			<Birthday />
+			<BirthdayEvents />
 		</>
 	)
 }

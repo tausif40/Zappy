@@ -2,21 +2,15 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Star, Heart, MapPin, Calendar, Users, Search, SlidersHorizontal, Check, Smile, GraduationCap, Wine, Crown } from "lucide-react"
-
+import { Star, Users, SlidersHorizontal, Check, Smile, GraduationCap, Wine, Crown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link"
-import { Slider } from "@/components/ui/slider"
-import EventFilter from "@/components/Events/Birthday/EventFilter"
+import EventFilter from "./EventFilter"
 
-export default function Events() {
+export default function BirthdayEvents() {
 	const [searchQuery, setSearchQuery] = useState("")
 
 	const [activeButton, setActiveButton] = useState('Kids');

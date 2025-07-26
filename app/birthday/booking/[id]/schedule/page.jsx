@@ -1,5 +1,5 @@
 import React from 'react'
-import Schedule from '@/components/Events/Birthday/Booking/Schedule/Schedule'
+import Schedule from '@/components/BookingProcess/Schedule/Schedule'
 
 function page() {
 

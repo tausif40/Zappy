@@ -5,7 +5,6 @@ import { Calendar, Star, CheckCircle, ArrowRight, Play, StarIcon, Box, Stars, Sh
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 function HeroSection() {
 	return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import Success from '@/components/Events/Birthday/Booking/Success/Success'
+import Success from '@/components/BookingProcess/Success/Success'
 
 function page() {
 	return (

@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from 'next/image';
 import { MoveLeft, MoveRight } from 'lucide-react';
 
-export default function EventCard() {
+export default function ExperienceEventHome() {
 	const swiperRef = useRef(null);
 	const [ isBeginning, setIsBeginning ] = useState(true);
 	const [ isEnd, setIsEnd ] = useState(false);

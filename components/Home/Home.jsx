@@ -1,123 +1,17 @@
 "use client"
 
 import React from "react"
-import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Gem, MapPin, Star, Users, Phone, Mail, Clock, CheckCircle, ArrowRight, Sparkles, Play, Award, Shield, Zap, Send, MessageCircle, Cake, Palette, Music, Camera, Heart, ChevronRight, Rocket, Gamepad2, Wand2, Check, LucideGift, LucideSparkles, LucideHeart, Dot } from "lucide-react"
+import { Gem, CheckCircle, Cake, Palette, Music, ChevronRight, LucideGift, LucideSparkles, LucideHeart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { useToast } from "@/hooks/use-toast"
 import HeroSection from '@/components/Home/HeroSection'
 import Testimonials from "./Testimonials"
-import CuratedEventHome from "./CuratedEventHome"
+import ExperienceEventHome from "./ExperienceEventHome"
 
 function Home() {
-	const { toast } = useToast();
-
-	const events = [
-		{
-			heading: "Mini Chef Academy",
-			title: "Cook up unforgettable fun!",
-			description: "Pizza making and cupcakes.",
-		},
-		{
-			heading: "DIY Slime & Science Party",
-			title: "Messy, magical science for all ages.",
-			description: "Slime and volcano experiments.",
-		},
-		{
-			heading: "Junior Builders LEGO Party",
-			title: "Build, compete, engineer dreams.",
-			description: "LEGO builds and competitions.",
-		},
-		{
-			heading: "Magical Birthday Adventure",
-			title: "Create unforgettable memories!",
-			description: "A fully planned magical birthday adventure with professional entertainers and activities.",
-		},
-		{
-			heading: "Junior Scientists Workshop",
-			title: "Create unforgettable memories!",
-			description: "An interactive science experience with amazing experiments and discoveries.",
-		},
-		{
-			heading: "Sports Olympiad",
-			title: "Create unforgettable memories!",
-			description: "A fun-filled day of sports activities and friendly competition.",
-		},
-		// {
-		// 	heading: "Glow-in-the-Dark Party",
-		// 	title: "Neon nights, non-stop fun!",
-		// 	description: "An exciting party with UV lights, glow paint and neon effects.",
-		// },
-	];
-
-	const services = [
-		{ title: "AI Event Planner", button: "Try AI Search" },
-		{ title: "Ready Packages", button: "View Packages" },
-		{ title: "Find Vendors", button: "Search Vendors" },
-		{ title: "Corporate Events", button: "Learn More", tag: "Coming Soon" },
-		{ title: "For Vendors", button: "Vendor Login" },
-	];
-
-	const heroSlides = [
-		{
-			title: "Create Magical Memories",
-			subtitle: "for Your Kids",
-			description: "From themed birthday parties to special celebrations, we bring joy and wonder to every moment.",
-			image: "/placeholder.svg?height=600&width=800",
-			color: "from-purple-500 to-pink-500",
-		},
-		{
-			title: "Professional Vendors",
-			subtitle: "Trusted Service",
-			description: "Verified vendors with years of experience in creating unforgettable children's events.",
-			image: "/placeholder.svg?height=600&width=800",
-			color: "from-blue-500 to-purple-500",
-		},
-		{
-			title: "Curated Experiences",
-			subtitle: "Just for You",
-			description: "Personalized event planning with attention to every detail that matters to your family.",
-			image: "/placeholder.svg?height=600&width=800",
-			color: "from-pink-500 to-yellow-500",
-		},
-	]
-
-	const stats = [
-		{ number: "10,000+", label: "Happy Families", icon: Users },
-		{ number: "500+", label: "Verified Vendors", icon: Shield },
-		{ number: "50+", label: "Cities Covered", icon: MapPin },
-		{ number: "4.9/5", label: "Average Rating", icon: Star },
-	]
-
-	// const features = [
-	// 	{
-	// 		icon: Zap,
-	// 		title: "Instant Booking",
-	// 		description: "Book your perfect event in just a few clicks with our streamlined process.",
-	// 	},
-	// 	{
-	// 		icon: Shield,
-	// 		title: "Verified Vendors",
-	// 		description: "All our vendors are thoroughly vetted and have proven track records.",
-	// 	},
-	// 	{
-	// 		icon: Award,
-	// 		title: "Quality Guarantee",
-	// 		description: "We ensure every event meets our high standards of excellence.",
-	// 	},
-	// 	{
-	// 		icon: Clock,
-	// 		title: "24/7 Support",
-	// 		description: "Our dedicated team is always here to help you plan the perfect event?.",
-	// 	},
-	// ]
 
 	const serviceCategories = [
 		{
@@ -129,8 +23,8 @@ function Home() {
 			count: "150+ themes",
 		},
 		{
-			title: "Curated Events",
-			description: "Curated experiences with amazing themes",
+			title: "Experience Events",
+			description: "Experience event with amazing themes",
 			icon: Palette,
 			color: "bg-purple-100 text-purple-600",
 			bgColor: "#E5DEFF",
@@ -153,57 +47,6 @@ function Home() {
 			bgColor: "#F2FCE2",
 			count: "100+ photographers",
 			comingSoon: true,
-		},
-	]
-
-	const featuredEvents = [
-		{
-			id: 1,
-			title: "Princess Theme Party",
-			vendor: "Magic Moments",
-			time: '2 hour',
-			rating: 4.9,
-			reviews: 156,
-			price: "₹8,999",
-			originalPrice: "₹12,999",
-			image: "/placeholder.svg?height=200&width=300",
-			badge: "Most Popular",
-			city: "Mumbai",
-			discount: "31% OFF",
-			description: "A magical tea party with princess characters, tiara crafting, and royal games.",
-			options: [ 'Princess character appearances', 'Royal tea party setup', 'Tiara crafting workshop', 'Tiara crafting workshop' ]
-		},
-		{
-			id: 2,
-			title: "Superhero Adventure",
-			vendor: "Hero Events",
-			time: '3 hour',
-			rating: 4.8,
-			reviews: 203,
-			price: "₹9,499",
-			originalPrice: "₹13,499",
-			image: "/placeholder.svg?height=200&width=300",
-			badge: "New",
-			city: "Delhi",
-			discount: "30% OFF",
-			description: "An action-packed adventure where kids train to become superheroes with obstacle courses",
-			options: [ 'Superhero costume station', 'Power training games', 'Obstacle courses', 'Obstacle courses', 'Obstacle courses' ]
-		},
-		{
-			id: 3,
-			title: "Jungle Safari Party",
-			vendor: "Wild Celebrations",
-			time: '1 hour',
-			rating: 4.7,
-			reviews: 89,
-			price: "₹7,999",
-			originalPrice: "₹10,999",
-			image: "/placeholder.svg?height=200&width=300",
-			badge: "Trending",
-			city: "Bangalore",
-			discount: "27% OFF",
-			description: "A mind-blowing experience with fascinating experiments and hands-on science activities.",
-			options: [ 'Interactive experiments', 'Slime-making workshop', 'Rocket launching activity', 'Obstacle courses', 'Obstacle courses', 'Obstacle courses' ]
 		},
 	]
 
@@ -252,7 +95,7 @@ function Home() {
 		{
 			icon: LucideHeart,
 			title: "Quality Guarantee",
-			description: "Curated vendors and premium products ensure consistent quality across all offerings.",
+			description: "Experience vendors and premium products ensure consistent quality across all offerings.",
 			points: [
 				"Vetted vendors & products",
 				"Quality assurance standards",
@@ -273,7 +116,7 @@ function Home() {
 					<div className="text-center mb-16 animate-slide-up">
 						<h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Our Event Categories</h2>
 						<p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-							Discover our range of carefully curated event services designed to create unforgettable experiences
+							Discover our range of carefully event services designed to create unforgettable experiences
 						</p>
 					</div>
 					<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 py-4">
@@ -319,7 +162,7 @@ function Home() {
 					<div className="text-center mb-12">
 						{/* <!-- Main Heading --> */}
 						<h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-							<span className="bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text">Curated Events</span>
+							<span className="bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text">Experience Events</span>
 						</h1>
 						<p className="text-slate-900 text-lg mt-2 dark:text-gray-300">Extraordinary experiences, handpicked for Indian kids — forget ordinary parties!</p>
 						<p className="text-slate-700 text-base mt-2 dark:text-gray-400">Discover 7 event concepts, crafted by child experts and Indian parents.</p>
@@ -328,10 +171,10 @@ function Home() {
 					</div>
 
 
-					<CuratedEventHome />
+					<ExperienceEventHome />
 
 					<div className="text-center col-span-3">
-						<Link href='/curated-event'>
+						<Link href='/experience-event'>
 							<Button variant='outline' size="lg" className="px-8">
 								More Events
 							</Button>
@@ -407,7 +250,7 @@ function Home() {
 					<div className="text-center mb-16 animate-slide-up">
 						<h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Featured Events</h2>
 						<p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-							Create unforgettable memories for your child with our carefully curated event packages
+							Create unforgettable memories for your child with our carefully experience event packages
 						</p>
 					</div>
 					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

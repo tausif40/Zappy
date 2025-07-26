@@ -1,12 +1,12 @@
 import React from 'react'
-import CuratedEvent from '@/components/Events/CuratedEvent/CuratedEvent'
 import HomeNavBar from "@/components/NavBar/HomeNavBar"
+import ExperienceEvent from '@/components/ExperienceEvent/ExperienceEvent'
 
 function page() {
 	return (
 		<>
 			<HomeNavBar />
-			<CuratedEvent />
+			<ExperienceEvent />
 		</>
 	)
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import EventDetails from "@/components/Events/Birthday/EventDetails"
+import EventDetails from '@/components/BirthdayEvents/EventDetails'
 
 function page() {
 	return (
