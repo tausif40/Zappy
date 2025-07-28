@@ -1,12 +1,12 @@
 import React from 'react'
 import HomeNavBar from "@/components/NavBar/HomeNavBar"
-import ExperienceEvent from '@/components/ExperienceEvent/ExperienceEvent'
+import ExperientialEvent from '@/components/ExperientialEvent/ExperientialEvent'
 
 function page() {
 	return (
 		<>
 			<HomeNavBar />
-			<ExperienceEvent />
+			<ExperientialEvent />
 		</>
 	)
 }

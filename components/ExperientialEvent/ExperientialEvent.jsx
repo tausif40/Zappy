@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import EventFilter from "@/components/BirthdayEvents/EventFilter"
 import EventCard from "./EventCard"
 
-export default function ExperienceEvent() {
+export default function ExperientialEvent() {
 	const [ searchQuery, setSearchQuery ] = useState("")
 
 	return (

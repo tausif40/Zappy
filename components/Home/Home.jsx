@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import HeroSection from '@/components/Home/HeroSection'
 import Testimonials from "./Testimonials"
-import ExperienceEventHome from "./ExperienceEventHome"
+import ExperientialEventHome from "./ExperientialEventHome"
 
 function Home() {
 
@@ -23,8 +23,8 @@ function Home() {
 			count: "150+ themes",
 		},
 		{
-			title: "Experience Events",
-			description: "Experience event with amazing themes",
+			title: "Experiential Events",
+			description: "Experiential event with amazing themes",
 			icon: Palette,
 			color: "bg-purple-100 text-purple-600",
 			bgColor: "#E5DEFF",
@@ -162,7 +162,7 @@ function Home() {
 					<div className="text-center mb-12">
 						{/* <!-- Main Heading --> */}
 						<h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-							<span className="bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text">Experience Events</span>
+							<span className="bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text">Experiential Events</span>
 						</h1>
 						<p className="text-slate-900 text-lg mt-2 dark:text-gray-300">Extraordinary experiences, handpicked for Indian kids — forget ordinary parties!</p>
 						<p className="text-slate-700 text-base mt-2 dark:text-gray-400">Discover 7 event concepts, crafted by child experts and Indian parents.</p>
@@ -171,10 +171,10 @@ function Home() {
 					</div>
 
 
-					<ExperienceEventHome />
+					<ExperientialEventHome />
 
 					<div className="text-center col-span-3">
-						<Link href='/experience-event'>
+						<Link href='/experiential-event'>
 							<Button variant='outline' size="lg" className="px-8">
 								More Events
 							</Button>

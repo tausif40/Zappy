@@ -1,6 +1,6 @@
 import React from 'react'
-import EventDetails from "@/components/Events/Birthday/EventDetails"
 import HomeNavBar from "@/components/NavBar/HomeNavBar"
+import EventDetails from '@/components/BirthdayEvents/EventDetails'
 
 function page() {
 	return (

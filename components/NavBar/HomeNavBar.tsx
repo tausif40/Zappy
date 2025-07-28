@@ -16,7 +16,7 @@ import Cookies from "js-cookie";
 const navigation = [
 	{ name: "Home", href: "/" },
 	{ name: "Birthday", href: "/birthday" },
-	{ name: "Experience", href: "/experience-event" },
+	{ name: "Experiential", href: "/experiential-event" },
 	{ name: "Products", href: "/products" },
 	{ name: "Vendors", href: "/vendors" },
 ]
