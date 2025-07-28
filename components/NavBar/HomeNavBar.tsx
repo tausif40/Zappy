@@ -82,7 +82,7 @@ export default function HomeNavBar() {
 
 
 	useEffect(() => {
-		console.log("token - ", token)
+		// console.log("token - ", token)
 		token === undefined ? setIsLoggedIn(false) : setIsLoggedIn(true)
 	}, [token])
 

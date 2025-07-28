@@ -167,7 +167,6 @@ function Home() {
 						<p className="text-slate-900 text-lg mt-2 dark:text-gray-300">Extraordinary experiences, handpicked for Indian kids — forget ordinary parties!</p>
 						<p className="text-slate-700 text-base mt-2 dark:text-gray-400">Discover 7 event concepts, crafted by child experts and Indian parents.</p>
 						<p className="text-orange-500 font-semibold mt-1">Each event is a memorable, scalable celebration!</p>
-
 					</div>
 
 

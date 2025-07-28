@@ -11,7 +11,7 @@ export const getQueryParams = (filterData: string) => {
 	Object.entries(filterData).forEach(([key, value]) => {
 		if (Array.isArray(value)) {
 			queryParams.append(key, value.join(","));
-		} else if (value !== undefined && value !== null) {
+		} else if (value !== undefined && value !== null && value !== '') {
 			queryParams.append(key, value);
 		}
 	});

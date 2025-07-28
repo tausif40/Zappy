@@ -6,6 +6,7 @@ import Footer from "@/components/Footer/Footer";
 import ReduxProvider from "@/store/ReduxProvider";
 import { Toaster } from "@/components/ui/toaster";
 import AuthProvider from "@/components/Providers/auth-provider";
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,9 +23,11 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
         <AuthProvider>
           <ReduxProvider>
             <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true} disableTransitionOnChange={false}>
-              <main >{children}</main>
-              <Toaster />
-              <Footer />
+              <AntdRegistry >
+                <main >{children}</main>
+                <Toaster />
+                <Footer />
+              </AntdRegistry>
             </ThemeProvider>
           </ReduxProvider>
         </AuthProvider>

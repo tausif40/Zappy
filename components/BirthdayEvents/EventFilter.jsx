@@ -20,7 +20,7 @@ function EventFilter() {
 
 	// Convert value to % position
 	const getAgePercent = (val) => ((val - min) / (max - min)) * 100;
-	console.log(getAgePercent(ageValue[ 1 ]));
+	// console.log(getAgePercent(ageValue[ 1 ]));
 
 	const categories = [
 		{ value: "all", label: "All Categories" },
