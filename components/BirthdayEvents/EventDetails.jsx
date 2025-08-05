@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
@@ -15,16 +15,19 @@ import { useToast } from "@/hooks/use-toast"
 import Reviews from "../Reviews/Reviews"
 import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb"
 import EventsPlan from "./EventsPlan"
+import { getBirthdayEventDetails } from "@/store/features/event-slice"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function EventDetails() {
 	const params = useParams();
+	const dispatch = useDispatch()
 	const route = useRouter();
 	const eventId = params.id
 	const { toast } = useToast()
 	const [ selectedImageIndex, setSelectedImageIndex ] = useState(0)
 
 	// Mock event data - in real app, this would be fetched based on eventId
-	const event = {
+	const events = {
 		id: eventId,
 		title: "Princess Theme Birthday Party",
 		vendor: {
@@ -140,7 +143,24 @@ export default function EventDetails() {
 
 
 	const [ selected, setSelected ] = useState("Silver");
+	const [ event, setEvent ] = useState([]);
 	const selectedTier = plans.find((tier) => tier.name === selected);
+
+
+	const birthdayEventDetails = useSelector((state) => state.event.birthdayEventDetails);
+	console.log(birthdayEventDetails);
+
+	useEffect(() => {
+		setEvent(birthdayEventDetails?.data?.event || [])
+	}, [ birthdayEventDetails ]);
+
+	console.log("event-", event);
+	// console.log("banner-", event?.banner[ 0 ]);
+
+	useEffect(() => {
+		dispatch(getBirthdayEventDetails(eventId))
+	}, [ eventId, dispatch ]);
+
 
 
 	const handleShare = () => {
@@ -196,17 +216,26 @@ export default function EventDetails() {
 						<Card className="shadow overflow-hidden">
 							<CardContent className="p-0 ">
 								<div className="relative">
-									<Image
-										src={event.images[ selectedImageIndex ] || "/placeholder.svg"}
-										alt={event.title}
-										width={600}
-										height={400}
-										className="w-full h-96 object-cover"
-									/>
+									{/* event?.banner[ 0 ] ||  */}
+									{event?.banner ?
+										<Image
+											src={event?.banner[ 0 ] || "/placeholder.svg"}
+											alt={event?.title}
+											width={600}
+											height={400}
+											className="w-full h-96 object-cover"
+										/> :
+										<Image
+											src={"/placeholder.svg"}
+											alt={event?.title}
+											width={600}
+											height={400}
+											className="w-full h-96 object-cover"
+										/>}
 									<Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
-										{event.badge}
+										{event?.badge}
 									</Badge>
-									<Badge className="absolute top-4 right-4 bg-green-500 text-white border-0">{event.discount}</Badge>
+									<Badge className="absolute top-4 right-4 bg-green-500 text-white border-0">{event?.discount}</Badge>
 								</div>
 
 								<div className="grid grid-cols-5 gap-4 p-4">
@@ -224,19 +253,19 @@ export default function EventDetails() {
 								<div className="px-8 py-6">
 									<div className="flex items-start justify-between mb-6">
 										<div>
-											<h1 className="text-3xl font-bold text-foreground mb-2">{event.title}</h1>
+											<h1 className="text-3xl font-bold text-foreground mb-2">{event?.title}</h1>
 											<div className="flex items-center space-x-4 text-muted-foreground">
 												<div className="flex items-center">
 													<MapPin className="h-4 w-4 mr-1" />
-													{event.city}
+													{event?.city}
 												</div>
 												<div className="flex items-center">
 													<Users className="h-4 w-4 mr-1" />
-													{event.ageGroup}
+													{event?.ageGroup}
 												</div>
 												<div className="flex items-center">
 													<Clock className="h-4 w-4 mr-1" />
-													{event.duration}
+													{event?.duration}
 												</div>
 											</div>
 										</div>
@@ -248,15 +277,15 @@ export default function EventDetails() {
 									<div className="flex items-center space-x-4 mb-6">
 										<div className="flex items-center">
 											<Star className="h-5 w-5 text-yellow-400 fill-current" />
-											<span className="ml-1 font-semibold">{event.rating}</span>
-											<span className="ml-1 text-muted-foreground">({event.reviews} reviews)</span>
+											<span className="ml-1 font-semibold">{event?.rating}</span>
+											<span className="ml-1 text-muted-foreground">({event?.reviews} reviews)</span>
 										</div>
-										<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">Max {event.maxGuests}</Badge>
+										<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">Max {event?.maxGuests}</Badge>
 									</div>
 
-									<p className="text-muted-foreground leading-relaxed mb-6">{event.description}</p>
+									<p className="text-muted-foreground leading-relaxed mb-6">{event?.description}</p>
 
-									<Tabs defaultValue="highlights" className="w-full">
+									{/* <Tabs defaultValue="highlights" className="w-full">
 										<TabsList className="grid w-full grid-cols-3">
 											<TabsTrigger value="highlights">Highlights</TabsTrigger>
 											<TabsTrigger value="includes">Includes</TabsTrigger>
@@ -265,7 +294,7 @@ export default function EventDetails() {
 
 										<TabsContent value="highlights" className="mt-6">
 											<div className="grid md:grid-cols-2 gap-4">
-												{event.highlights.map((highlight, index) => (
+												{event?.highlights?.map((highlight, index) => (
 													<div key={index} className="flex items-start space-x-3">
 														<CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
 														<span className="text-sm">{highlight}</span>
@@ -276,7 +305,7 @@ export default function EventDetails() {
 
 										<TabsContent value="includes" className="mt-6">
 											<div className="grid md:grid-cols-2 gap-4">
-												{event.includes.map((item, index) => (
+												{event?.includes?.map((item, index) => (
 													<div key={index} className="flex items-start space-x-3">
 														<CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
 														<span className="text-sm">{item}</span>
@@ -289,23 +318,23 @@ export default function EventDetails() {
 											<div className="space-y-4">
 												<div>
 													<h4 className="font-medium mb-2">Cancellation Policy</h4>
-													<p className="text-sm text-muted-foreground">{event.policies.cancellation}</p>
+													<p className="text-sm text-muted-foreground">{event?.policies?.cancellation}</p>
 												</div>
 												<div>
 													<h4 className="font-medium mb-2">Payment Terms</h4>
-													<p className="text-sm text-muted-foreground">{event.policies.payment}</p>
+													<p className="text-sm text-muted-foreground">{event?.policies?.payment}</p>
 												</div>
 												<div>
 													<h4 className="font-medium mb-2">Weather Policy</h4>
-													<p className="text-sm text-muted-foreground">{event.policies.weather}</p>
+													<p className="text-sm text-muted-foreground">{event?.policies?.weather}</p>
 												</div>
 												<div>
 													<h4 className="font-medium mb-2">Changes Policy</h4>
-													<p className="text-sm text-muted-foreground">{event.policies.changes}</p>
+													<p className="text-sm text-muted-foreground">{event?.policies?.changes}</p>
 												</div>
 											</div>
 										</TabsContent>
-									</Tabs>
+									</Tabs> */}
 								</div>
 							</CardContent>
 						</Card>
@@ -325,9 +354,9 @@ export default function EventDetails() {
 								<h3 className="text-lg font-semibold mb-4">About the Vendor</h3>
 								<div className="flex items-start space-x-4 mb-4">
 									<Avatar className="w-12 h-12 z-0">
-										<AvatarImage src={event.vendor.avatar || "/placeholder.svg"} />
+										<AvatarImage src={event?.vendor.avatar || "/placeholder.svg"} />
 										<AvatarFallback>
-											{event.vendor.name
+											{event?.vendor.name
 												.split(" ")
 												.map((n) => n[ 0 ])
 												.join("")}
@@ -335,8 +364,8 @@ export default function EventDetails() {
 									</Avatar>
 									<div className="flex-1">
 										<div className="flex items-center space-x-2 mb-1">
-											<h4 className="font-semibold">{event.vendor.name}</h4>
-											{event.vendor.verified && (
+											<h4 className="font-semibold">{event?.vendor.name}</h4>
+											{event?.vendor.verified && (
 												<Badge className="bg-green-100 text-green-700 border-0 text-xs">
 													<Shield className="w-3 h-3 mr-1" />
 													Verified
@@ -346,11 +375,11 @@ export default function EventDetails() {
 										<div className="flex items-center space-x-4 text-sm text-muted-foreground">
 											<div className="flex items-center">
 												<Star className="h-3 w-3 text-yellow-400 fill-current mr-1" />
-												{event.vendor.rating} ({event.vendor.reviews})
+												{event?.vendor.rating} ({event?.vendor.reviews})
 											</div>
 											<div className="flex items-center">
 												<Award className="h-3 w-3 mr-1" />
-												{event.vendor.experience}
+												{event?.vendor.experience}
 											</div>
 										</div>
 									</div>
@@ -359,16 +388,16 @@ export default function EventDetails() {
 								<div className="space-y-2">
 									<Button variant="outline" className="w-full justify-start">
 										<Phone className="mr-2 h-4 w-4" />
-										{event.vendor.phone}
+										{event?.vendor.phone}
 									</Button>
 									<Button variant="outline" className="w-full justify-start">
 										<Mail className="mr-2 h-4 w-4" />
-										{event.vendor.email}
+										{event?.vendor.email}
 									</Button>
 								</div>
 
 								<div className="mt-4">
-									<Link href={`/vendors/${event.vendor.name.toLowerCase().replace(/\s+/g, "-")}`}>
+									<Link href={`/vendors/${event?.vendor.name.toLowerCase().replace(/\s+/g, "-")}`}>
 										<Button variant="secondary" className="w-full">
 											View Vendor Profile
 										</Button>

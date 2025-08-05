@@ -109,15 +109,15 @@ function EventsPlan({ event }) {
 							<div className="space-y-3 text-sm px-2 pt-6">
 								<div className="flex items-center justify-between">
 									<span className="text-muted-foreground">Duration:</span>
-									<span className="font-medium">{event.duration}</span>
+									<span className="font-medium">{event?.duration}</span>
 								</div>
 								<div className="flex items-center justify-between">
 									<span className="text-muted-foreground">Max Guests:</span>
-									<span className="font-medium">{event.maxGuests}</span>
+									<span className="font-medium">{event?.maxGuests}</span>
 								</div>
 								<div className="flex items-center justify-between">
 									<span className="text-muted-foreground">Age Group</span>
-									<span className="font-medium">{event.ageGroup}</span>
+									<span className="font-medium">{event?.ageGroup}</span>
 								</div>
 							</div>
 						</CardContent>

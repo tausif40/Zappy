@@ -18,190 +18,14 @@ import BirthdaySkeleton from "@/components/Skeleton/Birthday"
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 
 
-const events = [
-	{
-		id: 1,
-		title: "Princess Theme Party",
-		vendor: "Magic Moments",
-		time: "2 hour",
-		rating: 4.9,
-		reviews: 156,
-		price: "₹8,999",
-		originalPrice: "₹12,999",
-		image: "/placeholder.svg?height=200&width=300",
-		badge: "Most Popular",
-		city: "Mumbai",
-		discount: "31% OFF",
-		ageGroup: "3-9 years",
-		description: "A magical tea party with princess characters, tiara crafting, and royal games.",
-		options: [
-			"Princess character appearances",
-			"Royal tea party setup",
-			"Tiara crafting workshop",
-			"Storytime with the Queen"
-		]
-	},
-	{
-		id: 2,
-		title: "Superhero Adventure Party",
-		vendor: "Hero Events",
-		time: "3 hour",
-		rating: 4.8,
-		reviews: 201,
-		price: "₹10,499",
-		originalPrice: "₹14,999",
-		image: "/placeholder.svg?height=200&width=300",
-		badge: "Editor's Choice",
-		city: "Delhi",
-		discount: "30% OFF",
-		ageGroup: "12-16 years",
-		description: "Action-packed party with superhero training, obstacle courses, and themed games.",
-		options: [
-			"Superhero training camp",
-			"Obstacle course setup",
-			"Hero photo booth",
-			"Power badge giveaways"
-		]
-	},
-	{
-		id: 3,
-		title: "Under the Sea Bash",
-		vendor: "Aqua Parties",
-		time: "2.5 hour",
-		rating: 4.7,
-		reviews: 132,
-		price: "₹7,999",
-		originalPrice: "₹10,999",
-		image: "/placeholder.svg?height=200&width=300",
-		badge: "Top Rated",
-		city: "Bangalore",
-		discount: "27% OFF",
-		ageGroup: "2-5 years",
-		description: "Dive into a mermaid-themed party with ocean decor and underwater games.",
-		options: [
-			"Mermaid character meet & greet",
-			"Ocean-themed decorations",
-			"Bubble show",
-			"Treasure hunt game"
-		]
-	},
-	{
-		id: 4,
-		title: "Carnival Fun Fair",
-		vendor: "Festive Feels",
-		time: "3 hour",
-		rating: 4.6,
-		reviews: 98,
-		price: "₹11,000",
-		originalPrice: "₹15,000",
-		image: "/placeholder.svg?height=200&width=300",
-		badge: "New Arrival",
-		city: "Hyderabad",
-		discount: "26% OFF",
-		ageGroup: "20-25 years",
-		description: "Exciting carnival party with game booths, popcorn machines, and entertainers.",
-		options: [
-			"Game booths",
-			"Popcorn and candy floss",
-			"Juggler & clown acts",
-			"Colorful decorations"
-		]
-	},
-	{
-		id: 5,
-		title: "Science Party Experiment",
-		vendor: "Smart Sparks",
-		time: "1.5 hour",
-		rating: 4.9,
-		reviews: 122,
-		price: "₹9,500",
-		originalPrice: "₹13,000",
-		image: "/placeholder.svg?height=200&width=300",
-		badge: "Educational",
-		city: "Chennai",
-		discount: "27% OFF",
-		ageGroup: "3-9 years",
-		description: "Fun and educational science party with live experiments and take-home kits.",
-		options: [
-			"Live science demos",
-			"Experiment kits for kids",
-			"Lab coat costumes",
-			"Dry ice effects"
-		]
-	},
-	{
-		id: 6,
-		title: "Jungle Safari Party",
-		vendor: "Wild Kids",
-		time: "2 hour",
-		rating: 4.5,
-		reviews: 77,
-		price: "₹6,999",
-		originalPrice: "₹9,499",
-		image: "/placeholder.svg?height=200&width=300",
-		badge: "Budget Friendly",
-		city: "Pune",
-		discount: "26% OFF",
-		ageGroup: "13-19 years",
-		description: "An animal-themed adventure party with jungle decor and safari games.",
-		options: [
-			"Safari tent setup",
-			"Animal mascot appearances",
-			"Jungle scavenger hunt",
-			"Nature craft station"
-		]
-	},
-	{
-		id: 7,
-		title: "DIY Art & Craft Party",
-		vendor: "Crafty Hands",
-		time: "1.5 hour",
-		rating: 4.6,
-		reviews: 84,
-		price: "₹5,499",
-		originalPrice: "₹7,999",
-		image: "/placeholder.svg?height=200&width=300",
-		badge: "Creative Pick",
-		city: "Ahmedabad",
-		discount: "31% OFF",
-		ageGroup: "3-9 years",
-		description: "Creative party with painting, clay modeling, and fun DIY crafts for all ages.",
-		options: [
-			"All materials included",
-			"Guided art sessions",
-			"Display corner for art",
-			"Take-home art kits"
-		]
-	},
-	{
-		id: 8,
-		title: "Glow in the Dark Dance Party",
-		vendor: "GlowUp Events",
-		time: "2 hour",
-		rating: 4.8,
-		reviews: 109,
-		price: "₹9,999",
-		originalPrice: "₹13,499",
-		image: "/placeholder.svg?height=200&width=300",
-		badge: "Party Vibe",
-		city: "Kolkata",
-		discount: "26% OFF",
-		ageGroup: "10-12 years",
-		description: "High-energy glow party with neon lights, glow accessories, and a dance floor.",
-		options: [
-			"Glow accessories for guests",
-			"Live DJ with lighting",
-			"Neon face paint station",
-			"LED dance floor"
-		]
-	}
-]
-
 const ageGroups = [
 	{
 		id: 'kids',
 		text: 'Kids (1-12)',
 		icon: Smile,
+		options: [
+			'Popular Among Boys', 'Popular Among Girls', 'All-time Classics'
+		]
 	},
 	{
 		id: 'teens',
@@ -230,7 +54,7 @@ export default function BirthdayEvents() {
 
 	useEffect(() => {
 		setBirthdayEvents(birthdayEvent?.data)
-	}, [ birthdayEvent ])
+	}, [ birthdayEvent ]);
 
 	// console.log("isLoading: ", birthdayEvent?.isLoading);
 	// console.log("store: ", birthdayEvent);
@@ -267,13 +91,13 @@ export default function BirthdayEvents() {
 
 	const goToNextPage = () => {
 		if (page < totalPages) {
-			dispatch(setFilter({ ...filter, page: page + 1 }))
+			dispatch(setFilter({ ...birthdayFilter, page: page + 1 }))
 		}
 	}
 
 	const goToPrevPage = () => {
 		if (page > 1) {
-			dispatch(setFilter({ ...filter, page: page - 1 }))
+			dispatch(setFilter({ ...birthdayFilter, page: page - 1 }))
 		}
 	}
 
@@ -303,18 +127,17 @@ export default function BirthdayEvents() {
 								className="pl-12 pr-4 py-6 text-lg border-2 focus:border-purple-500 rounded-full"
 							/> */}
 							{ageGroups.map((button) => {
-								// Determine if the current button is active
 								const isActive = activeButton === button.id;
 								return (
-									<Button key={button.id} onClick={() => setActiveButton(button.id)}
-										className={`${isActive ? 'bg-purple-400 text-white shadow-md'
-											: 'bg-white text-purple-600 border border-purple-300 hover:bg-purple-50 hover:border-purple-400'}`
-										}>
-										{/* Render the icon component */}
-										<button.icon className="w-5 h-5 md:w-6 md:h-6" />
-										<span>{button.text}</span>
-									</Button>
-								);
+									<>
+										<Button key={button.id} onClick={() => setActiveButton(button.id)}
+											className={`${isActive ? 'bg-purple-400 text-white shadow-md' : 'bg-white text-purple-600 border border-purple-300 hover:bg-purple-50 hover:border-purple-400'}`
+											}>
+											<button.icon className="w-5 h-5 md:w-6 md:h-6" />
+											<span>{button.text}</span>
+										</Button>
+									</>
+								)
 							})}
 						</div>
 					</div>
@@ -350,7 +173,7 @@ export default function BirthdayEvents() {
 
 						{/* Results Header */}
 						<div className="flex justify-between items-center mb-6">
-							<p className="text-muted-foreground">Showing {events.length} events</p>
+							<p className="text-muted-foreground">Showing {birthdayEvents.length} events</p>
 							<Select defaultValue="popular">
 								<SelectTrigger className="w-48">
 									<SelectValue />
@@ -397,7 +220,7 @@ export default function BirthdayEvents() {
 											</div>
 
 											<div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs">
-												{event.duration}
+												{event?.duration} hour
 											</div>
 										</div>
 										<CardContent className="px-6 pt-3">
@@ -422,12 +245,12 @@ export default function BirthdayEvents() {
 											<div className="flex items-center justify-between mb-3">
 												<div className="flex items-center text-sm text-muted-foreground">
 													<Users className="h-3 w-3 mr-1 text-purple-600" />
-													<span className="font-semibold">Age:&nbsp;</span> {getAgeGroupText(event.ageGroup)}
+													<span className="font-semibold">Age:&nbsp;</span> {getAgeGroupText(event?.ageGroup)}
 												</div>
 												<div className="flex items-center">
 													<Star className="h-4 w-4 text-yellow-400 fill-current" />
-													<span className="ml-1 font-medium text-sm">{event.rating || 0}</span>
-													<span className="ml-1 text-xs text-muted-foreground">({event.reviews || 0})</span>
+													<span className="ml-1 font-medium text-sm">{event?.rating || 0}</span>
+													<span className="ml-1 text-xs text-muted-foreground">({event?.reviews || 0})</span>
 												</div>
 											</div>
 
@@ -441,17 +264,17 @@ export default function BirthdayEvents() {
 
 												{event?.options?.length > 3 && (
 													<div className="flex text-primary hover:text-purple-600 cursor-pointer text-sm">
-														+{event.options.length - 3} more features
+														+{event?.options.length - 3} more features
 													</div>
 												)}
 											</div>
 											<div className="flex flex-col gap-2 mt-4">
-												<Link href={`/birthday/details/${event.id}`}>
+												<Link href={`/birthday/details/${event?._id}`}>
 													<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
 														Book Now
 													</Button>
 												</Link>
-												{/* <Link href={`/birthday/details/${event.id}`}>
+												{/* <Link href={`/birthday/details/${event?.id}`}>
 												<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
 													More Details
 												</Button>

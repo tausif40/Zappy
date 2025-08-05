@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "@/lib/apiClient";
 import { getQueryParams } from "@/lib/utils";
 
-// Login User
+
 export const getBirthdayEvent = createAsyncThunk("event/getBirthDayEvent", async (filter, thunkAPI) => {
 	try {
 		console.log(`/birthday-events?${getQueryParams(filter)}`);
@@ -16,9 +16,19 @@ export const getBirthdayEvent = createAsyncThunk("event/getBirthDayEvent", async
 		return thunkAPI.rejectWithValue(error);
 	}
 });
+export const getBirthdayEventDetails = createAsyncThunk("event/getBirthdayEventDetails", async (id, thunkAPI) => {
+	try {
+		const response = await apiClient.get(`/birthday-events/${id}`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error);
+	}
+});
 
 const initialState = {
 	birthdayEvent: { data: [], isLoading: false, error: null },
+	birthdayEventDetails: { data: [], isLoading: false, error: null },
 	birthdayEventFilter: { city: '', priceRange: '', ageGroup: '', subCategory: '', page: '', limit: '', total: '' }
 }
 
@@ -52,6 +62,20 @@ const eventSlice = createSlice({
 			.addCase(getBirthdayEvent.rejected, (state, action) => {
 				state.birthdayEvent.isLoading = false;
 				state.birthdayEvent.error = action.payload;
+			})
+			//birthday Event Details
+			.addCase(getBirthdayEventDetails.pending, (state) => {
+				state.birthdayEventDetails.isLoading = true;
+				state.birthdayEventDetails.error = null;
+			})
+			.addCase(getBirthdayEventDetails.fulfilled, (state, action) => {
+				state.birthdayEventDetails.isLoading = false;
+				state.birthdayEventDetails.error = null;
+				state.birthdayEventDetails.data = action.payload;
+			})
+			.addCase(getBirthdayEventDetails.rejected, (state, action) => {
+				state.birthdayEventDetails.isLoading = false;
+				state.birthdayEventDetails.error = action.payload;
 			});
 	}
 });
