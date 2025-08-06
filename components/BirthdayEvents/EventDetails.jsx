@@ -4,13 +4,10 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { Star, Heart, MapPin, Users, Clock, CheckCircle, ArrowLeft, Share2, Phone, Mail, Award, Shield, Gift, MessageCircle, ChevronRight, CalendarDays } from "lucide-react"
+import { Star, MapPin, Users, Clock, CheckCircle, ArrowLeft, Share2, Award, Shield, Gift, ChevronRight, Smile, GraduationCap, Wine, Crown, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
 import Reviews from "../Reviews/Reviews"
 import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb"
@@ -26,6 +23,31 @@ export default function EventDetails() {
 	const { toast } = useToast()
 	const [ selectedImageIndex, setSelectedImageIndex ] = useState(0)
 
+	const ageGroups = [
+		{
+			id: 'kids',
+			text: 'Kids (1-12)',
+			icon: Smile,
+			options: [
+				'Popular Among Boys', 'Popular Among Girls', 'All-time Classics'
+			]
+		},
+		{
+			id: 'teens',
+			text: 'Teens (13-19)',
+			icon: GraduationCap,
+		},
+		{
+			id: 'adults',
+			text: 'Adults (20+)',
+			icon: Wine,
+		},
+		{
+			id: 'milestone',
+			text: 'Milestone',
+			icon: Crown,
+		},
+	];
 	// Mock event data - in real app, this would be fetched based on eventId
 	const events = {
 		id: eventId,
@@ -142,10 +164,9 @@ export default function EventDetails() {
 	];
 
 
-	const [ selected, setSelected ] = useState("Silver");
 	const [ event, setEvent ] = useState([]);
+	const [ selected, setSelected ] = useState("Silver");
 	const selectedTier = plans.find((tier) => tier.name === selected);
-
 
 	const birthdayEventDetails = useSelector((state) => state.event.birthdayEventDetails);
 	console.log(birthdayEventDetails);
@@ -161,6 +182,11 @@ export default function EventDetails() {
 		dispatch(getBirthdayEventDetails(eventId))
 	}, [ eventId, dispatch ]);
 
+
+	const getAgeGroupText = (age) => {
+		const group = ageGroups.find((item) => item.id === age);
+		return group?.text;
+	}
 
 
 	const handleShare = () => {
@@ -217,25 +243,19 @@ export default function EventDetails() {
 							<CardContent className="p-0 ">
 								<div className="relative">
 									{/* event?.banner[ 0 ] ||  */}
-									{event?.banner ?
-										<Image
-											src={event?.banner[ 0 ] || "/placeholder.svg"}
-											alt={event?.title}
-											width={600}
-											height={400}
-											className="w-full h-96 object-cover"
-										/> :
-										<Image
-											src={"/placeholder.svg"}
-											alt={event?.title}
-											width={600}
-											height={400}
-											className="w-full h-96 object-cover"
-										/>}
-									<Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
-										{event?.badge}
-									</Badge>
-									<Badge className="absolute top-4 right-4 bg-green-500 text-white border-0">{event?.discount}</Badge>
+									<Image
+										src={event?.banner ? event?.banner[ 0 ] : "/placeholder.svg"}
+										alt={event?.title}
+										width={600}
+										height={400}
+										className="w-full h-96 object-cover"
+									/>
+									{event?.tags &&
+										<Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
+											{event?.tags}
+										</Badge>
+									}
+									{event?.discount > 0 && <Badge className="absolute top-4 right-4 bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
 								</div>
 
 								<div className="grid grid-cols-5 gap-4 p-4">
@@ -243,7 +263,7 @@ export default function EventDetails() {
 										<Image
 											key={i}
 											src="/placeholder.svg"
-											alt="placeholder"
+											alt="img"
 											width={150}
 											height={100}
 											className="w-full h-20 object-cover"
@@ -261,11 +281,12 @@ export default function EventDetails() {
 												</div>
 												<div className="flex items-center">
 													<Users className="h-4 w-4 mr-1" />
-													{event?.ageGroup}
+													{getAgeGroupText(event?.ageGroup)}
 												</div>
+
 												<div className="flex items-center">
 													<Clock className="h-4 w-4 mr-1" />
-													{event?.duration}
+													{event?.duration} Hours
 												</div>
 											</div>
 										</div>
@@ -275,12 +296,14 @@ export default function EventDetails() {
 									</div>
 
 									<div className="flex items-center space-x-4 mb-6">
-										<div className="flex items-center">
-											<Star className="h-5 w-5 text-yellow-400 fill-current" />
-											<span className="ml-1 font-semibold">{event?.rating}</span>
-											<span className="ml-1 text-muted-foreground">({event?.reviews} reviews)</span>
-										</div>
-										<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">Max {event?.maxGuests}</Badge>
+										{event?.rating > 0 &&
+											<div className="flex items-center">
+												<Star className="h-5 w-5 text-yellow-400 fill-current" />
+												<span className="ml-1 font-semibold">{event?.rating}</span>
+												<span className="ml-1 text-muted-foreground">({event?.reviews} reviews)</span>
+											</div>
+										}
+										<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">Max {event?.guest}</Badge>
 									</div>
 
 									<p className="text-muted-foreground leading-relaxed mb-6">{event?.description}</p>
@@ -346,65 +369,7 @@ export default function EventDetails() {
 
 					{/* Sidebar */}
 					<div className="space-y-6 lg:col-span-2  sticky top-24 ">
-						<EventsPlan event={event} />
-
-						{/* Vendor Info */}
-						{/* <Card className="shadow-lg">
-							<CardContent className="p-6">
-								<h3 className="text-lg font-semibold mb-4">About the Vendor</h3>
-								<div className="flex items-start space-x-4 mb-4">
-									<Avatar className="w-12 h-12 z-0">
-										<AvatarImage src={event?.vendor.avatar || "/placeholder.svg"} />
-										<AvatarFallback>
-											{event?.vendor.name
-												.split(" ")
-												.map((n) => n[ 0 ])
-												.join("")}
-										</AvatarFallback>
-									</Avatar>
-									<div className="flex-1">
-										<div className="flex items-center space-x-2 mb-1">
-											<h4 className="font-semibold">{event?.vendor.name}</h4>
-											{event?.vendor.verified && (
-												<Badge className="bg-green-100 text-green-700 border-0 text-xs">
-													<Shield className="w-3 h-3 mr-1" />
-													Verified
-												</Badge>
-											)}
-										</div>
-										<div className="flex items-center space-x-4 text-sm text-muted-foreground">
-											<div className="flex items-center">
-												<Star className="h-3 w-3 text-yellow-400 fill-current mr-1" />
-												{event?.vendor.rating} ({event?.vendor.reviews})
-											</div>
-											<div className="flex items-center">
-												<Award className="h-3 w-3 mr-1" />
-												{event?.vendor.experience}
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div className="space-y-2">
-									<Button variant="outline" className="w-full justify-start">
-										<Phone className="mr-2 h-4 w-4" />
-										{event?.vendor.phone}
-									</Button>
-									<Button variant="outline" className="w-full justify-start">
-										<Mail className="mr-2 h-4 w-4" />
-										{event?.vendor.email}
-									</Button>
-								</div>
-
-								<div className="mt-4">
-									<Link href={`/vendors/${event?.vendor.name.toLowerCase().replace(/\s+/g, "-")}`}>
-										<Button variant="secondary" className="w-full">
-											View Vendor Profile
-										</Button>
-									</Link>
-								</div>
-							</CardContent>
-						</Card> */}
+						<EventsPlan event={event?.tiers} />
 
 						{/* Safety Features */}
 						<Card className="shadow-lg">

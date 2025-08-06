@@ -201,44 +201,49 @@ export default function BirthdayEvents() {
 										className="group hover:shadow-md transition-all duration-300 overflow-hidden bg-white dark:bg-card"
 									>
 										<div className="relative">
-											<Image
-												src={event?.banner[ 0 ] || "/placeholder.svg"}
-												alt={event?.title}
-												width={300}
-												height={200}
-												className="w-full h-48 object-cover transition-transform duration-300"
-											/>
-											{event?.tags && <Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 capitalize">
-												{event?.tags}
-											</Badge>}
-
+											<Link href={`/birthday/details/${event?._id}`}>
+												<Image
+													src={event?.banner[ 0 ] || "/placeholder.svg"}
+													alt={event?.title}
+													width={300}
+													height={200}
+													className="w-full h-48 object-cover transition-transform duration-300 cursor-default"
+												/>
+											</Link>
+											{event?.tags &&
+												<Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 capitalize">
+													{event?.tags}
+												</Badge>
+											}
 
 											{/* <Badge className="absolute top-3 right-3 bg-green-500 text-white border-0">{event?.discount}</Badge> */}
 
-											<div className="absolute top-3 right-3">
-												<Heart className="h-4 w-4" />
-											</div>
+											<Button variant='ghost' className="absolute top-3 right-3 p-1 h-6 rounded-[4px] bg-opacity-50">
+												<Heart className="h-4 w-4 text-white hover:text-gray-800" />
+											</Button>
 
 											<div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs">
 												{event?.duration} hour
 											</div>
 										</div>
-										<CardContent className="px-6 pt-3">
+										<CardContent className="px-5 pt-3">
 
-											<h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1 line-clamp-1 capitalize">{event?.title}</h3>
+											<Link href={`/birthday/details/${event?._id}`}>
+												<h3 className="text-xl font-semibold text-gray-800 hover:text-blue-800 transition-all dark:text-white mb-1 line-clamp-1 cursor-pointer capitalize">{event?.title}</h3>
+											</Link>
 											<p className="text-muted-foreground text-sm mb-3 line-clamp-2">{event?.description}</p>
 
 											<div className="flex items-center justify-between mb-2">
 												{/* <Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badge> */}
 												<div className="text-right flex gap-2 items-baseline">
-													<p className="text-2xl font-semibold text-green-600">₹ </p>
+													<p className="text-2xl font-semibold text-gray-800">₹ </p>
 													<span className="text-xl font-bold text-purple-600">{getDiscountedPrice(event?.tiers[ 0 ]?.price, event?.discount)}</span>
-													{event?.discount && <div className="text-sm text-muted-foreground line-through">{event?.tiers[ 0 ]?.price}</div>}
+													{event?.discount > 0 && <div className="text-sm text-muted-foreground line-through">{event?.tiers[ 0 ]?.price}</div>}
 												</div>
 												{/* <div className="bg-black/70 text-white px-2 py-1 rounded text-xs">
 												{event.time}
 											</div> */}
-												{event?.discount && <Badge className="bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
+												{event?.discount > 0 && <Badge className="bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
 											</div>
 
 
@@ -247,11 +252,11 @@ export default function BirthdayEvents() {
 													<Users className="h-3 w-3 mr-1 text-purple-600" />
 													<span className="font-semibold">Age:&nbsp;</span> {getAgeGroupText(event?.ageGroup)}
 												</div>
-												<div className="flex items-center">
+												{event?.rating > 0 && <div className="flex items-center">
 													<Star className="h-4 w-4 text-yellow-400 fill-current" />
-													<span className="ml-1 font-medium text-sm">{event?.rating || 0}</span>
-													<span className="ml-1 text-xs text-muted-foreground">({event?.reviews || 0})</span>
-												</div>
+													<span className="ml-1 font-medium text-sm">{event?.rating}</span>
+													<span className="ml-1 text-xs text-muted-foreground">({event?.reviews})</span>
+												</div>}
 											</div>
 
 											<div className="space-y-2">
@@ -313,6 +318,6 @@ export default function BirthdayEvents() {
 					</div>
 				</div>
 			</div>
-		</div>
+		</div >
 	)
 }
