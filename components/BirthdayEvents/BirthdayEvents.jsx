@@ -16,6 +16,7 @@ import { setFilter } from "@/store/features/event-slice"
 import { useSearchParams } from "next/navigation"
 import BirthdaySkeleton from "@/components/Skeleton/Birthday"
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import { getDiscountedPrice } from "@/lib/utils"
 
 
 const ageGroups = [
@@ -70,14 +71,6 @@ export default function BirthdayEvents() {
 			...birthdayFilter,
 			[ key ]: value
 		}))
-	}
-
-
-	const getDiscountedPrice = (price, discount) => {
-		if (!price || !discount) return price;
-
-		const discountedPrice = price - (price * discount) / 100;
-		return Math.round(discountedPrice);
 	}
 
 	const getAgeGroupText = (age) => {

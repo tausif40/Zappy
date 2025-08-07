@@ -3,180 +3,66 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import { Star, MapPin, Users, Clock, CheckCircle, ArrowLeft, Share2, Award, Shield, Gift, ChevronRight, Smile, GraduationCap, Wine, Crown, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
 import Reviews from "../Reviews/Reviews"
-import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb"
 import EventsPlan from "./EventsPlan"
 import { getBirthdayEventDetails } from "@/store/features/event-slice"
 import { useDispatch, useSelector } from "react-redux"
+import { getDiscountedPrice } from '@/lib/utils'
+import Gallery from "./Gallery"
+
+const ageGroups = [
+	{
+		id: 'kids',
+		text: 'Kids (1-12)',
+		icon: Smile,
+		options: [
+			'Popular Among Boys', 'Popular Among Girls', 'All-time Classics'
+		]
+	},
+	{
+		id: 'teens',
+		text: 'Teens (13-19)',
+		icon: GraduationCap,
+	},
+	{
+		id: 'adults',
+		text: 'Adults (20+)',
+		icon: Wine,
+	},
+	{
+		id: 'milestone',
+		text: 'Milestone',
+		icon: Crown,
+	},
+];
+
+const breadcrumb = [
+	{ name: 'Home', href: '/' },
+	{ name: 'Birthday', href: '/birthday' },
+	{ name: 'Princess Theme Birthday Party', href: '' },
+];
 
 export default function EventDetails() {
 	const params = useParams();
 	const dispatch = useDispatch()
-	const route = useRouter();
 	const eventId = params.id
 	const { toast } = useToast()
-	const [ selectedImageIndex, setSelectedImageIndex ] = useState(0)
-
-	const ageGroups = [
-		{
-			id: 'kids',
-			text: 'Kids (1-12)',
-			icon: Smile,
-			options: [
-				'Popular Among Boys', 'Popular Among Girls', 'All-time Classics'
-			]
-		},
-		{
-			id: 'teens',
-			text: 'Teens (13-19)',
-			icon: GraduationCap,
-		},
-		{
-			id: 'adults',
-			text: 'Adults (20+)',
-			icon: Wine,
-		},
-		{
-			id: 'milestone',
-			text: 'Milestone',
-			icon: Crown,
-		},
-	];
-	// Mock event data - in real app, this would be fetched based on eventId
-	const events = {
-		id: eventId,
-		title: "Princess Theme Birthday Party",
-		vendor: {
-			name: "Magic Moments Events",
-			rating: 4.9,
-			reviews: 156,
-			experience: "8+ years",
-			verified: true,
-			avatar: "/placeholder.svg?height=80&width=80",
-			phone: "+91 98765 43210",
-			email: "contact@magicmoments.com",
-		},
-		rating: 4.9,
-		reviews: 156,
-		price: "₹8,999",
-		originalPrice: "₹12,999",
-		discount: "31% OFF",
-		images: [
-			"/placeholder.svg?height=400&width=600",
-			"/placeholder.svg?height=400&width=600",
-			"/placeholder.svg?height=400&width=600",
-			"/placeholder.svg?height=400&width=600",
-		],
-		badge: "Most Popular",
-		city: "Mumbai",
-		duration: "3-4 hours",
-		availableOn: "Weekends",
-		maxGuests: "20-25 people",
-		ageGroup: "15-20 years",
-		description:
-			"Transform your little princess's special day into a magical fairy tale experience! Our Princess Theme Birthday Party package includes everything needed to create an enchanting celebration that will make your child feel like royalty.",
-		highlights: [
-			"Professional princess performer for 2 hours",
-			"Complete royal decoration setup",
-			"Princess costume for birthday child",
-			"Crown-making activity for all people",
-			"Royal photo booth with props",
-			"Princess-themed games and activities",
-			"Magical storytelling session",
-			"Royal feast setup and coordination",
-		],
-		includes: [
-			"Princess performer (2 hours)",
-			"Complete decoration setup",
-			"Birthday child costume",
-			"Activity materials",
-			"Photo booth props",
-			"Game coordination",
-			"Setup and cleanup",
-			"Event coordination",
-		],
-		addOns: [
-			{ name: "Professional Photography", price: "₹2,999", description: "2-hour photo session with edited photos" },
-			{ name: "Princess Cake", price: "₹1,499", description: "Custom princess-themed cake (2kg)" },
-			{ name: "Return Gifts", price: "₹199/child", description: "Princess-themed return gift bags" },
-			{ name: "Face Painting", price: "₹999", description: "Professional face painting for all people" },
-		],
-		availability: [
-			{ date: "2024-02-10", slots: [ "10:00 AM", "2:00 PM", "4:00 PM" ] },
-			{ date: "2024-02-11", slots: [ "11:00 AM", "3:00 PM" ] },
-			{ date: "2024-02-17", slots: [ "10:00 AM", "1:00 PM", "4:00 PM" ] },
-			{ date: "2024-02-18", slots: [ "12:00 PM", "3:00 PM" ] },
-		],
-		policies: {
-			cancellation: "Free cancellation up to 48 hours before the event",
-			payment: "50% advance payment required to confirm booking",
-			weather: "Indoor backup arrangements available for outdoor bookings",
-			changes: "Minor changes allowed up to 24 hours before the event",
-		},
-	}
-
-	const breadcrumb = [
-		{ name: 'Home', href: '/' },
-		{ name: 'Birthday', href: '/birthday' },
-		{ name: 'Princess Theme Birthday Party', href: '' },
-	];
-
-	const plans = [
-		{
-			name: "Silver",
-			subtitle: "Basic",
-			description: "Essential services with basic venue setup",
-			price: 9999,
-			duration: "2.5 hours",
-			ageRange: "Ages 6-12",
-			tier: "SILVER",
-			color: "border-ring bg-highlights",
-			buttonColor: "bg-primary hover:bg-highlight",
-		},
-		{
-			name: "Gold",
-			subtitle: "Enhanced",
-			description: "Enhanced services with better setup",
-			price: 14999,
-			duration: "3 hours",
-			ageRange: "Ages 7-13",
-			tier: "GOLD",
-			color: "border-yellow-400 bg-yellow-50",
-			buttonColor: "bg-yellow-500 hover:bg-yellow-600",
-		},
-		{
-			name: "Platinum",
-			subtitle: "Premium",
-			description: "Premium services with complete setup",
-			price: 19999,
-			duration: "4 hours",
-			ageRange: "Ages 8-14",
-			tier: "PLATINUM",
-			color: "border-teal-400 bg-teal-50",
-			buttonColor: "bg-teal-500 hover:bg-teal-600",
-		},
-	];
-
-
+	const [ guist, setGuist ] = useState('');
 	const [ event, setEvent ] = useState([]);
-	const [ selected, setSelected ] = useState("Silver");
-	const selectedTier = plans.find((tier) => tier.name === selected);
 
 	const birthdayEventDetails = useSelector((state) => state.event.birthdayEventDetails);
-	console.log(birthdayEventDetails);
 
 	useEffect(() => {
 		setEvent(birthdayEventDetails?.data?.event || [])
 	}, [ birthdayEventDetails ]);
 
-	console.log("event-", event);
-	// console.log("banner-", event?.banner[ 0 ]);
+	console.log("event-", event?.tiers);
 
 	useEffect(() => {
 		dispatch(getBirthdayEventDetails(eventId))
@@ -188,13 +74,32 @@ export default function EventDetails() {
 		return group?.text;
 	}
 
-
 	const handleShare = () => {
 		toast({
 			title: "Link Copied!",
 			description: "Event link copied to clipboard.",
 		})
 	}
+
+	const tierStyles = {
+		silver: {
+			borderColor: "border-gray-400",
+			textColor: "text-gray-500",
+			color: "text-gray-600"
+		},
+		gold: {
+			borderColor: "border-purple-400",
+			textColor: "text-purple-500",
+			color: "text-purple-600"
+		},
+		platinum: {
+			borderColor: "border-yellow-400",
+			textColor: "text-yellow-500",
+			color: "text-yellow-600"
+		}
+	};
+
+
 
 	return (
 		<div className="min-h-screen pt-16 bg-background">
@@ -241,35 +146,40 @@ export default function EventDetails() {
 						{/* Event Details */}
 						<Card className="shadow overflow-hidden">
 							<CardContent className="p-0 ">
-								<div className="relative">
-									{/* event?.banner[ 0 ] ||  */}
-									<Image
-										src={event?.banner ? event?.banner[ 0 ] : "/placeholder.svg"}
-										alt={event?.title}
-										width={600}
-										height={400}
-										className="w-full h-96 object-cover"
-									/>
-									{event?.tags &&
-										<Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
-											{event?.tags}
-										</Badge>
-									}
-									{event?.discount > 0 && <Badge className="absolute top-4 right-4 bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
-								</div>
 
-								<div className="grid grid-cols-5 gap-4 p-4">
-									{[ ...Array(3) ].map((_, i) => (
+
+								<Gallery />
+								{/* <div>
+									<div className="relative">
 										<Image
-											key={i}
-											src="/placeholder.svg"
-											alt="img"
-											width={150}
-											height={100}
-											className="w-full h-20 object-cover"
+											src={event?.banner ? event?.banner[ 0 ] : "/placeholder.svg"}
+											alt={event?.title}
+											width={600}
+											height={400}
+											className="w-full h-96 object-cover"
 										/>
-									))}
-								</div>
+										{event?.tags &&
+											<Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
+												{event?.tags}
+											</Badge>
+										}
+										{event?.discount > 0 && <Badge className="absolute top-4 right-4 bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
+									</div>
+
+									<div className="grid grid-cols-5 gap-4 p-4">
+										{[ ...Array(3) ].map((_, i) => (
+											<Image
+												key={i}
+												src="/placeholder.svg"
+												alt="img"
+												width={150}
+												height={100}
+												className="w-full h-20 object-cover"
+											/>
+										))}
+									</div>
+								</div> */}
+
 								<div className="px-8 py-6">
 									<div className="flex items-start justify-between mb-6">
 										<div>
@@ -295,7 +205,7 @@ export default function EventDetails() {
 										</div>
 									</div>
 
-									<div className="flex items-center space-x-4 mb-6">
+									<div className="flex items-center space-x-2 mb-6">
 										{event?.rating > 0 &&
 											<div className="flex items-center">
 												<Star className="h-5 w-5 text-yellow-400 fill-current" />
@@ -303,61 +213,51 @@ export default function EventDetails() {
 												<span className="ml-1 text-muted-foreground">({event?.reviews} reviews)</span>
 											</div>
 										}
-										<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">Max {event?.guest}</Badge>
+										<div>
+											Max Guests: &nbsp;
+											<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">{guist} persons</Badge>
+										</div>
 									</div>
 
 									<p className="text-muted-foreground leading-relaxed mb-6">{event?.description}</p>
 
-									{/* <Tabs defaultValue="highlights" className="w-full">
-										<TabsList className="grid w-full grid-cols-3">
-											<TabsTrigger value="highlights">Highlights</TabsTrigger>
-											<TabsTrigger value="includes">Includes</TabsTrigger>
-											<TabsTrigger value="policies">Policies</TabsTrigger>
-										</TabsList>
+									<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+										{event?.tiers?.map((tier) => {
+											const style = tierStyles[ tier.name.toLowerCase() ] || {
+												borderColor: "border-muted",
+												textColor: "text-foreground"
+											};
+											return (
+												// shadow rounded-2xl ${style.borderColor}
+												<Card key={tier?._id} className={`border-0 shadow-none`}>
+													<CardHeader className="px-5 pb-2 pt-4">
+														<CardTitle className={`capitalize text-xl flex items-center justify-between ${style.textColor}`}>
+															{tier?.name}
+														</CardTitle>
+													</CardHeader>
+													<CardContent className="">
+														<Badge variant="secondary">{tier?.guest} Guests</Badge>
+														{/* <p className="text-muted-foreground text-sm">{tier?.description}</p> */}
+														{/* <div className="flex gap-2">
+															<p className="text-lg font-bold text-ring">₹ {getDiscountedPrice(tier?.price, 20)}</p>
+															<p className="text-lg text-muted-foreground line-through">{tier?.price.toLocaleString()}</p>
+														</div> */}
+														<ul className="space-y-2 mt-4">
+															{tier?.features?.map((feature, idx) => (
+																<li key={idx} className="flex items-center text-sm">
+																	<CheckCircle className={`w-4 h-4 mr-2 ${style.color}`} />
+																	<p className="text-muted-foreground">{feature}</p>
+																</li>
+															))}
+														</ul>
+													</CardContent>
+												</Card>
+											)
+										})}
+									</div>
 
-										<TabsContent value="highlights" className="mt-6">
-											<div className="grid md:grid-cols-2 gap-4">
-												{event?.highlights?.map((highlight, index) => (
-													<div key={index} className="flex items-start space-x-3">
-														<CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-														<span className="text-sm">{highlight}</span>
-													</div>
-												))}
-											</div>
-										</TabsContent>
 
-										<TabsContent value="includes" className="mt-6">
-											<div className="grid md:grid-cols-2 gap-4">
-												{event?.includes?.map((item, index) => (
-													<div key={index} className="flex items-start space-x-3">
-														<CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
-														<span className="text-sm">{item}</span>
-													</div>
-												))}
-											</div>
-										</TabsContent>
 
-										<TabsContent value="policies" className="mt-6">
-											<div className="space-y-4">
-												<div>
-													<h4 className="font-medium mb-2">Cancellation Policy</h4>
-													<p className="text-sm text-muted-foreground">{event?.policies?.cancellation}</p>
-												</div>
-												<div>
-													<h4 className="font-medium mb-2">Payment Terms</h4>
-													<p className="text-sm text-muted-foreground">{event?.policies?.payment}</p>
-												</div>
-												<div>
-													<h4 className="font-medium mb-2">Weather Policy</h4>
-													<p className="text-sm text-muted-foreground">{event?.policies?.weather}</p>
-												</div>
-												<div>
-													<h4 className="font-medium mb-2">Changes Policy</h4>
-													<p className="text-sm text-muted-foreground">{event?.policies?.changes}</p>
-												</div>
-											</div>
-										</TabsContent>
-									</Tabs> */}
 								</div>
 							</CardContent>
 						</Card>
@@ -369,10 +269,10 @@ export default function EventDetails() {
 
 					{/* Sidebar */}
 					<div className="space-y-6 lg:col-span-2  sticky top-24 ">
-						<EventsPlan event={event?.tiers} />
+						<EventsPlan event={event?.tiers} discount={event?.discount} guist={setGuist} />
 
 						{/* Safety Features */}
-						<Card className="shadow-lg">
+						<Card className="shadow">
 							<CardContent className="p-6">
 								<h3 className="text-lg font-semibold mb-4">Safety & Trust</h3>
 								<div className="space-y-3">
