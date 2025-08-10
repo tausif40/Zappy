@@ -62,7 +62,7 @@ export default function EventDetails() {
 		setEvent(birthdayEventDetails?.data?.event || [])
 	}, [ birthdayEventDetails ]);
 
-	console.log("event-", event?.tiers);
+	console.log("birthdayEventDetails-", birthdayEventDetails);
 
 	useEffect(() => {
 		dispatch(getBirthdayEventDetails(eventId))
@@ -148,7 +148,7 @@ export default function EventDetails() {
 							<CardContent className="p-0 ">
 
 
-								<Gallery />
+								<Gallery images={birthdayEventDetails?.data?.event?.banner} />
 								{/* <div>
 									<div className="relative">
 										<Image

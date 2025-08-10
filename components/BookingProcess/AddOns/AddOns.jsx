@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { ArrowLeft, ArrowRight, CheckCircle, ChevronLast, ChevronRight } from "lucide-react"
+import { ArrowLeft, ArrowRight, CheckCircle, ChevronLast, ChevronRight, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -12,60 +12,33 @@ import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useDispatch, useSelector } from "react-redux"
+import { getAddons, getCategory } from "@/store/features/addOns-slice"
 
 export default function AddOns() {
 	const params = useParams()
+	const dispatch = useDispatch();
 	const route = useRouter()
 	const eventId = params.id
 	const { toast } = useToast()
 	const [ selectedAddOnIds, setSelectedAddOnIds ] = useState([])
-
-	const allAddOns = [
-		{
-			id: 1,
-			name: "Photography",
-			price: 5000,
-			description: "Professional event photography service with editing.",
-			imageUrl: "/placeholder.svg",
-		},
-		{
-			id: 2,
-			name: "Catering Service",
-			price: 8000,
-			description: "Delicious buffet meals with customizable menu options.",
-			imageUrl: "/placeholder.svg",
-		},
-		{
-			id: 3,
-			name: "Live Music Band",
-			price: 6000,
-			description: "Live performance by professional musicians for a lively atmosphere.",
-			imageUrl: "/placeholder.svg",
-		},
-		{
-			id: 4,
-			name: "Decoration",
-			price: 4000,
-			description: "Beautiful theme-based event decoration setup.",
-			imageUrl: "/placeholder.svg",
-		},
-		{
-			id: 5,
-			name: "Extra Chairs & Tables",
-			price: 1500,
-			description: "Additional seating arrangement for extra guests.",
-			imageUrl: "/placeholder.svg",
-		},
-		{
-			id: 6,
-			name: "Lighting Effects",
-			price: 2000,
-			description: "Special lighting effects to enhance the event ambiance.",
-			imageUrl: "/placeholder.svg",
-		},
-	]
+	const [ selectedCategory, setSelectedCategory ] = useState(null)
+	const [ isDetailsOpen, setIsDetailsOpen ] = useState(false)
+	const [ selectedAddonDetails, setSelectedAddonDetails ] = useState(null)
 
 	const basePrice = 8999
+
+	useEffect(() => {
+		dispatch(getCategory())
+		dispatch(getAddons())
+	}, [ dispatch ])
+
+	const category = useSelector((state) => state.addOnsSlice?.category);
+	const addonsList = useSelector((state) => state.addOnsSlice?.addons);
+
+	console.log("category-", category?.data)
+	console.log("addonsList-", addonsList?.data?.results)
 
 	const handleAddOnToggle = (id) => {
 		setSelectedAddOnIds((prev) =>
@@ -73,8 +46,21 @@ export default function AddOns() {
 		)
 	}
 
-	const selectedAddOns = allAddOns.filter((addOn) => selectedAddOnIds.includes(addOn.id))
-	const totalPrice = basePrice + selectedAddOns.reduce((sum, addOn) => sum + addOn.price, 0)
+	const handleCategorySelect = (categoryId) => {
+		setSelectedCategory(categoryId)
+	}
+
+	const handleMoreDetails = (addon) => {
+		setSelectedAddonDetails(addon)
+		setIsDetailsOpen(true)
+	}
+
+	const filteredAddons = selectedCategory
+		? addonsList?.data?.results?.filter(addon => addon.category === selectedCategory) || []
+		: addonsList?.data?.results || []
+
+	const selectedAddOns = filteredAddons.filter((addOn) => selectedAddOnIds.includes(addOn._id))
+	const totalPrice = basePrice + selectedAddOns.reduce((sum, addOn) => sum + (addOn?.price || 0), 0)
 
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
@@ -84,39 +70,7 @@ export default function AddOns() {
 		{ name: 'Add-Ons', href: '' },
 	];
 
-	const addons = [
-		{ id: 1, name: "Photography", icon: "📷" },
-		{ id: 2, name: "Videography", icon: "🎥" },
-		{ id: 3, name: "Live Music Band", icon: "🎸" },
-		{ id: 4, name: "DJ Services", icon: "🎧" },
-		{ id: 5, name: "LED Walls", icon: "🖥️" },
-		{ id: 6, name: "Photo Booth", icon: "📸" },
-		{ id: 7, name: "Catering Add-ons", icon: "🍽️" },
-		{ id: 8, name: "Special Effects", icon: "✨" },
-		{ id: 9, name: "Drone Coverage", icon: "🛸" },
-		{ id: 10, name: "Anchor/Host", icon: "🎤" },
-		{ id: 11, name: "Game Zone Setup", icon: "🎮" },
-		{ id: 12, name: "Balloon Artist", icon: "🎈" },
-		{ id: 13, name: "Face Painting", icon: "🎨" },
-		{ id: 14, name: "Tattoo Artist", icon: "🖊️" },
-		{ id: 15, name: "Fireworks Display", icon: "🎆" },
-		{ id: 16, name: "Security Services", icon: "🛡️" },
-		{ id: 17, name: "VIP Seating", icon: "👑" },
-		{ id: 18, name: "Bar Setup", icon: "🍹" },
-		{ id: 19, name: "Extra Decoration", icon: "🪄" },
-		{ id: 20, name: "Transportation Service", icon: "🚌" }
-	]
-
-
-
 	const handleContinue = () => {
-		// if (selectedAddOnIds.length === 0) {
-		// 	toast({
-		// 		title: "Add-On Required",
-		// 		description: "Please select at least one add-on to continue.",
-		// 		variant: "destructive",
-		// 	})
-		// }
 		route.push(`/birthday/booking/${eventId}/schedule`)
 	}
 
@@ -171,38 +125,63 @@ export default function AddOns() {
 						<div className="col-span-1">
 							<h2 className="text-xl font-semibold pb-2">Category</h2>
 							<ScrollArea className="border py-2 pl-2 pr-3 rounded h-[80vh] min-w-xl">
-								{addons.map((value) => (
-									<p className="border p-2 rounded-md bg-background mb-2 cursor-pointer">{value.icon}&nbsp;{value.name}</p>
+								{/* All Categories Option */}
+								<p
+									className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${!selectedCategory ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
+										}`}
+									onClick={() => handleCategorySelect(null)}
+								>
+									📋 All Categories
+								</p>
+
+								{/* Category List */}
+								{category?.data?.map((cat) => (
+									<p
+										key={cat.id}
+										className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${selectedCategory === cat.name ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
+											}`}
+										onClick={() => handleCategorySelect(cat.name)}
+									>
+										{cat.name}
+									</p>
 								))}
 							</ScrollArea>
 						</div>
 						<div className="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 !items-start gap-4 pt-8">
-							{allAddOns.map((addon) => (
-								<Label key={addon.id} className="block">
+							{filteredAddons?.map((addon) => (
+								<Label key={addon._id} className="block">
 									<Card
-										onClick={() => handleAddOnToggle(addon.id)}
-										className={`relative flex flex-col items-center border transition-all duration-200 rounded-xl overflow-hidden ${selectedAddOnIds.includes(addon.id)
+										onClick={() => handleAddOnToggle(addon._id)}
+										className={`relative flex flex-col items-center border transition-all duration-200 rounded-xl overflow-hidden ${selectedAddOnIds.includes(addon._id)
 											? "ring-2 ring-purple-500 shadow-lg"
 											: "hover:shadow-md"
 											}`}
 									>
 										{/* Selected Checkmark */}
-										{selectedAddOnIds.includes(addon.id) && (
-											<div className="absolute top-2 left-2 bg-white rounded-full p-1 shadow">
+										{selectedAddOnIds.includes(addon._id) && (
+											<div className="absolute top-2 left-2 bg-white rounded-full p-1 shadow z-10">
 												<CheckCircle className="text-purple-500 h-5 w-5" />
 											</div>
 										)}
 
-										{/* Price Badge */}
-										<Badge className="absolute top-2 right-2 bg-green-500 text-white border-0 shadow">
-											+₹{addon.price.toLocaleString()}
-										</Badge>
+										<div className="flex gap-4 justify-between w-full absolute top-2 px-2">
+											{/* Popular Badge */}
+											{addon?.popular && (
+												<Badge className="bg-orange-500 text-white border-0 shadow z-10">
+													🔥 Popular
+												</Badge>
+											)}
+											{/* Price Badge */}
+											<Badge className="bg-green-500 text-white border-0 shadow z-10">
+												+₹ {(addon?.price || 0).toLocaleString()}
+											</Badge>
+										</div>
 
 										{/* Image Section */}
 										<div className="w-full h-28 bg-gray-200">
 											<Image
-												src={addon.imageUrl || "/placeholder.svg"}
-												alt={addon.name}
+												src={addon?.banner?.[ 0 ] || "/placeholder.svg"}
+												alt={addon?.name || "Addon"}
 												width={400}
 												height={200}
 												className="object-cover w-full h-full"
@@ -211,14 +190,35 @@ export default function AddOns() {
 
 										{/* Content */}
 										<CardContent className="w-full px-4 py-2">
-											<h3 className="text-lg font-semibold">{addon.name}</h3>
-											<p className="text-xs text-muted-foreground mt-1 line-clamp-2">{addon.description}</p>
-											<p className="text-blue-500 mt-2 text-end font-light cursor-pointer hover:underline">more details</p>
-
+											<h3 className="text-lg font-semibold">{addon?.name || "Addon Name"}</h3>
+											<p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+												{addon?.description || "No description available"}
+											</p>
+											<div className="flex justify-between items-center mt-2">
+												<span className="text-xs text-muted-foreground border px-2 rounded-md bg-gray-100">
+													{addon?.duration || "Duration not specified"}
+												</span>
+												<p
+													className="text-blue-500 text-xs cursor-pointer hover:underline"
+													onClick={(e) => {
+														e.stopPropagation()
+														handleMoreDetails(addon)
+													}}
+												>
+													more details
+												</p>
+											</div>
 										</CardContent>
 									</Card>
 								</Label>
 							))}
+
+							{/* No addons message */}
+							{filteredAddons?.length === 0 && (
+								<div className="col-span-full text-center py-8 text-muted-foreground">
+									<p>No addons available for this category.</p>
+								</div>
+							)}
 						</div>
 					</div>
 
@@ -231,9 +231,9 @@ export default function AddOns() {
 									<span>₹{basePrice.toLocaleString()}</span>
 								</div>
 								{selectedAddOns.map((addon) => (
-									<div key={addon.id} className="flex justify-between text-sm ">
-										<span>{addon.name}</span>
-										<span className="text-emerald-600">+ ₹{addon.price.toLocaleString()}</span>
+									<div key={addon._id} className="flex justify-between text-sm ">
+										<span>{addon?.name || "Addon"}</span>
+										<span className="text-emerald-600">+ ₹{(addon?.price || 0).toLocaleString()}</span>
 									</div>
 								))}
 								<hr />
@@ -252,6 +252,94 @@ export default function AddOns() {
 					</div>
 				</div>
 			</div>
+
+			{/* More Details Dialog */}
+			<Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+				<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+					<DialogHeader>
+						<DialogTitle className="flex items-center justify-between">
+							<span>{selectedAddonDetails?.name || "Addon Details"}</span>
+							{/* <Button
+								variant="ghost"
+								size="sm"
+								onClick={() => setIsDetailsOpen(false)}
+								className="h-8 w-8 p-0"
+							>
+								<X className="h-4 w-4" />
+							</Button> */}
+						</DialogTitle>
+					</DialogHeader>
+
+					{selectedAddonDetails && (
+						<div className="space-y-6">
+							{/* Banner Images */}
+							{selectedAddonDetails?.banner && selectedAddonDetails.banner.length > 0 && (
+								<div className="space-y-2">
+									<h3 className="font-semibold">Images</h3>
+									<div className="grid grid-cols-2 gap-2">
+										{selectedAddonDetails.banner.map((image, index) => (
+											<div key={index} className="relative h-32 rounded-lg overflow-hidden">
+												<Image
+													src={image}
+													alt={`${selectedAddonDetails.name} - Image ${index + 1}`}
+													fill
+													className="object-cover"
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+
+							{/* Description */}
+							<div className="space-y-2">
+								<h3 className="font-semibold">Description</h3>
+								<p className="text-muted-foreground">
+									{selectedAddonDetails?.description || "No description available"}
+								</p>
+							</div>
+
+							{/* Details Grid */}
+							<div className="grid grid-cols-2 gap-4">
+								<div className="space-y-2">
+									<h3 className="font-semibold">Category</h3>
+									<p className="text-muted-foreground">{selectedAddonDetails?.category || "N/A"}</p>
+								</div>
+								<div className="space-y-2">
+									<h3 className="font-semibold">Price</h3>
+									<p className="text-emerald-600 font-semibold">₹{(selectedAddonDetails?.price || 0).toLocaleString()}</p>
+								</div>
+								<div className="space-y-2">
+									<h3 className="font-semibold">Duration</h3>
+									<p className="text-muted-foreground">{selectedAddonDetails?.duration || "N/A"}</p>
+								</div>
+								<div className="space-y-2">
+									<h3 className="font-semibold">Max Quantity</h3>
+									<p className="text-muted-foreground">{selectedAddonDetails?.maxQuantity || "N/A"}</p>
+								</div>
+							</div>
+
+							{/* Status */}
+							{/* <div className="space-y-2">
+								<h3 className="font-semibold">Status</h3>
+								<Badge variant={selectedAddonDetails?.isActive ? "default" : "secondary"}>
+									{selectedAddonDetails?.isActive ? "Active" : "Inactive"}
+								</Badge>
+							</div> */}
+
+							{/* Popular Badge */}
+							{selectedAddonDetails?.popular && (
+								<div className="space-y-2">
+									<h3 className="font-semibold">Special</h3>
+									<Badge variant="outline" className="border-orange-500 text-orange-600">
+										🔥 Popular Choice
+									</Badge>
+								</div>
+							)}
+						</div>
+					)}
+				</DialogContent>
+			</Dialog>
 		</div >
 	)
 }

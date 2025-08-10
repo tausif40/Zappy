@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "@/store/features/auth-slice";
 import registerVendorSlice from "@/store/vendor/vendorAuth-slice";
 import eventSlice from "@/store/features/event-slice";
+import addOnsSlice from "@/store/features/addOns-slice";
 
 export const store = configureStore({
 	reducer: {
 		authSlice: authSlice,
 		registerVendor: registerVendorSlice,
-		event: eventSlice
+		event: eventSlice,
+		addOnsSlice: addOnsSlice
 	}
 });
 
