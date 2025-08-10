@@ -34,8 +34,12 @@ export default function AddOns() {
 		dispatch(getAddons())
 	}, [ dispatch ])
 
-	const category = useSelector((state) => state.addOnsSlice.category);
-	const addonsList = useSelector((state) => state.addOnsSlice.addons);
+	const category = useSelector((state) => state.addOnsSlice?.category);
+	const addonsList = useSelector((state) => state.addOnsSlice?.addons);
+
+	// Add loading states and safety checks
+	const isLoading = !category?.data || !addonsList?.data?.results;
+	const hasError = category?.error || addonsList?.error;
 
 	console.log("category-", category?.data)
 	console.log("addonsList-", addonsList?.data?.results)
@@ -56,8 +60,8 @@ export default function AddOns() {
 	}
 
 	const filteredAddons = selectedCategory
-		? addonsList?.data?.results?.filter(addon => addon?.category === selectedCategory) || []
-		: addonsList?.data?.results || []
+		? (addonsList?.data?.results && Array.isArray(addonsList.data.results) ? addonsList.data.results.filter(addon => addon?.category === selectedCategory) : []) || []
+		: (addonsList?.data?.results && Array.isArray(addonsList.data.results) ? addonsList.data.results : []) || []
 
 	const selectedAddOns = filteredAddons.filter((addOn) => selectedAddOnIds?.includes(addOn?._id))
 	const totalPrice = basePrice + selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0)
@@ -125,31 +129,62 @@ export default function AddOns() {
 						<div className="col-span-1">
 							<h2 className="text-xl font-semibold pb-2">Category</h2>
 							<ScrollArea className="border py-2 pl-2 pr-3 rounded h-[80vh] min-w-xl">
+								{/* Loading State */}
+								{isLoading && (
+									<div className="text-center py-4 text-muted-foreground">
+										<p>Loading categories...</p>
+									</div>
+								)}
+
+								{/* Error State */}
+								{hasError && (
+									<div className="text-center py-4 text-red-500">
+										<p>Error loading data. Please refresh.</p>
+									</div>
+								)}
+
 								{/* All Categories Option */}
-								<p
-									className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${!selectedCategory ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
-										}`}
-									onClick={() => handleCategorySelect(null)}
-								>
-									📋 All Categories
-								</p>
+								{!isLoading && !hasError && (
+									<p
+										className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${!selectedCategory ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
+											}`}
+										onClick={() => handleCategorySelect(null)}
+									>
+										📋 All Categories
+									</p>
+								)}
 
 								{/* Category List */}
-								{category?.data?.map((cat) => (
+								{!isLoading && !hasError && category?.data && Array.isArray(category.data) && category.data.map((cat) => (
 									<p
-										key={cat?.id}
+										key={cat?.id || cat?._id || Math.random()}
 										className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${selectedCategory === cat?.name ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
 											}`}
 										onClick={() => handleCategorySelect(cat?.name)}
 									>
-										{cat?.name}
+										{cat?.name || 'Unnamed Category'}
 									</p>
 								))}
 							</ScrollArea>
 						</div>
 						<div className="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 !items-start gap-4 pt-8">
-							{filteredAddons?.map((addon) => (
-								<Label key={addon?._id} className="block">
+							{/* Loading State */}
+							{isLoading && (
+								<div className="col-span-full text-center py-8 text-muted-foreground">
+									<p>Loading addons...</p>
+								</div>
+							)}	
+
+							{/* Error State */}
+							{hasError && (
+								<div className="col-span-full text-center py-8 text-red-500">
+									<p>Error loading addons. Please refresh the page.</p>
+								</div>
+							)}
+
+							{/* Addons Grid */}
+							{!isLoading && !hasError && filteredAddons?.map((addon) => (
+								<Label key={addon?._id || Math.random()} className="block">
 									<Card
 										onClick={() => handleAddOnToggle(addon?._id)}
 										className={`relative flex flex-col items-center border transition-all duration-200 rounded-xl overflow-hidden ${selectedAddOnIds.includes(addon?._id)
@@ -180,7 +215,7 @@ export default function AddOns() {
 										{/* Image Section */}
 										<div className="w-full h-28 bg-gray-200">
 											<Image
-												src={addon?.banner?.[ 0 ] || "/placeholder.svg"}
+												src={addon?.banner && Array.isArray(addon.banner) && addon.banner.length > 0 ? addon.banner[ 0 ] : "/placeholder.svg"}
 												alt={addon?.name || "Addon"}
 												width={400}
 												height={200}
@@ -214,7 +249,7 @@ export default function AddOns() {
 							))}
 
 							{/* No addons message */}
-							{filteredAddons?.length === 0 && (
+							{!isLoading && !hasError && filteredAddons?.length === 0 && (
 								<div className="col-span-full text-center py-8 text-muted-foreground">
 									<p>No addons available for this category.</p>
 								</div>
@@ -273,15 +308,15 @@ export default function AddOns() {
 					{selectedAddonDetails && (
 						<div className="space-y-6">
 							{/* Banner Images */}
-							{selectedAddonDetails?.banner && selectedAddonDetails?.banner?.length > 0 && (
+							{selectedAddonDetails?.banner && Array.isArray(selectedAddonDetails.banner) && selectedAddonDetails.banner.length > 0 && (
 								<div className="space-y-2">
 									<h3 className="font-semibold">Images</h3>
 									<div className="grid grid-cols-2 gap-2">
-										{selectedAddonDetails?.banner?.map((image, index) => (
+										{selectedAddonDetails.banner.map((image, index) => (
 											<div key={index} className="relative h-32 rounded-lg overflow-hidden">
 												<Image
 													src={image}
-													alt={`${selectedAddonDetails?.name} - Image ${index + 1}`}
+													alt={`${selectedAddonDetails?.name || 'Addon'} - Image ${index + 1}`}
 													fill
 													className="object-cover"
 												/>
