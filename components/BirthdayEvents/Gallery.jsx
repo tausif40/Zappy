@@ -28,7 +28,7 @@ const Gallery = ({ images }) => {
           display: 'flex',
           gap: 20
         }}>
-          {images.slice(1).map((img, idx) => (
+          {images?.slice(1)?.map((img, idx) => (
             <PhotoView src={img} key={idx}>
               <img
                 src={img}
