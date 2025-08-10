@@ -34,12 +34,8 @@ export default function AddOns() {
 		dispatch(getAddons())
 	}, [ dispatch ])
 
-	const category = useSelector((state) => state.addOnsSlice?.category);
-	const addonsList = useSelector((state) => state.addOnsSlice?.addons);
-
-	// Add loading states
-	const isLoading = !category?.data || !addonsList?.data?.results;
-	const hasError = category?.error || addonsList?.error;
+	const category = useSelector((state) => state.addOnsSlice.category);
+	const addonsList = useSelector((state) => state.addOnsSlice.addons);
 
 	console.log("category-", category?.data)
 	console.log("addonsList-", addonsList?.data?.results)
@@ -60,11 +56,11 @@ export default function AddOns() {
 	}
 
 	const filteredAddons = selectedCategory
-		? (addonsList?.data?.results && Array.isArray(addonsList.data.results) ? addonsList.data.results.filter(addon => addon?.category === selectedCategory) : []) || []
-		: (addonsList?.data?.results && Array.isArray(addonsList.data.results) ? addonsList.data.results : []) || []
+		? addonsList?.data?.results?.filter(addon => addon?.category === selectedCategory) || []
+		: addonsList?.data?.results || []
 
-	const selectedAddOns = filteredAddons.filter((addOn) => selectedAddOnIds.includes(addOn._id))
-	const totalPrice = basePrice + selectedAddOns.reduce((sum, addOn) => sum + (addOn?.price || 0), 0)
+	const selectedAddOns = filteredAddons.filter((addOn) => selectedAddOnIds?.includes(addOn?._id))
+	const totalPrice = basePrice + selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0)
 
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
@@ -129,62 +125,31 @@ export default function AddOns() {
 						<div className="col-span-1">
 							<h2 className="text-xl font-semibold pb-2">Category</h2>
 							<ScrollArea className="border py-2 pl-2 pr-3 rounded h-[80vh] min-w-xl">
-								{/* Loading State */}
-								{isLoading && (
-									<div className="text-center py-4 text-muted-foreground">
-										<p>Loading categories...</p>
-									</div>
-								)}
-
-								{/* Error State */}
-								{hasError && (
-									<div className="text-center py-4 text-red-500">
-										<p>Error loading data. Please refresh.</p>
-									</div>
-								)}
-
 								{/* All Categories Option */}
-								{!isLoading && !hasError && (
-									<p
-										className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${!selectedCategory ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
-											}`}
-										onClick={() => handleCategorySelect(null)}
-									>
-										📋 All Categories
-									</p>
-								)}
+								<p
+									className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${!selectedCategory ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
+										}`}
+									onClick={() => handleCategorySelect(null)}
+								>
+									📋 All Categories
+								</p>
 
 								{/* Category List */}
-								{!isLoading && !hasError && category?.data && Array.isArray(category.data) && category.data.map((cat) => (
+								{category?.data?.map((cat) => (
 									<p
-										key={cat?.id || cat?._id || Math.random()}
+										key={cat?.id}
 										className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${selectedCategory === cat?.name ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
 											}`}
 										onClick={() => handleCategorySelect(cat?.name)}
 									>
-										{cat?.name || 'Unnamed Category'}
+										{cat?.name}
 									</p>
 								))}
 							</ScrollArea>
 						</div>
 						<div className="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 !items-start gap-4 pt-8">
-							{/* Loading State */}
-							{isLoading && (
-								<div className="col-span-full text-center py-8 text-muted-foreground">
-									<p>Loading addons...</p>
-								</div>
-							)}
-
-							{/* Error State */}
-							{hasError && (
-								<div className="col-span-full text-center py-8 text-red-500">
-									<p>Error loading addons. Please refresh the page.</p>
-								</div>
-							)}
-
-							{/* Addons Grid */}
-							{!isLoading && !hasError && filteredAddons?.map((addon) => (
-								<Label key={addon?._id || Math.random()} className="block">
+							{filteredAddons?.map((addon) => (
+								<Label key={addon?._id} className="block">
 									<Card
 										onClick={() => handleAddOnToggle(addon?._id)}
 										className={`relative flex flex-col items-center border transition-all duration-200 rounded-xl overflow-hidden ${selectedAddOnIds.includes(addon?._id)
@@ -215,7 +180,7 @@ export default function AddOns() {
 										{/* Image Section */}
 										<div className="w-full h-28 bg-gray-200">
 											<Image
-												src={addon?.banner && Array.isArray(addon.banner) && addon.banner.length > 0 ? addon.banner[ 0 ] : "/placeholder.svg"}
+												src={addon?.banner?.[ 0 ] || "/placeholder.svg"}
 												alt={addon?.name || "Addon"}
 												width={400}
 												height={200}
@@ -249,7 +214,7 @@ export default function AddOns() {
 							))}
 
 							{/* No addons message */}
-							{!isLoading && !hasError && filteredAddons?.length === 0 && (
+							{filteredAddons?.length === 0 && (
 								<div className="col-span-full text-center py-8 text-muted-foreground">
 									<p>No addons available for this category.</p>
 								</div>
@@ -263,10 +228,10 @@ export default function AddOns() {
 								<h4 className="font-semibold">Cart Summary</h4>
 								<div className="flex justify-between text-sm">
 									<span>Base Package</span>
-									<span>₹{basePrice.toLocaleString()}</span>
+									<span>₹ {basePrice.toLocaleString()}</span>
 								</div>
-								{selectedAddOns && selectedAddOns.length > 0 && selectedAddOns.map((addon) => (
-									<div key={addon?._id || Math.random()} className="flex justify-between text-sm ">
+								{selectedAddOns?.map((addon) => (
+									<div key={addon?._id} className="flex justify-between text-sm ">
 										<span>{addon?.name || "Addon"}</span>
 										<span className="text-emerald-600">+ ₹{(addon?.price || 0).toLocaleString()}</span>
 									</div>
@@ -274,7 +239,7 @@ export default function AddOns() {
 								<hr />
 								<div className="flex justify-between font-bold">
 									<span>Total</span>
-									<span className="text-purple-600">₹{totalPrice.toLocaleString()}</span>
+									<span className="text-purple-600">₹ {totalPrice.toLocaleString()}</span>
 								</div>
 								<Button
 									onClick={handleContinue}
@@ -308,15 +273,15 @@ export default function AddOns() {
 					{selectedAddonDetails && (
 						<div className="space-y-6">
 							{/* Banner Images */}
-							{selectedAddonDetails?.banner && Array.isArray(selectedAddonDetails.banner) && selectedAddonDetails.banner.length > 0 && (
+							{selectedAddonDetails?.banner && selectedAddonDetails?.banner?.length > 0 && (
 								<div className="space-y-2">
 									<h3 className="font-semibold">Images</h3>
 									<div className="grid grid-cols-2 gap-2">
-										{selectedAddonDetails.banner.map((image, index) => (
+										{selectedAddonDetails?.banner?.map((image, index) => (
 											<div key={index} className="relative h-32 rounded-lg overflow-hidden">
 												<Image
 													src={image}
-													alt={`${selectedAddonDetails.name || 'Addon'} - Image ${index + 1}`}
+													alt={`${selectedAddonDetails?.name} - Image ${index + 1}`}
 													fill
 													className="object-cover"
 												/>
