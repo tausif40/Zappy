@@ -26,9 +26,9 @@ const Gallery = ({ images }) => {
   return (
     <div style={{ padding: 20 }}>
       {/* Large banner/main image */}
-      <PhotoProvider>
+      <PhotoProvider maskOpacity={0.8}>
         <div style={{ marginBottom: 20 }}>
-          <PhotoView src={images[ 0 ]}>
+          <PhotoView src={images[ 0 ]} >
             <img
               src={images[ 0 ]}
               alt="Main"
