@@ -164,7 +164,7 @@ export default function AddOns() {
 											</div>
 										)}
 
-										<div className="flex gap-4 justify-between w-full absolute top-2 px-2">
+										<div className="flex gap-4 justify-end w-full absolute top-2 px-2">
 											{/* Popular Badge */}
 											{addon?.popular && (
 												<Badge className="bg-orange-500 text-white border-0 shadow z-10">

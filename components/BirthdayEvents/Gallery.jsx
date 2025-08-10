@@ -2,13 +2,6 @@ import React from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 
-// const images = [
-//   'https://yourdomain.com/image1.jpg',
-//   'https://yourdomain.com/image2.jpg',
-//   'https://yourdomain.com/image3.jpg',
-//   // Add more image URLs as needed
-// ];
-
 const Gallery = ({ images }) => {
   return (
     <div style={{ padding: 20 }}>
