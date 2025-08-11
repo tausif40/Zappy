@@ -45,9 +45,9 @@ function EventsPlan({ event, discount, guist }) {
 	const selectedTier = plans?.find((tier) => tier?.name === selected);
 	const selectedPlanData = planSubdata?.find((plan) => plan?.name === selected);
 
-	console.log("event plans-", plans);
+	// console.log("event plans-", plans);
 	// console.log("selected plans-", selected);
-	console.log("selectedTier-", selectedTier);
+	// console.log("selectedTier-", selectedTier);
 
 	useEffect(() => {
 		guist(selectedTier?.guest)

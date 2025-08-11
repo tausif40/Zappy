@@ -25,7 +25,9 @@ const ageGroups = [
 		text: 'Kids (1-12)',
 		icon: Smile,
 		options: [
-			'Popular Among Boys', 'Popular Among Girls', 'All-time Classics'
+			{ key: 'All-time Classics', name: 'All-time Classics' },
+			{ key: 'Popular Among Boys', name: 'Popular Among Boys' },
+			{ key: 'Popular Among Girls', name: 'Popular Among Girls' },
 		]
 	},
 	{
@@ -48,7 +50,8 @@ const ageGroups = [
 export default function BirthdayEvents() {
 	const dispatch = useDispatch()
 	const [ birthdayEvents, setBirthdayEvents ] = useState([])
-	const [ activeButton, setActiveButton ] = useState('Kids');
+	const [ activeButton, setActiveButton ] = useState('');
+	const [ selectedKidsOption, setSelectedKidsOption ] = useState('All-time Classics');
 
 	const birthdayEvent = useSelector((state) => state.event.birthdayEvent);
 	const birthdayFilter = useSelector((state) => state.event.birthdayEventFilter);
@@ -57,20 +60,65 @@ export default function BirthdayEvents() {
 		setBirthdayEvents(birthdayEvent?.data)
 	}, [ birthdayEvent ]);
 
-	// console.log("isLoading: ", birthdayEvent?.isLoading);
+	// console.log("lenght: ", birthdayEvent?.data?.totalResults);
 	// console.log("store: ", birthdayEvent);
 	// console.log("useEffect: ", birthdayEvents);
-	console.log("filter: ", birthdayFilter);
 
 	useEffect(() => {
+		console.log("birthdayFilter: ", birthdayFilter);
 		dispatch(getBirthdayEvent(birthdayFilter))
 	}, [ birthdayFilter, dispatch ])
 
-	const handleChangeFilter = (key, value) => {
+	// Initialize filter with default values
+	useEffect(() => {
+		if (activeButton && !birthdayFilter.ageGroup) {
+			handleChangeFilter('ageGroup', activeButton);
+		}
+	}, []);
+
+	// Handle filter submissions from EventFilter
+	const handleFilterSubmit = (filterData) => {
+		console.log("Received filter data:", filterData);
+
+		// Update the filter with the new data
 		dispatch(setFilter({
 			...birthdayFilter,
-			[ key ]: value
-		}))
+			city: filterData.city,
+			priceRange: filterData.priceRange,
+			// Add other filter fields as needed
+		}));
+	};
+
+
+	// useEffect(() => {
+	// 	dispatch(setFilter({
+	// 		...birthdayFilter,
+	// 		ageGroup: activeButton,
+	// 		subCategory: selectedKidsOption
+	// 	}))
+	// }, [ activeButton, selectedKidsOption ])
+
+	const handleChangeFilter = (key, value) => {
+		// console.log(`[${key} ]: ${value},`)
+		if (key === 'ageGroup') {
+			dispatch(setFilter({
+				...birthdayFilter,
+				ageGroup: value,
+				subCategory: value === 'kids' ? selectedKidsOption : '',
+			}))
+		}
+		else if (key === 'subCategory') {
+			dispatch(setFilter({
+				...birthdayFilter,
+				subCategory: value,
+			}))
+		}
+		else {
+			dispatch(setFilter({
+				...birthdayFilter,
+				[ key ]: value,
+			}))
+		}
 	}
 
 	const getAgeGroupText = (age) => {
@@ -112,26 +160,46 @@ export default function BirthdayEvents() {
 
 						{/* Search Bar */}
 						<div className="max-w-2xl mx-auto flex flex-wrap justify-center mt-6 gap-4">
-							{/* <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-							<Input
-								placeholder="Search for themes, vendors, or locations..."
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
-								className="pl-12 pr-4 py-6 text-lg border-2 focus:border-purple-500 rounded-full"
-							/> */}
 							{ageGroups.map((button) => {
 								const isActive = activeButton === button.id;
 								return (
-									<>
-										<Button key={button.id} onClick={() => setActiveButton(button.id)}
-											className={`${isActive ? 'bg-purple-400 text-white shadow-md' : 'bg-white text-purple-600 border border-purple-300 hover:bg-purple-50 hover:border-purple-400'}`
-											}>
-											<button.icon className="w-5 h-5 md:w-6 md:h-6" />
-											<span>{button.text}</span>
-										</Button>
-									</>
+									<Button
+										key={button.id}
+										onClick={() => {
+											setActiveButton(button.id)
+											handleChangeFilter('ageGroup', button.id);
+										}}
+										className={`${isActive ? 'bg-purple-400 text-white shadow-md' : 'bg-white text-purple-600 border border-purple-300 hover:bg-purple-50 hover:border-purple-400'}`}
+									>
+										<button.icon className="w-5 h-5 md:w-6 md:h-6" />
+										<span>{button.text}</span>
+									</Button>
 								)
 							})}
+						</div>
+
+						{/* Age Group Options - Show when kids is selected */}
+						<div className="min-h-10 mt-6 ">
+							{activeButton === 'kids' && (
+								<div className="max-w-2xl mx-auto flex flex-wrap justify-center gap-3">
+									{ageGroups.find(group => group.id === 'kids')?.options?.map((option) => (
+										<Button
+											key={option.key}
+											size="sm"
+											onClick={() => {
+												setSelectedKidsOption(option.key);
+												handleChangeFilter('subCategory', option.key);
+											}}
+											className={`${selectedKidsOption === option.key
+												? 'bg-purple-500 text-white border-purple-500 shadow'
+												: 'bg-white backdrop-blur-sm border border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300'
+												}`}
+										>
+											{option.name}
+										</Button>
+									))}
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -141,7 +209,7 @@ export default function BirthdayEvents() {
 				<div className="flex flex-col lg:flex-row gap-8">
 					{/* Filters Sidebar - Desktop */}
 					<div className="hidden lg:block w-72 h-96 space-y-6 sticky top-20">
-						<EventFilter />
+						<EventFilter onSubmitFilters={handleFilterSubmit} />
 					</div>
 
 					{/* Main Content */}
@@ -158,7 +226,7 @@ export default function BirthdayEvents() {
 								<SheetContent side="left" className="w-80">
 									<div className="space-y-6 mt-6">
 										<h3 className="text-lg font-semibold">Filters</h3>
-										<EventFilter />
+										<EventFilter onSubmitFilters={handleFilterSubmit} />
 									</div>
 								</SheetContent>
 							</Sheet>
@@ -166,7 +234,7 @@ export default function BirthdayEvents() {
 
 						{/* Results Header */}
 						<div className="flex justify-between items-center mb-6">
-							<p className="text-muted-foreground">Showing {birthdayEvents.length} events</p>
+							<p className="text-muted-foreground">Showing {birthdayEvent?.data?.totalResults} events</p>
 							<Select defaultValue="popular">
 								<SelectTrigger className="w-48">
 									<SelectValue />
@@ -188,99 +256,124 @@ export default function BirthdayEvents() {
 								? <>{Array.from({ length: 6 }).map((_, ind) => (
 									<BirthdaySkeleton key={ind} />
 								))}</>
-								: birthdayEvents?.results?.map((event) => (
-									<Card
-										key={event?._id}
-										className="group hover:shadow-md transition-all duration-300 overflow-hidden bg-white dark:bg-card"
-									>
-										<div className="relative">
-											<Link href={`/birthday/details/${event?._id}`}>
-												<Image
-													src={event?.banner[ 0 ] || "/placeholder.svg"}
-													alt={event?.title}
-													width={300}
-													height={200}
-													className="w-full h-48 object-cover transition-transform duration-300 cursor-default"
-												/>
-											</Link>
-											{event?.tags &&
-												<Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 capitalize">
-													{event?.tags}
-												</Badge>
-											}
-
-											{/* <Badge className="absolute top-3 right-3 bg-green-500 text-white border-0">{event?.discount}</Badge> */}
-
-											<Button variant='ghost' className="absolute top-3 right-3 p-1 h-6 rounded-[4px] bg-opacity-50">
-												<Heart className="h-4 w-4 text-white hover:text-gray-800" />
-											</Button>
-
-											<div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs">
-												{event?.duration} hour
+								: birthdayEvents?.results && birthdayEvents?.results?.length === 0
+									? <div className="col-span-full text-center py-16 bg-slate-50 rounded-md">
+										<div className="max-w-md mx-auto">
+											<div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+												<svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
+												</svg>
 											</div>
+											<h3 className="text-xl font-semibold text-gray-900 mb-2">No Events Available</h3>
+											<p className="text-gray-500 mb-6">We couldn't find any events matching your current filters. Try adjusting your search criteria.</p>
+											{/* <Button
+													variant="outline"
+													onClick={() => {
+														// Reset filters to default
+														handleChangeFilter('ageGroup', '');
+														handleChangeFilter('subCategory', '');
+														setActiveButton('');
+														setSelectedKidsOption('all');
+													}}
+												>
+													Clear Filters
+												</Button> */}
 										</div>
-										<CardContent className="px-5 pt-3">
+									</div>
+									: birthdayEvents?.results?.map((event) => (
+										<Card
+											key={event?._id}
+											className="group hover:shadow-md transition-all duration-300 overflow-hidden bg-white dark:bg-card"
+										>
+											<div className="relative">
+												<Link href={`/birthday/details/${event?._id}`}>
+													<Image
+														src={event?.banner[ 0 ] || "/placeholder.svg"}
+														alt={event?.title}
+														width={300}
+														height={200}
+														className="w-full h-48 object-cover transition-transform duration-300 cursor-default"
+													/>
+												</Link>
+												{event?.tags &&
+													<Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 capitalize">
+														{event?.tags}
+													</Badge>
+												}
 
-											<Link href={`/birthday/details/${event?._id}`}>
-												<h3 className="text-xl font-semibold text-gray-800 hover:text-blue-800 transition-all dark:text-white mb-1 line-clamp-1 cursor-pointer capitalize">{event?.title}</h3>
-											</Link>
-											<p className="text-muted-foreground text-sm mb-3 line-clamp-2">{event?.description}</p>
+												{/* <Badge className="absolute top-3 right-3 bg-green-500 text-white border-0">{event?.discount}</Badge> */}
 
-											<div className="flex items-center justify-between mb-2">
-												{/* <Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badge> */}
-												<div className="text-right flex gap-2 items-baseline">
-													<p className="text-2xl font-semibold text-gray-800">₹ </p>
-													<span className="text-xl font-bold text-purple-600">{getDiscountedPrice(event?.tiers[ 0 ]?.price, event?.discount)}</span>
-													{event?.discount > 0 && <div className="text-sm text-muted-foreground line-through">{event?.tiers[ 0 ]?.price}</div>}
+												<Button variant='ghost' className="absolute top-3 right-3 p-1 h-6 rounded-[4px] bg-opacity-50">
+													<Heart className="h-4 w-4 text-white hover:text-gray-800" />
+												</Button>
+
+												<div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs">
+													{event?.duration} hour
 												</div>
-												{/* <div className="bg-black/70 text-white px-2 py-1 rounded text-xs">
+											</div>
+											<CardContent className="px-5 pt-3">
+
+												<Link href={`/birthday/details/${event?._id}`}>
+													<h3 className="text-xl font-semibold text-gray-800 hover:text-blue-800 transition-all dark:text-white mb-1 line-clamp-1 cursor-pointer capitalize">{event?.title}</h3>
+												</Link>
+												<p className="text-muted-foreground text-sm mb-3 line-clamp-2">{event?.description}</p>
+
+												<div className="flex items-center justify-between mb-2">
+													{/* <Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badbar> */}
+													<div className="text-right flex gap-2 items-baseline">
+														<p className="text-2xl font-semibold text-gray-800">₹ </p>
+														<span className="text-xl font-bold text-purple-600">{getDiscountedPrice(event?.tiers[ 0 ]?.price, event?.discount)}</span>
+														{event?.discount > 0 && <div className="text-sm text-muted-foreground line-through">{event?.tiers[ 0 ]?.price}</div>}
+													</div>
+													{/* <div className="bg-black/70 text-white px-2 py-1 rounded text-xs">
 												{event.time}
 											</div> */}
-												{event?.discount > 0 && <Badge className="bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
-											</div>
-
-
-											<div className="flex items-center justify-between mb-3">
-												<div className="flex items-center text-sm text-muted-foreground">
-													<Users className="h-3 w-3 mr-1 text-purple-600" />
-													<span className="font-semibold">Age:&nbsp;</span> {getAgeGroupText(event?.ageGroup)}
+													{event?.discount > 0 && <Badge className="bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
 												</div>
-												{event?.rating > 0 && <div className="flex items-center">
-													<Star className="h-4 w-4 text-yellow-400 fill-current" />
-													<span className="ml-1 font-medium text-sm">{event?.rating}</span>
-													<span className="ml-1 text-xs text-muted-foreground">({event?.reviews})</span>
-												</div>}
-											</div>
 
-											<div className="space-y-2">
-												{event?.tiers[ 0 ]?.features?.slice(0, 3).map((option, i) => (
-													<div key={i} className="flex text-muted-foreground items-center text-sm">
-														<Check className="w-4 h-4 mr-2 text-green-500" />
-														{option}
-													</div>
-												))}
 
-												{event?.options?.length > 3 && (
-													<div className="flex text-primary hover:text-purple-600 cursor-pointer text-sm">
-														+{event?.options.length - 3} more features
+												<div className="flex items-center justify-between mb-3">
+													<div className="flex items-center text-sm text-muted-foreground">
+														<Users className="h-3 w-3 mr-1 text-purple-600" />
+														<span className="font-semibold">Age:&nbsp;</span> {getAgeGroupText(event?.ageGroup)}
 													</div>
-												)}
-											</div>
-											<div className="flex flex-col gap-2 mt-4">
-												<Link href={`/birthday/details/${event?._id}`}>
-													<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
-														Book Now
-													</Button>
-												</Link>
-												{/* <Link href={`/birthday/details/${event?.id}`}>
-												<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
+													{event?.rating > 0 && <div className="flex items-center">
+														<Star className="h-4 w-4 text-yellow-400 fill-current" />
+														<span className="ml-1 font-medium text-sm">{event?.rating}</span>
+														<span className="ml-1 text-xs text-muted-foreground">({event?.reviews})</span>
+													</div>}
+												</div>
+
+												<div className="space-y-2">
+													{event?.tiers[ 0 ]?.features?.slice(0, 3).map((option, i) => (
+														<div key={i} className="flex text-muted-foreground items-center text-sm">
+															<Check className="w-4 h-4 mr-2 text-green-500" />
+															{option}
+														</div>
+													))}
+
+													{event?.options?.length > 3 && (
+														<div className="flex text-primary hover:text-purple-600 cursor-pointer text-sm">
+															+{event?.options.length - 3} more features
+														</div>
+													)}
+												</div>
+												<div className="flex flex-col gap-2 mt-4">
+													<Link href={`/birthday/details/${event?._id}`}>
+														<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
+															Book Now
+														</Button>
+													</Link>
+													{/* <Link href={`/birthday/details/${event?.id}`}>
+												<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-900/20"	>
 													More Details
 												</Button>
 											</Link> */}
-											</div>
-										</CardContent>
-									</Card>
-								))}
+												</div>
+											</CardContent>
+										</Card>
+									))
+							}
 						</div>
 
 						<div>

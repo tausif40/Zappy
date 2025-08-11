@@ -72,7 +72,49 @@ export default function Footer() {
 
 			{/* Main Footer Content */}
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:px-12">
+					{/* Quick Links */}
+					<div>
+						<h4 className="font-semibold text-white mb-4">Quick Links</h4>
+						<ul className="space-y-3">
+							{quickLinks.map((link) => (
+								<li key={link.name}>
+									<Link href={link.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm" >
+										{link.name}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</div>
+
+					{/* Services */}
+					<div>
+						<h4 className="font-semibold text-white mb-4">Services</h4>
+						<ul className="space-y-3">
+							{services.map((service) => (
+								<li key={service.name}>
+									<Link href={service.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm">
+										{service.name}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</div>
+
+					{/* Support */}
+					<div>
+						<h4 className="font-semibold text-white mb-4">For Vendors</h4>
+						<ul className="space-y-3">
+							{vendors.map((vendor) => (
+								<li key={vendor.name}>
+									<Link href={vendor.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm"	>
+										{vendor.name}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</div>
+
 					{/* Brand Section */}
 					<div className="lg:col-span-2">
 						<Link href="/" className="flex items-center space-x-2 mb-4">
@@ -120,47 +162,6 @@ export default function Footer() {
 						</div>
 					</div>
 
-					{/* Quick Links */}
-					<div>
-						<h4 className="font-semibold text-white mb-4">Quick Links</h4>
-						<ul className="space-y-3">
-							{quickLinks.map((link) => (
-								<li key={link.name}>
-									<Link href={link.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm" >
-										{link.name}
-									</Link>
-								</li>
-							))}
-						</ul>
-					</div>
-
-					{/* Services */}
-					<div>
-						<h4 className="font-semibold text-white mb-4">Services</h4>
-						<ul className="space-y-3">
-							{services.map((service) => (
-								<li key={service.name}>
-									<Link href={service.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm">
-										{service.name}
-									</Link>
-								</li>
-							))}
-						</ul>
-					</div>
-
-					{/* Support */}
-					<div>
-						<h4 className="font-semibold text-white mb-4">For Vendors</h4>
-						<ul className="space-y-3">
-							{vendors.map((vendor) => (
-								<li key={vendor.name}>
-									<Link href={vendor.href} className="text-slate-300 hover:text-purple-600 transition-colors text-sm"	>
-										{vendor.name}
-									</Link>
-								</li>
-							))}
-						</ul>
-					</div>
 				</div>
 
 				<Separator className="my-8" />
@@ -177,10 +178,10 @@ export default function Footer() {
 					</div>
 
 					<div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-						<Link href="/privacy" className="hover:text-purple-600 transition-colors">
+						<Link href="/privacy-policy" className="hover:text-purple-600 transition-colors">
 							Privacy Policy
 						</Link>
-						<Link href="/terms" className="hover:text-purple-600 transition-colors">
+						<Link href="/terms-service" className="hover:text-purple-600 transition-colors">
 							Terms of Service
 						</Link>
 						{/* <Link href="/cookies" className="hover:text-purple-600 transition-colors">

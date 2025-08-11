@@ -3,11 +3,11 @@ import apiClient from "@/lib/apiClient";
 import { getQueryParams } from "@/lib/utils";
 
 
-export const getBirthdayEvent = createAsyncThunk("event/getBirthDayEvent", async (filter, thunkAPI) => {
+export const getBirthdayEvent = createAsyncThunk("event/getBirthDayEvent", async (birthdayFilter, thunkAPI) => {
 	try {
-		console.log(`/birthday-events?${getQueryParams(filter)}`);
+		console.log(`/birthday-events?${getQueryParams(birthdayFilter)}`);
 
-		const response = await apiClient.get(`/birthday-events?${getQueryParams(filter)}`);
+		const response = await apiClient.get(`/birthday-events?${getQueryParams(birthdayFilter)}`);
 		console.log(response);
 
 		return response.data;
@@ -37,14 +37,15 @@ const eventSlice = createSlice({
 	initialState,
 	reducers: {
 		setFilter: (state, action) => {
+			console.log('action:', action)
 			const { city, priceRange, ageGroup, subCategory, page, limit, total } = action.payload
-			state.city = city ?? ''
-			state.priceRange = priceRange ?? '';
-			state.ageGroup = ageGroup ?? '';
-			state.subCategory = subCategory ?? '';
-			state.page = page ?? '';
-			state.limit = limit ?? '';
-			state.total = total ?? '';
+			state.birthdayEventFilter.city = city ?? state.birthdayEventFilter.city
+			state.birthdayEventFilter.priceRange = priceRange ?? state.birthdayEventFilter.priceRange;
+			state.birthdayEventFilter.ageGroup = ageGroup ?? state.birthdayEventFilter.ageGroup;
+			state.birthdayEventFilter.subCategory = subCategory ?? state.birthdayEventFilter.subCategory;
+			state.birthdayEventFilter.page = page ?? state.birthdayEventFilter.page;
+			state.birthdayEventFilter.limit = limit ?? state.birthdayEventFilter.limit;
+			state.birthdayEventFilter.total = total ?? state.birthdayEventFilter.total;
 		}
 	},
 	extraReducers: (builder) => {

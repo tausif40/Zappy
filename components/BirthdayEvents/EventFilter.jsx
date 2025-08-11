@@ -1,16 +1,20 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { RotateCw } from "lucide-react"
 
-function EventFilter() {
+function EventFilter({ onSubmitFilters }) {
 	const [ selectedCategory, setSelectedCategory ] = useState("all")
 	const [ selectedCity, setSelectedCity ] = useState("all")
 	const [ priceRange, setPriceRange ] = useState("all")
+	const [ selectedDate, setSelectedDate ] = useState("")
 	const [ ageValue, setAgeValue ] = useState([ 1, 100 ]);
+	const [ isRotating, setIsRotating ] = useState(false)
 
 	const [ open, setOpen ] = useState(false)
 	const [ date, setDate ] = useState(undefined)
@@ -20,24 +24,73 @@ function EventFilter() {
 
 	// Convert value to % position
 	const getAgePercent = (val) => ((val - min) / (max - min)) * 100;
-	// console.log(getAgePercent(ageValue[ 1 ]));
 
-	const categories = [
-		{ value: "all", label: "All Categories" },
-		{ value: "birthday", label: "Birthday Parties" },
-		{ value: "themed", label: "Themed Events" },
-		{ value: "educational", label: "Educational" },
-		{ value: "outdoor", label: "Outdoor Adventures" },
-	]
+	// Check if any filters are active (not default)
+	const hasActiveFilters = selectedCity !== "all" || priceRange !== "all" || selectedDate !== "";
+
+	// Auto-apply filters when selections change
+	useEffect(() => {
+		if (onSubmitFilters) {
+			const filterData = {
+				city: selectedCity === "all" ? "" : selectedCity,
+				priceRange: priceRange === "all" ? "" : priceRange,
+				date: selectedDate || "",
+			};
+			onSubmitFilters(filterData);
+		}
+	}, [ selectedCity, priceRange, selectedDate, onSubmitFilters ]);
+
+	// Submit function to collect all filter data
+	const handleSubmitFilters = () => {
+		const filterData = {
+			city: selectedCity === "all" ? "" : selectedCity,
+			priceRange: priceRange === "all" ? "" : priceRange,
+			date: selectedDate || "",
+		};
+
+		console.log("Filter Data:", filterData);
+
+		if (onSubmitFilters) {
+			onSubmitFilters(filterData);
+		}
+	};
+
+	const handleResetFilters = () => {
+		// Add rotation animation
+		setIsRotating(true);
+
+		// Reset all filters to default
+		setSelectedCategory("all");
+		setSelectedCity("all");
+		setPriceRange("all");
+		setSelectedDate("");
+
+		// Stop rotation after animation completes
+		setTimeout(() => {
+			setIsRotating(false);
+		}, 500);
+
+		// Pass empty filters to parent
+		if (onSubmitFilters) {
+			onSubmitFilters({
+				city: "",
+				priceRange: "",
+				date: "",
+			});
+		}
+	};
 
 	const cities = [
-		{ value: "all", label: "All Cities" },
-		{ value: "mumbai", label: "Mumbai" },
-		{ value: "delhi", label: "Delhi" },
-		{ value: "bangalore", label: "Bangalore" },
-		{ value: "pune", label: "Pune" },
-		{ value: "hyderabad", label: "Hyderabad" },
-		{ value: "chennai", label: "Chennai" },
+		{ _id: "all", label: "All Cities" },
+		{ _id: 'delhi', label: "Delhi" },
+		{ _id: 'indore', label: "Indore" },
+		{ _id: 'bangalore', label: "Bangalore" },
+		{ _id: 'hyderabad', label: "Hyderabad" },
+		{ _id: 'chennai', label: "Chennai" },
+		{ _id: 'kolkata', label: "Kolkata" },
+		{ _id: 'pune', label: "Pune" },
+		{ _id: 'ahmedabad', label: "Ahmedabad" },
+		{ _id: 'lucknow', label: "Lucknow" }
 	]
 
 	const priceRanges = [
@@ -51,16 +104,36 @@ function EventFilter() {
 	return (
 		<>
 			<Card className="p-4">
-				<h3 className="text-lg font-semibold mb-4">Filters</h3>
+				<div className="flex justify-between gap-3">
+					<h3 className="text-lg font-semibold mb-4">Filters</h3>
+					<Button
+						size='sm'
+						variant="ghost"
+						onClick={handleResetFilters}
+						className="relative flex"
+					>
+						<RotateCw
+							className={`transition-transform duration-500 ${isRotating ? 'rotate-180' : ''}`}
+						/>
+						{/* Red dot indicator when filters are active */}
+						{hasActiveFilters && (
+							<div className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+						)}
+					</Button>
+				</div>
 
 				<div className="space-y-6">
 
 					<div>
 						<label className="block text-sm font-medium mb-2">Select Date</label>
-						<Input type='date' />
+						<Input
+							type='date'
+							value={selectedDate}
+							onChange={(e) => setSelectedDate(e.target.value)}
+						/>
 					</div>
 
-					<div>
+					{/* <div>
 						<label className="block text-sm font-medium mb-2">Category</label>
 						<Select value={selectedCategory} onValueChange={setSelectedCategory}>
 							<SelectTrigger>
@@ -74,7 +147,7 @@ function EventFilter() {
 								))}
 							</SelectContent>
 						</Select>
-					</div>
+					</div> */}
 
 					<div>
 						<label className="block text-sm font-medium mb-2">City</label>
@@ -84,7 +157,7 @@ function EventFilter() {
 							</SelectTrigger>
 							<SelectContent>
 								{cities.map((city) => (
-									<SelectItem key={city.value} value={city.value}>
+									<SelectItem key={city._id} value={city._id}>
 										{city.label}
 									</SelectItem>
 								))}
@@ -142,6 +215,16 @@ function EventFilter() {
 							</div>
 						</div>
 					</div> */}
+
+					{/* Action Buttons */}
+					<div className="w-full">
+						<Button
+							onClick={handleSubmitFilters}
+							className="bg-purple-600 hover:bg-purple-600 w-full"
+						>
+							Apply Filters
+						</Button>
+					</div>
 				</div>
 			</Card>
 		</>

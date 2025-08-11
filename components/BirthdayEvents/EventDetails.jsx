@@ -62,7 +62,7 @@ export default function EventDetails() {
 		setEvent(birthdayEventDetails?.data?.event || [])
 	}, [ birthdayEventDetails ]);
 
-	console.log("birthdayEventDetails-", birthdayEventDetails);
+	// console.log("birthdayEventDetails-", birthdayEventDetails);
 
 	useEffect(() => {
 		dispatch(getBirthdayEventDetails(eventId))
@@ -98,7 +98,6 @@ export default function EventDetails() {
 			color: "text-yellow-600"
 		}
 	};
-
 
 
 	return (

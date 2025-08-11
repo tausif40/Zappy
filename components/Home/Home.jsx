@@ -21,6 +21,7 @@ function Home() {
 			color: "bg-pink-100 text-pink-600",
 			bgColor: "#FFDEE2",
 			count: "150+ themes",
+			link: '/birthday'
 		},
 		{
 			title: "Experiential Events",
@@ -29,6 +30,7 @@ function Home() {
 			color: "bg-purple-100 text-purple-600",
 			bgColor: "#E5DEFF",
 			count: "200+ options",
+			link: '/experiential-event'
 		},
 		{
 			title: "Corporate Events",
@@ -38,6 +40,7 @@ function Home() {
 			bgColor: "#FEF7CD",
 			count: "300+ performers",
 			comingSoon: true,
+			link: ''
 		},
 		{
 			title: "Weddings",
@@ -47,6 +50,7 @@ function Home() {
 			bgColor: "#F2FCE2",
 			count: "100+ photographers",
 			comingSoon: true,
+			link: ''
 		},
 	]
 
@@ -142,12 +146,14 @@ function Home() {
 										<Badge variant="secondary" className="min-w-max">
 											{category.count}
 										</Badge>
-										<Button
-											variant="ghost"
-											className="group-hover:bg-purple-50 dark:group-hover:bg-purple-900/20 transition-colors"
-										>
-											Explore <ChevronRight className="ml-1 h-4 w-4" />
-										</Button>
+										<Link href={category.link}>
+											<Button
+												variant="ghost"
+												className="group-hover:bg-purple-50 dark:group-hover:bg-purple-900/20 transition-colors"
+											>
+												Explore <ChevronRight className="ml-1 h-4 w-4" />
+											</Button>
+										</Link>
 									</div>
 								</CardContent>
 							</Card>
@@ -242,91 +248,6 @@ function Home() {
 					</div>
 				</div>
 			</section>
-
-			{/* Featured Events */}
-			{/* <section className="py-14 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/10 dark:to-pink-900/10">
-				<div className="container mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="text-center mb-16 animate-slide-up">
-						<h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Featured Events</h2>
-						<p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-							Create unforgettable memories for your child with our carefully experience event packages
-						</p>
-					</div>
-					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-						{featuredEvents.map((event, index) => (
-							<Card
-								key={event?.id}
-								className="group hover:shadow-xl transition-all duration-300 overflow-hidden bg-white dark:bg-card hover-lift animate-slide-up"
-								style={{ animationDelay: `${index * 0.1}s` }}
-							>
-								<div className="relative">
-									<Image
-										src={event?.image || "/placeholder.svg"}
-										alt={event?.title}
-										width={300}
-										height={200}
-										className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-									/>
-									<Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
-										{event?.badge}
-									</Badge>
-									<Badge className="absolute top-3 right-3 bg-green-500 text-white border-0">{event?.discount}</Badge>
-									<Button size="icon" variant="ghost" className="absolute bottom-3 right-3 bg-white/80 hover:bg-white">
-										<Heart className="h-4 w-4" />
-									</Button>
-								</div>
-								<CardContent className="p-6">
-									<div className="flex items-center justify-between mb-2">
-										<Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badge>
-										<div className="text-right flex gap-2 items-baseline">
-											<div className="text-sm text-muted-foreground line-through">{event?.originalPrice}</div>
-											<span className="text-xl font-bold text-purple-600">{event?.price}</span>
-										</div>
-									</div>
-									<h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">{event?.title}</h3>
-									<p className="text-muted-foreground text-sm mb-3">{event?.description}</p>
-
-									<div className="space-y-2">
-										{event?.options?.slice(0, 3).map((option, i) => (
-											<div key={i} className="flex text-muted-foreground items-center">
-												<Check className="w-4 h-4 mr-2 text-green-500" />
-												{option}
-											</div>
-										))}
-
-										{event?.options?.length > 3 && (
-											<div className="flex text-primary hover:text-purple-600 cursor-pointer">
-												+{event.options.length - 3} more features
-											</div>
-										)}
-									</div>
-									<div className="flex flex-col gap-2 mt-4">
-										<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
-											Book Now
-										</Button>
-										<Link href={`/event-details/${event.id}`}>
-											<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/20"	>
-												More Details
-											</Button>
-										</Link>
-									</div>
-								</CardContent>
-							</Card>
-						))}
-					</div>
-					<div className="text-center mt-12">
-						<Link href="/kids-events">
-							<Button
-								size="lg"
-								variant="outline"
-								className="border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
-							>
-								View All Events
-							</Button>
-						</Link>
-					</div>
-				</div>
-			</section> */}
 
 			{/* Why Choose us */}
 			<section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
