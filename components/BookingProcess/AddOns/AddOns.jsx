@@ -173,7 +173,7 @@ export default function AddOns() {
 								<div className="col-span-full text-center py-8 text-muted-foreground">
 									<p>Loading addons...</p>
 								</div>
-							)}	
+							)}
 
 							{/* Error State */}
 							{hasError && (

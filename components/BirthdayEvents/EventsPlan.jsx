@@ -68,6 +68,7 @@ function EventsPlan({ event, discount, guist }) {
 		}
 
 		console.log("selectedTier-", selectedTier);
+
 		setIsAddingToCart(true);
 
 		const cartData = {
@@ -80,7 +81,6 @@ function EventsPlan({ event, discount, guist }) {
 		try {
 			const res = await dispatch(addToCart(cartData)).unwrap();
 			console.log(res);
-
 			if (res.status === 201) {
 				route.push(`/birthday/booking/${eventId}/add-ons`);
 			}
