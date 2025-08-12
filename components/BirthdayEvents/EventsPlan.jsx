@@ -3,40 +3,50 @@ import { Clock, CalendarDays, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { getDiscountedPrice } from '@/lib/utils'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart } from '@/store/features/Purchase-slice'
+import { useToast } from "@/hooks/use-toast"
+import { LoaderCircle } from "lucide-react"
+
+const planSubdata = [
+	{
+		name: "silver",
+		subtitle: "Basic",
+		text: "text-ring",
+		color: "border-ring bg-highlights",
+		buttonColor: "bg-primary",
+	},
+	{
+		name: "gold",
+		subtitle: "Enhanced",
+		text: "text-purple-600",
+		color: "border-purple-400 bg-purple-50 dark:bg-[#160226]",
+		buttonColor: "bg-purple-500 hover:bg-purple-600",
+	},
+	{
+		name: "platinum",
+		subtitle: "Premium",
+		text: "text-yellow-600",
+		color: "border-yellow-400 bg-yellow-50 dark:bg-[#2e1400]",
+		buttonColor: "bg-yellow-500 hover:bg-yellow-600",
+	},
+];
 
 function EventsPlan({ event, discount, guist }) {
 	const params = useParams();
 	const eventId = params.id;
+	const route = useRouter();
+	const dispatch = useDispatch();
+	const { toast } = useToast();
 
-	const planSubdata = [
-		{
-			name: "silver",
-			subtitle: "Basic",
-			text: "text-ring",
-			color: "border-ring bg-highlights",
-			buttonColor: "bg-primary",
-		},
-		{
-			name: "gold",
-			subtitle: "Enhanced",
-			text: "text-purple-600",
-			color: "border-purple-400 bg-purple-50 dark:bg-[#160226]",
-			buttonColor: "bg-purple-500 hover:bg-purple-600",
-		},
-		{
-			name: "platinum",
-			subtitle: "Premium",
-			text: "text-yellow-600",
-			color: "border-yellow-400 bg-yellow-50 dark:bg-[#2e1400]",
-			buttonColor: "bg-yellow-500 hover:bg-yellow-600",
-		},
-	];
+	const cartItem = useSelector((state) => state.purchaseSlice.cartItem)
 
 	const [ selected, setSelected ] = useState("silver");
 	const [ plans, setPlans ] = useState([]);
+	const [ isAddingToCart, setIsAddingToCart ] = useState(false);
 
 	useEffect(() => {
 		setPlans(event);
@@ -45,14 +55,44 @@ function EventsPlan({ event, discount, guist }) {
 	const selectedTier = plans?.find((tier) => tier?.name === selected);
 	const selectedPlanData = planSubdata?.find((plan) => plan?.name === selected);
 
-	// console.log("event plans-", plans);
-	// console.log("selected plans-", selected);
-	// console.log("selectedTier-", selectedTier);
-
 	useEffect(() => {
 		guist(selectedTier?.guest)
 	}, [ selectedTier ])
 
+	console.log("cartItem-", cartItem);
+
+	const handelPurchase = async () => {
+		if (!selectedTier) {
+			toast({ variant: "destructive", title: "Error", description: "Please select a plan first." });
+			return;
+		}
+
+		console.log("selectedTier-", selectedTier);
+		setIsAddingToCart(true);
+
+		const cartData = {
+			eventId: eventId,
+			eventTitle: "Princess Theme Party",
+			selectedTierId: selectedTier?._id
+		}
+		console.log(cartData);
+
+		try {
+			const res = await dispatch(addToCart(cartData)).unwrap();
+			console.log(res);
+
+			if (res.status === 201) {
+				route.push(`/birthday/booking/${eventId}/add-ons`);
+			}
+		} catch (error) {
+			console.log("Error adding to cart:", error);
+			if (error?.status !== 401) {
+				toast({ variant: "destructive", title: "Please Login", description: "If you are already account, Signup" });
+			}
+		} finally {
+			setIsAddingToCart(false);
+		}
+	}
 
 	return (
 		<>
@@ -91,30 +131,28 @@ function EventsPlan({ event, discount, guist }) {
 							<div className='mt-2'>
 								<span className="text-3xl font-bold text-foreground">₹ {getDiscountedPrice(selectedTier.price, discount)} &nbsp;</span>
 								<span className="text-lg text-muted-foreground line-through">{selectedTier.price}</span>&nbsp;&nbsp;
-								{/* <Badge className="bg-green-500 text-white border-0">{discount}% OFF</Badge> */}
+								<Badge className="bg-green-500 text-white border-0">{discount}% OFF</Badge>
 							</div>
-
-							{/* <div className="flex space-x-6 items-center text-sm text-muted-foreground">
-								<div className="flex items-center space-x-2">
-									<Clock size={16} />
-									<span>{selectedTier.duration}</span>
-								</div>
-								<div className="flex items-center space-x-2">
-									<CalendarDays size={16} />
-									<span>{selectedTier.ageRange}</span>
-								</div>
-							</div> */}
 
 							<div className="flex items-center mt-4 text-sm justify-between">
 								<span className="text-muted-foreground">Max Guests:</span>
 								<span className="font-medium">{selectedTier?.guest} person</span>
 							</div>
 
-							<Link href={`/birthday/booking/${eventId}/add-ons`}>
-								<Button className={`w-full !mt-6 text-white px-6 py-2 shadow ${selectedPlanData?.buttonColor}`}>
-									Book Now
-								</Button>
-							</Link>
+							<Button
+								className={`w-full !mt-6 text-white px-6 py-2 shadow ${selectedPlanData?.buttonColor}`}
+								onClick={handelPurchase}
+								disabled={isAddingToCart}
+							>
+								{isAddingToCart ? (
+									<>
+										Booking &nbsp;
+										<LoaderCircle className="animate-spin h-4 w-4 mr-2" />
+									</>
+								) : (
+									'Book Now'
+								)}
+							</Button>
 
 							{/* <div className="space-y-3 text-sm px-2 pt-6">
 								<div className="flex items-center justify-between">

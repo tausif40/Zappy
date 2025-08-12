@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Gift, LoaderCircle, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -15,15 +15,47 @@ import { loginSchema } from "@/schema/userSchema"
 import { useDispatch } from "react-redux"
 import { login } from "@/store/features/auth-slice"
 import { useSession, signOut, signIn } from 'next-auth/react';
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Cookies from "js-cookie";
+import { getAndClearReturnUrl } from "@/lib/utils";
 
 export default function Login() {
 	const { toast } = useToast()
 	const route = useRouter();
+	const searchParams = useSearchParams();
 	const dispatch = useDispatch();
 	const [ showPassword, setShowPassword ] = useState(false)
 	const [ isLoading, setIsLoading ] = useState(false)
+
+	// Handle Google sign-in success and check for return URL
+	useEffect(() => {
+		const handleGoogleSignIn = () => {
+			// Check if there's a return URL stored
+			const returnTo = getAndClearReturnUrl();
+			if (returnTo) {
+				console.log('Google sign-in successful, redirecting to return URL:', returnTo);
+				route.push(returnTo);
+			}
+		};
+
+		// Listen for storage changes (when Google sign-in completes)
+		const handleStorageChange = (e) => {
+			if (e.key === 'token' && e.newValue) {
+				handleGoogleSignIn();
+			}
+		};
+
+		window.addEventListener('storage', handleStorageChange);
+
+		// Also check on component mount
+		if (searchParams.get('callbackUrl')) {
+			handleGoogleSignIn();
+		}
+
+		return () => {
+			window.removeEventListener('storage', handleStorageChange);
+		};
+	}, [ route, searchParams ]);
 
 	// const { data: session, status } = useSession();
 
@@ -44,9 +76,19 @@ export default function Login() {
 			const res = await dispatch(login(data)).unwrap();
 			console.log(res);
 			if (res.status === 200) {
-				route.push("/dashboard");
 				Cookies.set("token", res.data.accessToken);
-				toast({ variant: "success", title: "Login Successful!", description: "Welcome back to Zappy."});
+
+				// Check if there's a return URL stored
+				const returnTo = getAndClearReturnUrl();
+				if (returnTo) {
+					// console.log('Redirecting to return URL:', returnTo);
+					route.push(returnTo);
+					toast({ variant: "success", title: "Login Successful!", description: "Welcome back to Zappy." });
+				} else {
+					// Default redirect to dashboard
+					route.push("/dashboard");
+					toast({ variant: "success", title: "Login Successful!", description: "Welcome back to Zappy." });
+				}
 			} else {
 				throw new Error(res.data.message || "Login failed. Please try again.");
 			}
@@ -75,7 +117,7 @@ export default function Login() {
 					<CardContent className="space-y-6">
 						<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 							<div className="space-y-1">
-								<label className="text-sm font-medium">Phone No</label>
+								<label className="text-sm font-medium">Mobile No</label>
 								<div className="relative">
 									<Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 									<Input

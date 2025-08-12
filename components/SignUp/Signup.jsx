@@ -151,7 +151,7 @@ export default function Signup() {
 						</div>
 
 						<div className="space-y-1">
-							<label className="text-sm font-medium">Phone <span className="text-red-500">*</span></label>
+							<label className="text-sm font-medium">Mobile No <span className="text-red-500">*</span></label>
 							<div className="relative">
 								<Phone className="absolute left-3 top-5 -translate-y-1/2 text-muted-foreground h-4 w-4" />
 								<Input
@@ -192,7 +192,7 @@ export default function Signup() {
 									type={showConfirmPassword ? "text" : "password"}
 									placeholder="Confirm your password"
 									className="pl-10 pr-10 border-2 focus:border-purple-500"
-								/> 
+								/>
 								<button
 									type="button"
 									onClick={() => setShowConfirmPassword(!showConfirmPassword)}

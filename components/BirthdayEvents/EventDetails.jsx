@@ -13,8 +13,8 @@ import Reviews from "../Reviews/Reviews"
 import EventsPlan from "./EventsPlan"
 import { getBirthdayEventDetails } from "@/store/features/event-slice"
 import { useDispatch, useSelector } from "react-redux"
-import { getDiscountedPrice } from '@/lib/utils'
 import Gallery from "./Gallery"
+import { getDiscountedPrice } from "@/lib/utils"
 
 const ageGroups = [
 	{
@@ -62,12 +62,11 @@ export default function EventDetails() {
 		setEvent(birthdayEventDetails?.data?.event || [])
 	}, [ birthdayEventDetails ]);
 
-	// console.log("birthdayEventDetails-", birthdayEventDetails);
-
 	useEffect(() => {
 		dispatch(getBirthdayEventDetails(eventId))
 	}, [ eventId, dispatch ]);
 
+	// console.log("event details - ", event);
 
 	const getAgeGroupText = (age) => {
 		const group = ageGroups.find((item) => item.id === age);
@@ -144,41 +143,14 @@ export default function EventDetails() {
 
 						{/* Event Details */}
 						<Card className="shadow overflow-hidden">
-							<CardContent className="p-0 ">
-
-
+							<CardContent className="relative p-0 ">
+								{/* <Badge className="absolute z-10 top-4 right-4 bg-green-500 text-white border-0">{event?.discount}% OFF</Badge> */}
+								{event?.tags &&
+									<Badge className="absolute top-6 left-6 z-10 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 capitalize">
+										{event?.tags}
+									</Badge>
+								}
 								<Gallery images={birthdayEventDetails?.data?.event?.banner} />
-								{/* <div>
-									<div className="relative">
-										<Image
-											src={event?.banner ? event?.banner[ 0 ] : "/placeholder.svg"}
-											alt={event?.title}
-											width={600}
-											height={400}
-											className="w-full h-96 object-cover"
-										/>
-										{event?.tags &&
-											<Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
-												{event?.tags}
-											</Badge>
-										}
-										{event?.discount > 0 && <Badge className="absolute top-4 right-4 bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
-									</div>
-
-									<div className="grid grid-cols-5 gap-4 p-4">
-										{[ ...Array(3) ].map((_, i) => (
-											<Image
-												key={i}
-												src="/placeholder.svg"
-												alt="img"
-												width={150}
-												height={100}
-												className="w-full h-20 object-cover"
-											/>
-										))}
-									</div>
-								</div> */}
-
 								<div className="px-8 py-6">
 									<div className="flex items-start justify-between mb-6">
 										<div>
@@ -236,11 +208,6 @@ export default function EventDetails() {
 													</CardHeader>
 													<CardContent className="">
 														<Badge variant="secondary">{tier?.guest} Guests</Badge>
-														{/* <p className="text-muted-foreground text-sm">{tier?.description}</p> */}
-														{/* <div className="flex gap-2">
-															<p className="text-lg font-bold text-ring">₹ {getDiscountedPrice(tier?.price, 20)}</p>
-															<p className="text-lg text-muted-foreground line-through">{tier?.price.toLocaleString()}</p>
-														</div> */}
 														<ul className="space-y-2 mt-4">
 															{tier?.features?.map((feature, idx) => (
 																<li key={idx} className="flex items-center text-sm">
@@ -254,9 +221,6 @@ export default function EventDetails() {
 											)
 										})}
 									</div>
-
-
-
 								</div>
 							</CardContent>
 						</Card>

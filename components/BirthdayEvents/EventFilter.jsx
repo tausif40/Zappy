@@ -7,23 +7,57 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { RotateCw } from "lucide-react"
+import { Slider } from "../ui/slider"
 
 function EventFilter({ onSubmitFilters }) {
 	const [ selectedCategory, setSelectedCategory ] = useState("all")
 	const [ selectedCity, setSelectedCity ] = useState("all")
 	const [ priceRange, setPriceRange ] = useState("all")
 	const [ selectedDate, setSelectedDate ] = useState("")
-	const [ ageValue, setAgeValue ] = useState([ 1, 100 ]);
+	// Discrete price steps: 5K, 10K, 15K, 20K, 30K, 50K, 75K, 1L, 1.5L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L+
+	const PRICE_STEPS = [
+		1,
+		5_000,
+		10_000,
+		15_000,
+		20_000,
+		30_000,
+		50_000,
+		75_000,
+		100_000,
+		150_000,
+		200_000,
+		300_000,
+		400_000,
+		500_000,
+		600_000,
+		700_000,
+		800_000,
+		900_000,
+		1_000_000 // 10L (we display as 10L+)
+	];
+	const MIN_INDEX = 1;
+	const MAX_INDEX = PRICE_STEPS.length - 1;
+	const [ priceIndexRange, setPriceIndexRange ] = useState([ MIN_INDEX, MAX_INDEX ]);
 	const [ isRotating, setIsRotating ] = useState(false)
 
 	const [ open, setOpen ] = useState(false)
 	const [ date, setDate ] = useState(undefined)
 
-	const min = 0;
-	const max = 100;
+	// Slider operates on index steps mapped to PRICE_STEPS
+	const min = MIN_INDEX;
+	const max = MAX_INDEX;
 
-	// Convert value to % position
-	const getAgePercent = (val) => ((val - min) / (max - min)) * 100;
+	const formatPriceLabelFromIndex = (index) => {
+		if (index === MAX_INDEX) return "10L+";
+		const value = PRICE_STEPS[ index ];
+		if (value >= 100000) {
+			const lakhs = value / 100000;
+			// Show integer or decimal (e.g., 1L, 1.5L)
+			return Number.isInteger(lakhs) ? `${lakhs}L` : `${lakhs}L`;
+		}
+		return `${Math.round(value / 1000)}K`;
+	};
 
 	// Check if any filters are active (not default)
 	const hasActiveFilters = selectedCity !== "all" || priceRange !== "all" || selectedDate !== "";
@@ -42,10 +76,17 @@ function EventFilter({ onSubmitFilters }) {
 
 	// Submit function to collect all filter data
 	const handleSubmitFilters = () => {
+		const priceMin = PRICE_STEPS[ priceIndexRange[ 0 ] ];
+		const priceMax = PRICE_STEPS[ priceIndexRange[ 1 ] ];
+
 		const filterData = {
 			city: selectedCity === "all" ? "" : selectedCity,
-			priceRange: priceRange === "all" ? "" : priceRange,
 			date: selectedDate || "",
+			// Backward compatible string if needed
+			priceRange: priceRange === "all" ? "" : priceRange,
+			// Numeric price range from slider, as requested
+			// priceMin,
+			// priceMax,
 		};
 
 		console.log("Filter Data:", filterData);
@@ -64,6 +105,7 @@ function EventFilter({ onSubmitFilters }) {
 		setSelectedCity("all");
 		setPriceRange("all");
 		setSelectedDate("");
+		setPriceIndexRange([ MIN_INDEX, MAX_INDEX ]);
 
 		// Stop rotation after animation completes
 		setTimeout(() => {
@@ -95,10 +137,10 @@ function EventFilter({ onSubmitFilters }) {
 
 	const priceRanges = [
 		{ value: "all", label: "All Prices" },
-		{ value: "under-5000", label: "Under ₹5,000" },
-		{ value: "5000-10000", label: "₹5,000 - ₹10,000" },
-		{ value: "10000-15000", label: "₹10,000 - ₹15,000" },
-		{ value: "above-15000", label: "Above ₹15,000" },
+		{ value: "under-5000", label: "Under 5,000" },
+		{ value: "5000-10000", label: "5,000 - 10,000" },
+		{ value: "10000-15000", label: "10,000 - 15,000" },
+		{ value: "above-15000", label: "Above 15,000" },
 	]
 
 	return (
@@ -166,7 +208,7 @@ function EventFilter({ onSubmitFilters }) {
 					</div>
 
 					<div>
-						<label className="block text-sm font-medium mb-2">Price Range</label>
+						<label className="block text-sm font-medium mb-2">Price Range slider</label>
 						<Select value={priceRange} onValueChange={setPriceRange}>
 							<SelectTrigger>
 								<SelectValue />
@@ -182,35 +224,21 @@ function EventFilter({ onSubmitFilters }) {
 					</div>
 
 					{/* <div>
-						<label className="block text-sm font-medium mb-3">Age Group</label>
+						<label className="block text-sm font-medium mb-3">Price Range</label>
 						<div className="space-y-2">
-							<Slider defaultValue={ageValue}
-								value={ageValue}
+							<Slider
+								value={priceIndexRange}
 								min={min}
 								max={max}
 								step={1}
-								onValueChange={setAgeValue} />
-							<div className="relative h-6">
-								<span
-									className="absolute text-sm text-muted-foreground top-1"
-									// style={{ left: `calc(${getAgePercent(ageValue[ 0 ])}% - 10px)` }}
-									style={{
-										left: getAgePercent(ageValue[ 0 ]) >= 80
-											? `calc(${getAgePercent(ageValue[ 0 ])}% - 22px)`
-											: `calc(${getAgePercent(ageValue[ 0 ])}% - 10px)`
-									}}
-								>
-									{ageValue[ 0 ]}
+								onValueChange={setPriceIndexRange}
+							/>
+							<div className="flex justify-between h-6">
+								<span className="text-sm text-muted-foreground">
+									{formatPriceLabelFromIndex(priceIndexRange[ 0 ])}
 								</span>
-								<span
-									className="absolute text-sm text-muted-foreground top-1"
-									style={{
-										left: getAgePercent(ageValue[ 1 ]) <= 20
-											? `calc(${getAgePercent(ageValue[ 1 ])}% + 10px)`
-											: `calc(${getAgePercent(ageValue[ 1 ])}% - 10px)`
-									}}
-								>
-									{ageValue[ 1 ]}
+								<span className="text-sm text-muted-foreground">
+									{formatPriceLabelFromIndex(priceIndexRange[ 1 ])}
 								</span>
 							</div>
 						</div>

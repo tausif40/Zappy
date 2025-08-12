@@ -40,12 +40,12 @@ const Gallery = ({ images }) => {
   // Check if images array exists and has content
   if (!images || images.length === 0) {
     return (
-      <div style={{ padding: 20 }} className='bg-slate-50'>
+      <div style={{ padding: 16 }} className='bg-slate-50'>
         <div style={{
           width: '100%',
           height: 380,
           background: '#f3f3f3',
-          borderRadius: 14,
+          borderRadius: 8,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -74,7 +74,7 @@ const Gallery = ({ images }) => {
   };
 
   return (
-    <div style={{ padding: 20 }} className='bg-slate-50'>
+    <div style={{ padding: 16 }} className='bg-slate-50'>
       {/* Large banner/main image */}
       <PhotoProvider
         key={`${galleryId}-${images?.length}-${JSON.stringify(images)}`} // Unique key that changes with images
@@ -94,7 +94,7 @@ const Gallery = ({ images }) => {
                 width: '100%',
                 height: 380,
                 objectFit: 'cover',
-                borderRadius: 14,
+                borderRadius: 10,
                 boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
                 cursor: 'pointer'
               }}
