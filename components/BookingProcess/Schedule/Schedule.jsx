@@ -24,6 +24,7 @@ export default function Schedule() {
 	const eventId = params.id
 	const selectedTheme = searchParams.get("theme")
 	const { toast } = useToast()
+	const eventTitle = localStorage.getItem("eventTitle");
 
 	const [ selectedDate, setSelectedDate ] = useState("")
 	const [ selectedTime, setSelectedTime ] = useState("")
@@ -35,8 +36,8 @@ export default function Schedule() {
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
-		{ name: 'Princess Theme Birthday Party', href: '/' },
-		{ name: 'Choose Theme', href: '/birthday/booking/1/themes' },
+		{ name: eventTitle, href: `/birthday/details/${eventId}` },
+		{ name: 'Add-Ons', href: '/birthday/booking/1/add-ons' },
 		{ name: 'Date & Address', href: '' },
 	];
 

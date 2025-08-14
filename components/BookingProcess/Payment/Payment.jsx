@@ -32,7 +32,7 @@ export default function Payment() {
 	const route = useRouter();
 	const eventId = params.id
 	const { toast } = useToast()
-
+	const eventTitle = localStorage.getItem("eventTitle");
 	const [ paymentMethod, setPaymentMethod ] = useState("")
 	const [ agreeToTerms, setAgreeToTerms ] = useState(false)
 	const [ processing, setProcessing ] = useState(false)
@@ -157,7 +157,7 @@ export default function Payment() {
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
-		{ name: 'Princess Theme Birthday Party', href: '/' },
+		{ name: eventTitle, href: `/birthday/details/${eventId}` },
 		{ name: 'Choose Theme', href: '/birthday/booking/1/themes' },
 		{ name: 'Date & Address', href: '/birthday/booking/1/schedule' },
 		{ name: 'Payment', href: '' },

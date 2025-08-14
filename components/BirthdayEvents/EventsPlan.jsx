@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Clock, CalendarDays, CheckCircle } from "lucide-react"
+import { CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useParams, useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { getDiscountedPrice } from '@/lib/utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { addToCart } from '@/store/features/Purchase-slice'
+import { addToCart, getToCart } from '@/store/features/Purchase-slice'
 import { useToast } from "@/hooks/use-toast"
 import { LoaderCircle } from "lucide-react"
 
@@ -59,7 +58,7 @@ function EventsPlan({ event, discount, guist }) {
 		guist(selectedTier?.guest)
 	}, [ selectedTier ])
 
-	console.log("cartItem-", cartItem);
+	// console.log("event-", event);
 
 	const handelPurchase = async () => {
 		if (!selectedTier) {
@@ -73,7 +72,7 @@ function EventsPlan({ event, discount, guist }) {
 
 		const cartData = {
 			eventId: eventId,
-			eventTitle: "Princess Theme Party",
+			eventTitle: selectedTier?.name,
 			selectedTierId: selectedTier?._id
 		}
 		console.log(cartData);
@@ -82,11 +81,13 @@ function EventsPlan({ event, discount, guist }) {
 			const res = await dispatch(addToCart(cartData)).unwrap();
 			console.log(res);
 			if (res.status === 201) {
-				route.push(`/birthday/booking/${eventId}/add-ons`);
+				dispatch(getToCart(res?.data?.id))
+				const ids = encodeURIComponent(btoa(`${eventId}:${res?.data?.id}`));
+				route.push(`/birthday/booking/${ids}/add-ons`);
 			}
 		} catch (error) {
 			console.log("Error adding to cart:", error);
-			if (error?.status !== 401) {
+			if (error?.status === 401) {
 				toast({ variant: "destructive", title: "Please Login", description: "If you are already account, Signup" });
 			}
 		} finally {

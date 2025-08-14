@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, ArrowRight, CheckCircle, ChevronLast, ChevronRight, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -18,17 +18,21 @@ import { getAddons, getCategory } from "@/store/features/addOns-slice"
 
 export default function AddOns() {
 	const params = useParams()
-	const dispatch = useDispatch();
 	const route = useRouter()
-	const eventId = params.id
+	const dispatch = useDispatch();
 	const { toast } = useToast()
 	const [ selectedAddOnIds, setSelectedAddOnIds ] = useState([])
 	const [ selectedCategory, setSelectedCategory ] = useState(null)
 	const [ isDetailsOpen, setIsDetailsOpen ] = useState(false)
 	const [ selectedAddonDetails, setSelectedAddonDetails ] = useState(null)
 
-	const basePrice = 8999
+	const decodedURL = atob(decodeURIComponent(params.ids));
+	let [ eventId, bookingId ] = decodedURL.split(":");
 
+	console.log("Event ID:", eventId);
+	console.log("Booking ID:", bookingId);
+
+	const basePrice = 8999
 	useEffect(() => {
 		dispatch(getCategory())
 		dispatch(getAddons())
@@ -36,13 +40,14 @@ export default function AddOns() {
 
 	const category = useSelector((state) => state.addOnsSlice?.category);
 	const addonsList = useSelector((state) => state.addOnsSlice?.addons);
+	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
 
 	// Add loading states and safety checks
 	const isLoading = !category?.data || !addonsList?.data?.results;
 	const hasError = category?.error || addonsList?.error;
 
-	console.log("category-", category?.data)
-	console.log("addonsList-", addonsList?.data?.results)
+	console.log("bookingFlow-", bookingFlow)
+	// console.log("addonsList-", addonsList?.data?.results)	
 
 	const handleAddOnToggle = (id) => {
 		setSelectedAddOnIds((prev) =>
@@ -69,8 +74,7 @@ export default function AddOns() {
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
-		{ name: 'Princess Theme Birthday Party', href: '/' },
-		{ name: 'Choose Theme', href: '/' },
+		{ name: bookingFlow?.data?.event?.title, href: `/birthday/details/${eventId}` },
 		{ name: 'Add-Ons', href: '' },
 	];
 
@@ -263,7 +267,7 @@ export default function AddOns() {
 								<h4 className="font-semibold">Cart Summary</h4>
 								<div className="flex justify-between text-sm">
 									<span>Base Package</span>
-									<span>₹ {basePrice.toLocaleString()}</span>
+									<span>₹ {bookingFlow?.price?.toLocaleString()}</span>
 								</div>
 								{selectedAddOns?.map((addon) => (
 									<div key={addon?._id} className="flex justify-between text-sm ">

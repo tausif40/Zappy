@@ -15,6 +15,7 @@ import { getBirthdayEventDetails } from "@/store/features/event-slice"
 import { useDispatch, useSelector } from "react-redux"
 import Gallery from "./Gallery"
 import { getDiscountedPrice } from "@/lib/utils"
+import { Input } from "../ui/input"
 
 const ageGroups = [
 	{
@@ -40,12 +41,6 @@ const ageGroups = [
 		text: 'Milestone',
 		icon: Crown,
 	},
-];
-
-const breadcrumb = [
-	{ name: 'Home', href: '/' },
-	{ name: 'Birthday', href: '/birthday' },
-	{ name: 'Princess Theme Birthday Party', href: '' },
 ];
 
 export default function EventDetails() {
@@ -97,6 +92,14 @@ export default function EventDetails() {
 			color: "text-yellow-600"
 		}
 	};
+
+
+	const breadcrumb = [
+		{ name: 'Home', href: '/' },
+		{ name: 'Birthday', href: '/birthday' },
+		{ name: event?.title, href: `/birthday/details/${eventId}` },
+	];
+
 
 
 	return (
@@ -233,6 +236,7 @@ export default function EventDetails() {
 					{/* Sidebar */}
 					<div className="space-y-6 lg:col-span-2  sticky top-24 ">
 						<EventsPlan event={event?.tiers} discount={event?.discount} guist={setGuist} />
+
 
 						{/* Safety Features */}
 						<Card className="shadow">
