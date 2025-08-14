@@ -47,17 +47,17 @@ const purchaseSlice = createSlice({
 	name: "purchase",
 	initialState,
 	reducers: {
-		setBookingFlow: (state, action) => {
-			console.log(action);
-			const isEmpty = (value) => value == null || (Array.isArray(value) && value.length === 0);
-			const updatedBookingFlow = { ...state.bookingFlow, ...action.payload };
-			Object.keys(updatedBookingFlow).forEach((key) => {
-				if (isEmpty(updatedBookingFlow[ key ])) {
-					delete updatedBookingFlow[ key ];
-				}
-			});
-			state.bookingFlow = updatedBookingFlow;
-		}
+		// setBookingFlow: (state, action) => {
+		// 	console.log(action);
+		// 	const isEmpty = (value) => value == null || (Array.isArray(value) && value.length === 0);
+		// 	const updatedBookingFlow = { ...state.bookingFlow, ...action.payload };
+		// 	Object.keys(updatedBookingFlow).forEach((key) => {
+		// 		if (isEmpty(updatedBookingFlow[ key ])) {
+		// 			delete updatedBookingFlow[ key ];
+		// 		}
+		// 	});
+		// 	state.bookingFlow = updatedBookingFlow;
+		// }
 	},
 	extraReducers: (builder) => {
 		builder
