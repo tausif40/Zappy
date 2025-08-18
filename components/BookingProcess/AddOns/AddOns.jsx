@@ -15,6 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useDispatch, useSelector } from "react-redux"
 import { getAddons, getCategory } from "@/store/features/addOns-slice"
+import { getToCart } from "@/store/features/Purchase-slice"
 
 export default function AddOns() {
 	const params = useParams()
@@ -32,11 +33,13 @@ export default function AddOns() {
 	console.log("Event ID:", eventId);
 	console.log("Booking ID:", bookingId);
 
-	const basePrice = 8999
+	// const basePrice = 8999
+
 	useEffect(() => {
 		dispatch(getCategory())
 		dispatch(getAddons())
-	}, [ dispatch ])
+		dispatch(getToCart(bookingId))
+	}, [ dispatch, bookingId ])
 
 	const category = useSelector((state) => state.addOnsSlice?.category);
 	const addonsList = useSelector((state) => state.addOnsSlice?.addons);
@@ -65,11 +68,15 @@ export default function AddOns() {
 	}
 
 	const filteredAddons = selectedCategory
-		? (addonsList?.data?.results && Array.isArray(addonsList.data.results) ? addonsList.data.results.filter(addon => addon?.category === selectedCategory) : []) || []
+		? (addonsList?.data?.results && Array.isArray(addonsList.data.results)
+			? addonsList.data.results.filter(addon => addon?.category === selectedCategory) : []) || []
 		: (addonsList?.data?.results && Array.isArray(addonsList.data.results) ? addonsList.data.results : []) || []
 
-	const selectedAddOns = filteredAddons.filter((addOn) => selectedAddOnIds?.includes(addOn?._id))
-	const totalPrice = basePrice + selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0)
+	// Get all selected add-ons regardless of current category filter
+	const selectedAddOns = (addonsList?.data?.results && Array.isArray(addonsList.data.results)
+		? addonsList.data.results.filter((addOn) => selectedAddOnIds?.includes(addOn?._id))
+		: []) || []
+	const totalPrice = bookingFlow?.data?.itemTotal + selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0)
 
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
@@ -78,8 +85,23 @@ export default function AddOns() {
 		{ name: 'Add-Ons', href: '' },
 	];
 
-	const handleContinue = () => {
-		route.push(`/birthday/booking/${eventId}/schedule`)
+	const handleContinue = async () => {
+		try {
+			const res = await dispatch(addToCart(cartData)).unwrap();
+			console.log(res);
+			if (res.status === 201) {
+				const ids = encodeURIComponent(btoa(`${eventId}:${res?.data?.id}`));
+				route.push(`/birthday/booking/${ids}/schedule`)
+			}
+		} catch (error) {
+			console.log("Error adding to cart:", error);
+			if (error?.status === 401) {
+				toast({ variant: "destructive", title: "Please Login", description: "If you are already account, Signup" });
+			}
+		} finally {
+			setIsAddingToCart(false);
+		}
+
 	}
 
 	return (
@@ -198,7 +220,7 @@ export default function AddOns() {
 									>
 										{/* Selected Checkmark */}
 										{selectedAddOnIds.includes(addon?._id) && (
-											<div className="absolute top-2 left-2 bg-white rounded-full p-1 shadow z-10">
+											<div className="absolute top-2 left-2 bg-white rounded-full p-1 shadow z-20">
 												<CheckCircle className="text-purple-500 h-5 w-5" />
 											</div>
 										)}
@@ -266,12 +288,12 @@ export default function AddOns() {
 							<CardContent className="p-4 space-y-3">
 								<h4 className="font-semibold">Cart Summary</h4>
 								<div className="flex justify-between text-sm">
-									<span>Base Package</span>
-									<span>₹ {bookingFlow?.price?.toLocaleString()}</span>
+									<span className="capitalize">{bookingFlow?.data?.eventTitle} </span>
+									<span>₹ {bookingFlow?.data?.itemTotal?.toLocaleString()}</span>
 								</div>
 								{selectedAddOns?.map((addon) => (
 									<div key={addon?._id} className="flex justify-between text-sm ">
-										<span>{addon?.name || "Addon"}</span>
+										<span title={addon?.name} >{addon?.name?.substring(0, 18) + "..." || "Addon"}</span>
 										<span className="text-emerald-600">+ ₹{(addon?.price || 0).toLocaleString()}</span>
 									</div>
 								))}

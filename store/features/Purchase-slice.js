@@ -27,9 +27,19 @@ export const UpdateToCart = createAsyncThunk("purchase/UpdateToCart", async (dat
 		return thunkAPI.rejectWithValue(error);
 	}
 });
-export const getToCart = createAsyncThunk("purchase/getToCart", async (id, thunkAPI) => {
+export const getToCart = createAsyncThunk("purchase/getToCart", async (bookingId, thunkAPI) => {
 	try {
-		const response = await apiClient.get(`/cart/items/${id}`);
+		const response = await apiClient.get(`/cart/items/${bookingId}`);
+		console.log(response);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error);
+	}
+});
+export const updateToCart = createAsyncThunk("purchase/getToCart", async (bookingId, thunkAPI) => {
+	try {
+		const response = await apiClient.patch(`/cart/items/${bookingId}`);
 		console.log(response);
 		return response.data;
 	} catch (error) {

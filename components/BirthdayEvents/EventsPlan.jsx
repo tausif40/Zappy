@@ -81,7 +81,6 @@ function EventsPlan({ event, discount, guist }) {
 			const res = await dispatch(addToCart(cartData)).unwrap();
 			console.log(res);
 			if (res.status === 201) {
-				dispatch(getToCart(res?.data?.id))
 				const ids = encodeURIComponent(btoa(`${eventId}:${res?.data?.id}`));
 				route.push(`/birthday/booking/${ids}/add-ons`);
 			}
