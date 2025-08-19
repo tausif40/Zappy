@@ -64,7 +64,6 @@ export default function Schedule() {
 			city: "Mumbai",
 			state: "Maharashtra",
 			pincode: "400001",
-			phone: "+91 98765 43210",
 			isDefault: true,
 		},
 		{
@@ -75,7 +74,6 @@ export default function Schedule() {
 			city: "Mumbai",
 			state: "Maharashtra",
 			pincode: "400002",
-			phone: "+91 98765 43210",
 			isDefault: false,
 		},
 	])
