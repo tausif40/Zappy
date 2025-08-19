@@ -1,75 +1,181 @@
 import React from 'react'
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Calendar, Clock, MapPin, Package, Plus, LoaderCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
 
-function BookingSummary({ basePrice, selectedTheme, totalPrice }) {
+function BookingSummary({
+	selectedAddOns = [],
+	bookingFlow = {},
+	selectedDate = null,
+	selectedTime = null,
+	selectedAddress = null,
+	addresses = [],
+	onContinue,
+	isLoading = false,
+	buttonText = "Continue",
+	showSchedule = true,
+	showAddress = true,
+	showTheme = true
+}) {
 
-	const handleContinue = () => {
-		if (!selectedTheme) {
-			toast({
-				title: "Theme Required",
-				description: "Please select a theme to continue.",
-				variant: "destructive",
-			})
-			return
-		}
+	// Calculate total price
+	const basePrice = bookingFlow?.data?.itemTotal || 0
+	const addOnsTotal = selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0) || 0
 
-		// Navigate to schedule page (skipping add-ons)
-		// window.location.href = `/booking/${eventId}/schedule?theme=${selectedTheme}`
+	const totalPrice = basePrice + addOnsTotal
+
+	// Get selected address details
+	const selectedAddressDetails = addresses?.find(addr => addr.id.toString() === selectedAddress)
+
+	// Format date
+	const formatDate = (dateString) => {
+		if (!dateString) return null
+		const date = new Date(dateString)
+		return date.toLocaleDateString("en-US", {
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		})
 	}
 
 	return (
-		<>
-			<div className="lg:col-span-1">
-				<Card className="border-0 shadow-lg sticky top-24">
-					<CardContent className="p-4">
-						<h3 className="font-semibold mb-3">Summary</h3>
+		<Card className="sticky top-24 shadow-md">
+			<CardContent className="p-4 space-y-4">
+				{/* Header */}
+				<div className="text-center pb-2">
+					<h4 className="font-semibold text-lg">Booking Summary</h4>
+					<p className="text-sm text-muted-foreground">Review your selections</p>
+				</div>
 
-						<div className="space-y-2 mb-4 text-sm">
-							<div className="flex justify-between">
-								<span>Base Package</span>
-								<span>₹{basePrice.toLocaleString()}</span>
-							</div>
+				{/* Event Details */}
+				<div className="space-y-3">
+					<div className="flex items-center space-x-2">
+						<Package className="h-4 w-4 text-purple-500" />
+						<h5 className="font-medium text-sm">Event Package</h5>
+					</div>
+					<div className="pl-6 space-y-2">
+						<div className="flex justify-between text-sm">
+							<span className="capitalize">{bookingFlow?.data?.eventTitle || "Event Package"}</span>
+							<span className="font-medium">₹{basePrice.toLocaleString()}</span>
+						</div>
+					</div>
+				</div>
 
-							{selectedTheme && selectedTheme.price > 0 && (
-								<div className="flex justify-between">
-									<span>{selectedTheme.name}</span>
-									<span>+₹{selectedTheme.price.toLocaleString()}</span>
+				{/* Add-ons Section */}
+				{selectedAddOns && selectedAddOns.length > 0 && (
+					<div className="space-y-3">
+						<div className="flex items-center space-x-2">
+							<Plus className="h-4 w-4 text-emerald-500" />
+							<h5 className="font-medium text-sm">Add-ons</h5>
+						</div>
+						<div className="pl-6 space-y-2">
+							{selectedAddOns.map((addon) => (
+								<div key={addon?._id} className="flex justify-between text-sm">
+									<span title={addon?.name} className="text-muted-foreground">
+										{addon?.name?.length > 20 ? addon?.name?.substring(0, 20) + "..." : addon?.name}
+									</span>
+									<span className="text-emerald-600">+ ₹{(addon?.price || 0).toLocaleString()}</span>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+
+				{/* Schedule Section */}
+				{showSchedule && (selectedDate || selectedTime) && (
+					<div className="space-y-3">
+						<div className="flex items-center space-x-2">
+							<Calendar className="h-4 w-4 text-blue-500" />
+							<h5 className="font-medium text-sm">Schedule</h5>
+						</div>
+						<div className="pl-6 space-y-2">
+							{selectedDate && (
+								<div className="flex justify-between text-sm">
+									<span className="text-muted-foreground">Date</span>
+									<span>{formatDate(selectedDate)}</span>
 								</div>
 							)}
+							{selectedTime && (
+								<div className="flex justify-between text-sm">
+									<span className="text-muted-foreground">Time</span>
+									<span>{selectedTime}</span>
+								</div>
+							)}
+						</div>
+					</div>
+				)}
 
-							<div className="border-t pt-2">
-								<div className="flex justify-between font-semibold">
-									<span>Total</span>
-									<span className="text-purple-600">₹{totalPrice.toLocaleString()}</span>
+				{/* Address Section */}
+				{showAddress && selectedAddressDetails && (
+					<div className="space-y-3">
+						<div className="flex items-center space-x-2">
+							<MapPin className="h-4 w-4 text-red-500" />
+							<h5 className="font-medium text-sm">Event Location</h5>
+						</div>
+						<div className="pl-6 space-y-2">
+							<div className="text-sm">
+								<div className="flex items-center space-x-2 mb-1">
+									<Badge variant="secondary" className="text-xs">{selectedAddressDetails.type}</Badge>
+									{selectedAddressDetails.isDefault && (
+										<Badge className="bg-green-100 text-green-700 border-0 text-xs">Default</Badge>
+									)}
+								</div>
+								<div className="text-muted-foreground text-xs leading-relaxed">
+									{selectedAddressDetails.name}<br />
+									{selectedAddressDetails.address}<br />
+									{selectedAddressDetails.city}, {selectedAddressDetails.state} - {selectedAddressDetails.pincode}<br />
+									{selectedAddressDetails.phone}
 								</div>
 							</div>
 						</div>
+					</div>
+				)}
 
-						{selectedTheme && (
-							<div className="mb-4 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-								<div className="flex items-center space-x-2 mb-1">
-									<div className="text-purple-500">{getThemeIcon(selectedTheme)}</div>
-									<span className="font-medium text-sm">{selectedTheme?.name}</span>
-								</div>
-								<p className="text-xs text-muted-foreground">{selectedTheme?.description}</p>
-							</div>
-						)}
+				<Separator />
 
-						<Button
-							onClick={handleContinue}
-							disabled={!selectedTheme}
-							className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-						>
-							Continue
+				{/* Pricing Summary */}
+				<div className="space-y-2">
+					<div className="flex justify-between text-sm">
+						<span>Base Package</span>
+						<span>₹{basePrice.toLocaleString()}</span>
+					</div>
+
+					{selectedAddOns && selectedAddOns.length > 0 && (
+						<div className="flex justify-between text-sm">
+							<span>Add-ons ({selectedAddOns.length})</span>
+							<span>+ ₹{addOnsTotal.toLocaleString()}</span>
+						</div>
+					)}
+
+					<Separator />
+
+					<div className="flex justify-between font-bold text-base">
+						<span>Total</span>
+						<span className="text-purple-600">₹{totalPrice.toLocaleString()}</span>
+					</div>
+				</div>
+
+				{/* Continue Button */}
+				{onContinue && (
+					<Button
+						onClick={onContinue}
+						className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700"
+						disabled={isLoading}
+					>
+						{buttonText}&nbsp;
+						{isLoading ? (
+							<LoaderCircle className="animate-spin h-4 w-4 ml-2" />
+						) : (
 							<ArrowRight className="ml-2 h-4 w-4" />
-						</Button>
-					</CardContent>
-				</Card>
-			</div>
-		</>
+						)}
+					</Button>
+				)}
+			</CardContent>
+		</Card>
 	)
 }
 
-export default BookingSummary;
+export default BookingSummary

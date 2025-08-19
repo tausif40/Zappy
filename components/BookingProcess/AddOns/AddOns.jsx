@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { ArrowLeft, ArrowRight, CheckCircle, ChevronLast, ChevronRight, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, CheckCircle, ChevronLast, ChevronRight, LoaderCircle, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -15,7 +15,8 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useDispatch, useSelector } from "react-redux"
 import { getAddons, getCategory } from "@/store/features/addOns-slice"
-import { getToCart } from "@/store/features/Purchase-slice"
+import { getToCart, updateToCart } from "@/store/features/Purchase-slice"
+import BookingSummary from "../BookingSummary"
 
 export default function AddOns() {
 	const params = useParams()
@@ -26,14 +27,20 @@ export default function AddOns() {
 	const [ selectedCategory, setSelectedCategory ] = useState(null)
 	const [ isDetailsOpen, setIsDetailsOpen ] = useState(false)
 	const [ selectedAddonDetails, setSelectedAddonDetails ] = useState(null)
+	const [ isAddingToCart, setIsAddingToCart ] = useState(false);
 
 	const decodedURL = atob(decodeURIComponent(params.ids));
 	let [ eventId, bookingId ] = decodedURL.split(":");
 
-	console.log("Event ID:", eventId);
-	console.log("Booking ID:", bookingId);
+	const category = useSelector((state) => state.addOnsSlice?.category);
+	const addonsList = useSelector((state) => state.addOnsSlice?.addons);
+	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
 
-	// const basePrice = 8999
+	const isLoading = !category?.data || !addonsList?.data?.results;
+	const hasError = category?.error || addonsList?.error;
+
+	console.log("bookingFlow on addons-", bookingFlow)
+	console.log("addOnIds-", bookingFlow?.data?.addOnIds)
 
 	useEffect(() => {
 		dispatch(getCategory())
@@ -41,16 +48,23 @@ export default function AddOns() {
 		dispatch(getToCart(bookingId))
 	}, [ dispatch, bookingId ])
 
-	const category = useSelector((state) => state.addOnsSlice?.category);
-	const addonsList = useSelector((state) => state.addOnsSlice?.addons);
-	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
+	useEffect(() => {
+		if (bookingFlow?.data?.addOnIds && addonsList?.data?.results) {
+			const addOnIdsFromBooking = bookingFlow.data.addOnIds;
+			const availableAddons = addonsList.data.results;
 
-	// Add loading states and safety checks
-	const isLoading = !category?.data || !addonsList?.data?.results;
-	const hasError = category?.error || addonsList?.error;
+			// Find matching add-ons by ID
+			const matchingAddOnIds = availableAddons
+				.filter(addon => addOnIdsFromBooking.some(bookingAddon =>
+					bookingAddon.id === addon._id || bookingAddon.id === addon.id
+				))
+				.map(addon => addon._id || addon.id);
 
-	console.log("bookingFlow-", bookingFlow)
-	// console.log("addonsList-", addonsList?.data?.results)	
+			console.log("Auto-selecting add-ons:", matchingAddOnIds);
+			setSelectedAddOnIds(matchingAddOnIds);
+		}
+	}, [ bookingFlow?.data?.addOnIds, addonsList?.data?.results ]);
+
 
 	const handleAddOnToggle = (id) => {
 		setSelectedAddOnIds((prev) =>
@@ -78,6 +92,7 @@ export default function AddOns() {
 		: []) || []
 	const totalPrice = bookingFlow?.data?.itemTotal + selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0)
 
+
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
@@ -86,12 +101,18 @@ export default function AddOns() {
 	];
 
 	const handleContinue = async () => {
+
+		const data = {
+			addOnIds: { addOnIds: selectedAddOnIds },
+			bookingId: bookingId
+		}
 		try {
-			const res = await dispatch(addToCart(cartData)).unwrap();
+			setIsAddingToCart(true)
+			const res = await dispatch(updateToCart(data)).unwrap();
 			console.log(res);
-			if (res.status === 201) {
-				const ids = encodeURIComponent(btoa(`${eventId}:${res?.data?.id}`));
-				route.push(`/birthday/booking/${ids}/schedule`)
+			if (res.status === 200) {
+				// const ids = encodeURIComponent(btoa(`${eventId}:${res?.data?.id}`));
+				route.push(`/birthday/booking/${params.ids}/schedule`)
 			}
 		} catch (error) {
 			console.log("Error adding to cart:", error);
@@ -283,33 +304,17 @@ export default function AddOns() {
 						</div>
 					</div>
 
+					{/* Cart Summary */}
 					<div className="lg:col-span-1">
-						<Card className="sticky top-24 shadow-md">
-							<CardContent className="p-4 space-y-3">
-								<h4 className="font-semibold">Cart Summary</h4>
-								<div className="flex justify-between text-sm">
-									<span className="capitalize">{bookingFlow?.data?.eventTitle} </span>
-									<span>₹ {bookingFlow?.data?.itemTotal?.toLocaleString()}</span>
-								</div>
-								{selectedAddOns?.map((addon) => (
-									<div key={addon?._id} className="flex justify-between text-sm ">
-										<span title={addon?.name} >{addon?.name?.substring(0, 18) + "..." || "Addon"}</span>
-										<span className="text-emerald-600">+ ₹{(addon?.price || 0).toLocaleString()}</span>
-									</div>
-								))}
-								<hr />
-								<div className="flex justify-between font-bold">
-									<span>Total</span>
-									<span className="text-purple-600">₹ {totalPrice.toLocaleString()}</span>
-								</div>
-								<Button
-									onClick={handleContinue}
-									className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white"
-								>
-									Continue <ArrowRight className="ml-2 h-4 w-4" />
-								</Button>
-							</CardContent>
-						</Card>
+						<BookingSummary
+							selectedAddOns={selectedAddOns}
+							bookingFlow={bookingFlow}
+							onContinue={handleContinue}
+							isLoading={isAddingToCart}
+							buttonText="Continue"
+							showSchedule={false}
+							showAddress={false}
+						/>
 					</div>
 				</div>
 			</div>

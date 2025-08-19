@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin, Plus, Edit, ChevronRight } from "lucide-react"
@@ -16,12 +16,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useToast } from "@/hooks/use-toast"
 import DateTimeSelect from "./DateTimeSelect"
+import { useDispatch, useSelector } from "react-redux"
+import { getToCart } from "@/store/features/Purchase-slice"
+import BookingSummary from "../BookingSummary"
 
 export default function Schedule() {
-	const searchParams = useSearchParams()
+	const searchParams = useSearchParams();
+	const dispatch = useDispatch();
 	const route = useRouter();
 	const params = useParams()
-	const eventId = params.id
+	// const eventId = params.id
 	const selectedTheme = searchParams.get("theme")
 	const { toast } = useToast()
 	const eventTitle = localStorage.getItem("eventTitle");
@@ -31,6 +35,18 @@ export default function Schedule() {
 	const [ selectedAddress, setSelectedAddress ] = useState("")
 	const [ showAddAddress, setShowAddAddress ] = useState(false)
 	const [ currentMonth, setCurrentMonth ] = useState(new Date())
+
+	const decodedURL = atob(decodeURIComponent(params.ids));
+	let [ eventId, bookingId ] = decodedURL.split(":");
+	console.log("Event ID:", eventId);
+	console.log("Booking ID:", bookingId);
+
+	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
+	console.log("bookingFlow on schedule-", bookingFlow)
+
+	useEffect(() => {
+		dispatch(getToCart(bookingId))
+	}, [ dispatch, bookingId ])
 
 
 	const breadcrumb = [
@@ -139,7 +155,7 @@ export default function Schedule() {
 				<div className="flex items-center justify-between mb-6">
 					<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20" onClick={() => route.back()}>
 						<ArrowLeft className="mr-2 h-4 w-4" />
-						Back to Themes
+						Back to Add-ons
 					</Button>
 					<div className="text-sm text-muted-foreground">Step 3 of : Schedule & Address</div>
 				</div>
@@ -312,7 +328,7 @@ export default function Schedule() {
 					</div>
 
 					{/* Compact Sidebar */}
-					<div className="lg:col-span-1">
+					{/* <div className="lg:col-span-1">
 						<Card className="border shadow-lg sticky top-24">
 							<CardContent className="p-4">
 								<h3 className="font-semibold mb-3">Summary</h3>
@@ -373,7 +389,25 @@ export default function Schedule() {
 								</Button>
 							</CardContent>
 						</Card>
-					</div>
+					</div> */}
+					<BookingSummary
+						selectedAddOns={bookingFlow?.data?.addOnIds?.map(addon => ({
+							_id: addon.id,
+							name: addon.name || "Add-on",
+							price: addon.price || 0
+						})) || []}
+						bookingFlow={bookingFlow}
+						selectedDate={selectedDate}
+						selectedTime={selectedTime}
+						selectedAddress={selectedAddress}
+						addresses={addresses}
+						selectedTheme={selectedTheme}
+						onContinue={handleContinue}
+						buttonText="Continue to Payment"
+						showSchedule={true}
+						showAddress={true}
+					/>
+
 				</div>
 			</div>
 		</div>

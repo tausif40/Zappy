@@ -15,20 +15,20 @@ import { Card } from '@/components/ui/card';
 import { CalendarDays, Clock4 } from 'lucide-react';
 
 const unavailableDates = [
-	'2025-06-27',
-	'2025-06-29',
+	'2025-08-30',
+	'2025-08-24',
 	'2025-07-03',
-	'2025-07-04',
+	'2025-10-04',
 	'2025-07-06',
 	'2025-07-10',
-	'2025-07-17',
-	'2025-07-22',
-	'2025-07-29',
+	'2025-09-17',
+	'2025-09-22',
+	'2025-09-29',
 	'2025-08-05',
 	'2025-08-20',
 ];
 
-export default function BookingCalendar() {
+export default function DateTimeSelect() {
 	const today = dayjs();
 	const [ selectedMonth, setSelectedMonth ] = useState(today.month() + 1); // 1-12
 	const [ selectedYear, setSelectedYear ] = useState(today.year());

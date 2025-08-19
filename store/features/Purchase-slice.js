@@ -37,11 +37,12 @@ export const getToCart = createAsyncThunk("purchase/getToCart", async (bookingId
 		return thunkAPI.rejectWithValue(error);
 	}
 });
-export const updateToCart = createAsyncThunk("purchase/getToCart", async (bookingId, thunkAPI) => {
+export const updateToCart = createAsyncThunk("purchase/getToCart", async (data, thunkAPI) => {
 	try {
-		const response = await apiClient.patch(`/cart/items/${bookingId}`);
+		console.log("final submit:", data);
+		const response = await apiClient.patch(`/cart/items/${data.bookingId}`, data.addOnIds);
 		console.log(response);
-		return response.data;
+		return { status: response.status, data: response.data, };
 	} catch (error) {
 		console.log(error);
 		return thunkAPI.rejectWithValue(error);

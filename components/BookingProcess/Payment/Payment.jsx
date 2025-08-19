@@ -25,6 +25,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
+import BookingSummary from "../BookingSummary"
 
 export default function Payment() {
 	const params = useParams()
@@ -322,84 +323,26 @@ export default function Payment() {
 
 					{/* Compact Sidebar */}
 					<div className="lg:col-span-1">
-						<Card className="border-0 shadow-lg sticky top-24">
-							<CardContent className="p-4">
-								<h3 className="font-semibold mb-3">Final Summary</h3>
+						<BookingSummary
+							selectedAddOns={[]}
+							bookingFlow={{ data: { eventTitle: eventTitle, itemTotal: basePrice } }}
+							selectedDate={selectedDate}
+							selectedTime={selectedTime}
+							selectedAddress={selectedAddress}
+							addresses={[]}
+							selectedTheme={selectedTheme}
+							onContinue={handlePayment}
+							buttonText={processing ? "Processing..." : paymentMethod === "cod" ? "Confirm Booking" : `Pay ₹${totalPrice.toLocaleString()}`}
+							isLoading={processing || !paymentMethod || !agreeToTerms}
+							showSchedule={true}
+							showAddress={false}
+						/>
 
-								{/* Event Details */}
-								<div className="space-y-2 mb-4 p-3 bg-muted/30 rounded-lg">
-									<h4 className="font-medium text-sm">Event Details</h4>
-									<div className="space-y-1 text-xs">
-										<div className="flex items-center space-x-1">
-											<Calendar className="h-3 w-3" />
-											{/* <span>{formatDate(selectedDate)}</span> */}
-											<span>Tuesday, August 5, 2025</span>
-										</div>
-										<div className="flex items-center space-x-1">
-											<Clock className="h-3 w-3" />
-											{/* <span>{selectedTime}</span> */}
-											<span>11:00 AM</span>
-										</div>
-										<div className="flex items-center space-x-1">
-											<MapPin className="h-3 w-3" />
-											<span>Address selected</span>
-										</div>
-									</div>
-								</div>
-
-								{/* Price Breakdown */}
-								<div className="space-y-2 mb-4 text-sm">
-									<div className="flex justify-between">
-										<span>Base Package</span>
-										<span>₹{basePrice.toLocaleString()}</span>
-									</div>
-
-									{themePrice > 0 && (
-										<div className="flex justify-between">
-											<span>Theme Upgrade</span>
-											<span>+₹{themePrice.toLocaleString()}</span>
-										</div>
-									)}
-
-									<div className="flex justify-between">
-										<span>GST (18%)</span>
-										<span>₹{tax.toLocaleString()}</span>
-									</div>
-
-									<div className="border-t pt-2">
-										<div className="flex justify-between font-semibold">
-											<span>Total</span>
-											<span className="text-purple-600">₹{totalPrice.toLocaleString()}</span>
-										</div>
-									</div>
-								</div>
-
-								<Button
-									onClick={handlePayment}
-									disabled={!paymentMethod || !agreeToTerms || processing}
-									className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-6 text-lg"
-								>
-									{processing ? (
-										"Processing..."
-									) : paymentMethod === "cod" ? (
-										<>
-											<Banknote className="mr-2 h-5 w-5" />
-											Confirm Booking
-										</>
-									) : (
-										<>
-											<Shield className="mr-2 h-5 w-5" />
-											Pay ₹{totalPrice.toLocaleString()}
-										</>
-									)}
-								</Button>
-
-								<div className="mt-3 flex items-center justify-center space-x-2 text-xs text-muted-foreground">
-									<Lock className="h-3 w-3" />
-									<span>Secure & encrypted</span>
-								</div>
-							</CardContent>
-						</Card>
+						{/* Security Notice */}
+						<div className="mt-3 flex items-center justify-center space-x-2 text-xs text-muted-foreground">
+							<Lock className="h-3 w-3" />
+							<span>Secure & encrypted</span>
+						</div>
 					</div>
 				</div>
 			</div>

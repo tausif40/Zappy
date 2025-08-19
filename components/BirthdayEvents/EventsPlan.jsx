@@ -144,14 +144,7 @@ function EventsPlan({ event, discount, guist }) {
 								onClick={handelPurchase}
 								disabled={isAddingToCart}
 							>
-								{isAddingToCart ? (
-									<>
-										Booking &nbsp;
-										<LoaderCircle className="animate-spin h-4 w-4 mr-2" />
-									</>
-								) : (
-									'Book Now'
-								)}
+								{isAddingToCart ? <>Booking &nbsp; <LoaderCircle className="animate-spin h-4 w-4 mr-2" /> </> : ('Book Now')}
 							</Button>
 
 							{/* <div className="space-y-3 text-sm px-2 pt-6">
