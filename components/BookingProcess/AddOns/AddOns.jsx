@@ -56,9 +56,9 @@ export default function AddOns() {
 			// Find matching add-ons by ID
 			const matchingAddOnIds = availableAddons
 				.filter(addon => addOnIdsFromBooking.some(bookingAddon =>
-					bookingAddon.id === addon._id || bookingAddon.id === addon.id
+					bookingAddon._id === addon._id || bookingAddon.id === addon._id
 				))
-				.map(addon => addon._id || addon.id);
+				.map(addon => addon._id || addon._id);
 
 			console.log("Auto-selecting add-ons:", matchingAddOnIds);
 			setSelectedAddOnIds(matchingAddOnIds);

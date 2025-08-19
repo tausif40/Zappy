@@ -26,9 +26,7 @@ export default function Schedule() {
 	const route = useRouter();
 	const params = useParams()
 	// const eventId = params.id
-	const selectedTheme = searchParams.get("theme")
 	const { toast } = useToast()
-	const eventTitle = localStorage.getItem("eventTitle");
 
 	const [ selectedDate, setSelectedDate ] = useState("")
 	const [ selectedTime, setSelectedTime ] = useState("")
@@ -52,7 +50,7 @@ export default function Schedule() {
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
-		{ name: eventTitle, href: `/birthday/details/${eventId}` },
+		{ name: 'eventTitle', href: `/birthday/details/${eventId}` },
 		{ name: 'Add-Ons', href: '/birthday/booking/1/add-ons' },
 		{ name: 'Date & Address', href: '' },
 	];
@@ -89,33 +87,38 @@ export default function Schedule() {
 		city: "",
 		state: "",
 		pincode: "",
-		phone: "",
 	})
 
-	const basePrice = 8999
-	const themePrice = selectedTheme === "frozen-princess" ? 500 : selectedTheme === "unicorn-princess" ? 750 : selectedTheme === "fairy-princess" ? 600 : selectedTheme === "royal-princess" ? 800 : selectedTheme === "mermaid-princess" ? 700 : 0
-
-	const totalPrice = basePrice + themePrice
 
 	const handleContinue = () => {
-		// if (!selectedDate || !selectedTime || !selectedAddress) {
-		// 	toast({
-		// 		title: "Missing Information",
-		// 		description: "Please select date, time, and address to continue.",
-		// 		variant: "destructive",
-		// 	})
-		// 	return
-		// }
+		if (!selectedDate) {
+			toast({
+				title: "Missing Date",
+				description: "Please select a date to continue.",
+				variant: "destructive",
+			});
+		}
 
-		// Navigate to payment page
-		// const params = new URLSearchParams({
-		// 	theme: selectedTheme || "",
-		// 	date: selectedDate,
-		// 	time: selectedTime,
-		// 	address: selectedAddress,
-		// })
+		if (!selectedTime) {
+			toast({
+				title: "Missing Time",
+				description: "Please select a time to continue.",
+				variant: "destructive",
+			});
+		}
 
-		// window.location.href = `/booking/${eventId}/payment?${params.toString()}`
+		if (!selectedAddress) {
+			toast({
+				title: "Missing Address",
+				description: "Please select an address to continue.",
+				variant: "destructive",
+			});
+		}
+
+		if (!selectedDate || !selectedTime || !selectedAddress) {
+			return;
+		}
+
 		route.push(`/birthday/booking/${eventId}/payment`)
 	}
 
@@ -255,14 +258,6 @@ export default function Schedule() {
 															placeholder="400001"
 														/>
 													</div>
-													<div>
-														<label className="text-sm font-medium">Phone</label>
-														<Input
-															value={newAddress.phone}
-															onChange={(e) => setNewAddress({ ...newAddress, phone: e.target.value })}
-															placeholder="+91 98765 43210"
-														/>
-													</div>
 												</div>
 												<div className="flex space-x-2">
 													<Button onClick={() => setShowAddAddress(false)} variant="outline" className="flex-1">
@@ -327,69 +322,6 @@ export default function Schedule() {
 						</Card>
 					</div>
 
-					{/* Compact Sidebar */}
-					{/* <div className="lg:col-span-1">
-						<Card className="border shadow-lg sticky top-24">
-							<CardContent className="p-4">
-								<h3 className="font-semibold mb-3">Summary</h3>
-
-								<div className="space-y-2 mb-4 text-sm">
-									<div className="flex justify-between">
-										<span>Base Package</span>
-										<span>₹{basePrice.toLocaleString()}</span>
-									</div>
-
-									{themePrice > 0 && (
-										<div className="flex justify-between">
-											<span>Theme Upgrade</span>
-											<span>+₹{themePrice.toLocaleString()}</span>
-										</div>
-									)}
-
-									<div className="border-t pt-2">
-										<div className="flex justify-between font-semibold">
-											<span>Total</span>
-											<span className="text-purple-600">₹{totalPrice.toLocaleString()}</span>
-										</div>
-									</div>
-								</div>
-
-								{selectedDate && selectedTime && (
-									<div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-										<h4 className="font-medium text-blue-800 dark:text-blue-200 mb-1 text-sm">Event Schedule:</h4>
-										<div className="space-y-1 text-xs text-blue-700 dark:text-blue-300">
-											<div className="flex items-center space-x-1">
-												<Calendar className="h-3 w-3" />
-												<span>{formatDate(selectedDate)}</span>
-											</div>
-											<div className="flex items-center space-x-1">
-												<Clock className="h-3 w-3" />
-												<span>{selectedTime}</span>
-											</div>
-										</div>
-									</div>
-								)}
-
-								{selectedAddress && (
-									<div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-										<h4 className="font-medium text-green-800 dark:text-green-200 mb-1 text-sm">Event Address:</h4>
-										<div className="text-xs text-green-700 dark:text-green-300">
-											{addresses.find((a) => a.id.toString() === selectedAddress)?.address}
-										</div>
-									</div>
-								)}
-
-								<Button
-									onClick={handleContinue}
-									// disabled={!selectedDate || !selectedTime || !selectedAddress}
-									className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-								>
-									Continue to Payment
-									<ArrowRight className="ml-2 h-4 w-4" />
-								</Button>
-							</CardContent>
-						</Card>
-					</div> */}
 					<BookingSummary
 						selectedAddOns={bookingFlow?.data?.addOnIds?.map(addon => ({
 							_id: addon.id,
@@ -401,7 +333,6 @@ export default function Schedule() {
 						selectedTime={selectedTime}
 						selectedAddress={selectedAddress}
 						addresses={addresses}
-						selectedTheme={selectedTheme}
 						onContinue={handleContinue}
 						buttonText="Continue to Payment"
 						showSchedule={true}
