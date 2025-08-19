@@ -54,7 +54,12 @@ function BookingSummary({
 					<div className="space-y-3">
 						<div className="flex items-center space-x-2">
 							<Package className="h-4 w-4 text-purple-500" />
-							<h5 className="font-semibold text-sm" title={bookingFlow?.data?.event?.title}>{bookingFlow?.data?.event?.title?.substring(0, 30)}</h5>
+							{/* <h5 className="font-semibold text-sm" title={bookingFlow?.data?.event?.title}>{bookingFlow?.data?.event?.title?.substring(0, 30)}</h5> */}
+							<h5 className="font-semibold text-sm" title={bookingFlow?.data?.event?.title}>
+								{bookingFlow?.data?.event?.title?.length > 30
+									? bookingFlow?.data?.event?.title?.substring(0, 30) + "..." : bookingFlow?.data?.event?.title}
+							</h5>
+
 						</div>
 						<div className="pl-6 space-y-2">
 							<div className="flex justify-between text-sm">
@@ -75,7 +80,7 @@ function BookingSummary({
 								{selectedAddOns.map((addon) => (
 									<div key={addon?._id} className="flex justify-between text-sm">
 										<span title={addon?.name} className="text-muted-foreground">
-											{addon?.name?.length > 20 ? addon?.name?.substring(0, 20) + "..." : addon?.name}
+											{addon?.name?.length > 21 ? addon?.name?.substring(0, 21) + "..." : addon?.name}
 										</span>
 										<span className="text-emerald-600">+ ₹{(addon?.price || 0).toLocaleString()}</span>
 									</div>
