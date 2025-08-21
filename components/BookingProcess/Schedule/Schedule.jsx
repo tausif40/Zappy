@@ -264,7 +264,7 @@ export default function Schedule() {
 						onContinue={handleContinue}
 						buttonText="Continue to Payment"
 						showSchedule={true}
-						// showAddress={true}
+						showAddress={true}
 					/>
 
 				</div>

@@ -342,7 +342,7 @@ export default function Payment() {
 							buttonText={processing ? "Processing..." : paymentMethod === "CASE" ? "Confirm Booking" : `Pay ₹ ${bookingFlow?.data?.itemTotal?.toLocaleString()}`}
 							// isLoading={processing || !paymentMethod || !agreeToTerms}
 							showSchedule={true}
-							showAddress={false}
+							showAddress={true}
 						/>
 
 						{/* Security Notice */}
