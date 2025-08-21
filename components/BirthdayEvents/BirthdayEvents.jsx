@@ -303,10 +303,6 @@ export default function BirthdayEvents() {
 
 												{/* <Badge className="absolute top-3 right-3 bg-green-500 text-white border-0">{event?.discount}</Badge> */}
 
-												<Button variant='ghost' className="absolute top-3 right-3 p-1 h-6 rounded-[4px] bg-opacity-50">
-													<Heart className="h-4 w-4 text-white hover:text-gray-800" />
-												</Button>
-
 												<div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs">
 													{event?.duration} hour
 												</div>
@@ -358,18 +354,18 @@ export default function BirthdayEvents() {
 														</div>
 													)}
 												</div>
-												<div className="flex flex-col gap-2 mt-4">
-													<Link href={`/birthday/details/${event?._id}`}>
+												<div className="flex gap-2 mt-4 w-full">
+													<Button variant="outline" className="w-10 h-10 flex items-center justify-center">
+														<Heart className="h-4 w-4 text-muted-foreground" />
+													</Button>
+
+													<Link href={`/birthday/details/${event?._id}`} className="flex-1">
 														<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
 															Book Now
 														</Button>
 													</Link>
-													{/* <Link href={`/birthday/details/${event?.id}`}>
-												<Button variant="outline" className="w-full border-2 border-purple-200 hover:bg-purple-900/20"	>
-													More Details
-												</Button>
-											</Link> */}
 												</div>
+
 											</CardContent>
 										</Card>
 									))

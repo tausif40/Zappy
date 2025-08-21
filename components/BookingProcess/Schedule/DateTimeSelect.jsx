@@ -28,7 +28,7 @@ const unavailableDates = [
 	'2025-08-20',
 ];
 
-export default function DateTimeSelect() {
+export default function DateTimeSelect({ dateTime }) {
 	const today = dayjs();
 	const [ selectedMonth, setSelectedMonth ] = useState(today.month() + 1); // 1-12
 	const [ selectedYear, setSelectedYear ] = useState(today.year());
@@ -40,7 +40,7 @@ export default function DateTimeSelect() {
 
 	// Hardcoded month names (dayjs doesn't provide months())
 	const monthsList = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
-	const yearsList = Array.from({ length: 3 }, (_, i) => today.year() + i);
+	const yearsList = Array.from({ length: 4 }, (_, i) => today.year() + i);
 
 	const currentMonth = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`);
 	const startOfMonth = currentMonth.startOf('month');
@@ -59,10 +59,15 @@ export default function DateTimeSelect() {
 	};
 
 	useEffect(() => {
-		if (hour && minute && ampm) {
-			console.log(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')} ${ampm}`);
+		if (selectedDate && hour && minute && ampm) {
+			const formattedTime = `${hour}:${minute.padStart(2, '0')} ${ampm}`;
+			const result = {
+				eventTime: formattedTime,
+				eventDate: selectedDate,
+			};
+			dateTime(result)
 		}
-	}, [ hour, minute, ampm ]);
+	}, [ selectedDate, hour, minute, ampm ]);
 
 	return (
 		<section className='border-t shadow rounded-lg bg-card'>
@@ -125,7 +130,6 @@ export default function DateTimeSelect() {
 									onClick={() => {
 										if (!isUnavailable) {
 											setSelectedDate(dateStr);
-											console.log('Selected Date:', dateStr);
 										}
 									}}
 									className={clsx(

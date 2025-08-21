@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin, Plus, Edit, ChevronRight } from "lucide-react"
+import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin, Plus, Edit, ChevronRight, Trash } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
@@ -17,22 +17,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useToast } from "@/hooks/use-toast"
 import DateTimeSelect from "./DateTimeSelect"
 import { useDispatch, useSelector } from "react-redux"
-import { getToCart } from "@/store/features/Purchase-slice"
+import { deleteAddresses, getAddresses, getToCart, updateToCart } from "@/store/features/Purchase-slice"
 import BookingSummary from "../BookingSummary"
+import Address from "./Address"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export default function Schedule() {
-	const searchParams = useSearchParams();
-	const dispatch = useDispatch();
 	const route = useRouter();
 	const params = useParams()
-	// const eventId = params.id
+	const dispatch = useDispatch();
 	const { toast } = useToast()
 
-	const [ selectedDate, setSelectedDate ] = useState("")
-	const [ selectedTime, setSelectedTime ] = useState("")
+	const [ dateTime, setDateTime ] = useState()
 	const [ selectedAddress, setSelectedAddress ] = useState("")
 	const [ showAddAddress, setShowAddAddress ] = useState(false)
-	const [ currentMonth, setCurrentMonth ] = useState(new Date())
+	const [ addresses, setAddresses ] = useState([])
+	const [ isAddingToCart, setIsAddingToCart ] = useState(false)
 
 	const decodedURL = atob(decodeURIComponent(params.ids));
 	let [ eventId, bookingId ] = decodedURL.split(":");
@@ -40,94 +40,79 @@ export default function Schedule() {
 	console.log("Booking ID:", bookingId);
 
 	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
+	const addressesList = useSelector((state) => state.purchaseSlice?.addresses);
 	console.log("bookingFlow on schedule-", bookingFlow)
+	// console.log("addressesList-", addressesList)
+
+	useEffect(() => {
+		setAddresses(addressesList?.data?.addresses)
+	}, [ addressesList ])
 
 	useEffect(() => {
 		dispatch(getToCart(bookingId))
+		dispatch(getAddresses())
 	}, [ dispatch, bookingId ])
 
 
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
-		{ name: 'eventTitle', href: `/birthday/details/${eventId}` },
-		{ name: 'Add-Ons', href: '/birthday/booking/1/add-ons' },
+		{ name: bookingFlow?.data?.event?.title, href: `/birthday/details/${eventId}` },
+		{ name: 'Add-Ons', href: `/birthday/booking/${params.ids}/add-ons` },
 		{ name: 'Date & Address', href: '' },
 	];
 
-	const [ addresses ] = useState([
-		{
-			id: 1,
-			type: "Home",
-			name: "John Doe",
-			address: "123 Main Street, Apartment 4B",
-			city: "Mumbai",
-			state: "Maharashtra",
-			pincode: "400001",
-			isDefault: true,
-		},
-		{
-			id: 2,
-			type: "Office",
-			name: "John Doe",
-			address: "456 Business Park, Floor 5",
-			city: "Mumbai",
-			state: "Maharashtra",
-			pincode: "400002",
-			isDefault: false,
-		},
-	])
-
-	const [ newAddress, setNewAddress ] = useState({
-		type: "Home",
-		name: "",
-		address: "",
-		city: "",
-		state: "",
-		pincode: "",
-	})
-
-
-	const handleContinue = () => {
-		if (!selectedDate) {
+	const handleContinue = async () => {
+		if (!dateTime) {
 			toast({
-				title: "Missing Date",
-				description: "Please select a date to continue.",
+				title: "Missing Date or Time",
+				description: "Please select a date and time",
 				variant: "destructive",
 			});
+			return;
 		}
-
-		if (!selectedTime) {
-			toast({
-				title: "Missing Time",
-				description: "Please select a time to continue.",
-				variant: "destructive",
-			});
-		}
-
 		if (!selectedAddress) {
 			toast({
 				title: "Missing Address",
 				description: "Please select an address to continue.",
 				variant: "destructive",
 			});
-		}
-
-		if (!selectedDate || !selectedTime || !selectedAddress) {
 			return;
 		}
 
-		route.push(`/birthday/booking/${eventId}/payment`)
+		const data = {
+			addOnIds: { eventTime: dateTime.eventTime, eventDate: dateTime.eventDate, addressId: selectedAddress },
+			bookingId: bookingId
+		}
+		try {
+			setIsAddingToCart(true)
+			const res = await dispatch(updateToCart(data)).unwrap();
+			console.log(res);
+			if (res.status === 200) {
+				route.push(`/birthday/booking/${params.ids}/payment`)
+			}
+		} catch (error) {
+			console.log("Error on schedule:", error);
+			toast({ variant: "destructive", title: "Error to continue", description: error?.message || "Something went wrong, Please try again" });
+		} finally {
+			setIsAddingToCart(false);
+		}
 	}
 
-	const formatDate = (dateString) => {
-		const date = new Date(dateString)
-		return date.toLocaleDateString("en-US", {
-			weekday: "long",
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		})
+	const handelDeleteAddress = async (id) => {
+		try {
+			const res = await dispatch(deleteAddresses(id)).unwrap();
+			if (res.status) {
+				toast({
+					title: "Deleted",
+					description: "Address deleted successfully",
+					variant: "success",
+				});
+			}
+			console.log(res);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	return (
@@ -173,7 +158,7 @@ export default function Schedule() {
 					{/* Main Content */}
 					<div className="lg:col-span-3 space-y-8">
 						{/* Date & Time Selection */}
-						<DateTimeSelect />
+						<DateTimeSelect dateTime={setDateTime} />
 
 						{/* Address Selection */}
 						<Card className="border-0 shadow">
@@ -190,134 +175,76 @@ export default function Schedule() {
 												Add New Address
 											</Button>
 										</DialogTrigger>
-										<DialogContent className="max-w-md">
-											<DialogHeader>
-												<DialogTitle>Add New Address</DialogTitle>
-											</DialogHeader>
-											<div className="space-y-4">
-												<div className="grid grid-cols-2 gap-4">
-													<div>
-														<label className="text-sm font-medium">Address Type</label>
-														<Select
-															value={newAddress.type}
-															onValueChange={(value) => setNewAddress({ ...newAddress, type: value })}
-														>
-															<SelectTrigger>
-																<SelectValue />
-															</SelectTrigger>
-															<SelectContent>
-																<SelectItem value="Home">Home</SelectItem>
-																<SelectItem value="Office">Office</SelectItem>
-																<SelectItem value="Other">Other</SelectItem>
-															</SelectContent>
-														</Select>
-													</div>
-													<div>
-														<label className="text-sm font-medium">Full Name</label>
-														<Input
-															value={newAddress.name}
-															onChange={(e) => setNewAddress({ ...newAddress, name: e.target.value })}
-															placeholder="John Doe"
-														/>
-													</div>
-												</div>
-												<div>
-													<label className="text-sm font-medium">Address</label>
-													<Textarea
-														value={newAddress.address}
-														onChange={(e) => setNewAddress({ ...newAddress, address: e.target.value })}
-														placeholder="Street address, apartment, suite, etc."
-													/>
-												</div>
-												<div className="grid grid-cols-2 gap-4">
-													<div>
-														<label className="text-sm font-medium">City</label>
-														<Input
-															value={newAddress.city}
-															onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
-															placeholder="Mumbai"
-														/>
-													</div>
-													<div>
-														<label className="text-sm font-medium">State</label>
-														<Input
-															value={newAddress.state}
-															onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
-															placeholder="Maharashtra"
-														/>
-													</div>
-												</div>
-												<div className="grid grid-cols-2 gap-4">
-													<div>
-														<label className="text-sm font-medium">Pincode</label>
-														<Input
-															value={newAddress.pincode}
-															onChange={(e) => setNewAddress({ ...newAddress, pincode: e.target.value })}
-															placeholder="400001"
-														/>
-													</div>
-												</div>
-												<div className="flex space-x-2">
-													<Button onClick={() => setShowAddAddress(false)} variant="outline" className="flex-1">
-														Cancel
-													</Button>
-													<Button
-														variant='highlight'
-														onClick={() => {
-															setShowAddAddress(false)
-															toast({ title: "Address Added", description: "New address has been saved." })
-														}}
-														className="flex-1 text-white"
-													>
-														Save Address
-													</Button>
-												</div>
-											</div>
+										<DialogContent className="">
+											<p className="text-2xl font-bold text-muted-foreground">Add Address</p>
+											<ScrollArea className="h-[80vh]">
+												<Address popup={setShowAddAddress} />
+											</ScrollArea>
 										</DialogContent>
 									</Dialog>
 								</div>
 
 								<RadioGroup value={selectedAddress} onValueChange={setSelectedAddress}>
 									<div className="space-y-4">
-										{addresses.map((address) => (
-											<div key={address.id} className="flex items-start space-x-3">
-												<RadioGroupItem value={address.id.toString()} id={address.id.toString()} className="mt-4" />
-												<Label htmlFor={address.id.toString()} className="flex-1 cursor-pointer">
+										{addresses?.map((address) => (
+											<div key={address?._id} className="flex items-start space-x-3">
+												<RadioGroupItem
+													value={address?._id}
+													id={address?._id}
+													className="mt-4"
+												/>
+												<Label htmlFor={address?._id} className="flex-1 cursor-pointer">
 													<Card
-														className={`transition-all ${selectedAddress === address.id.toString()
+														className={`transition-all ${selectedAddress === address?._id
 															? "ring-2 ring-purple-500 bg-purple-50/50 dark:bg-purple-900/10"
 															: "hover:bg-muted/30"
 															}`}
 													>
 														<CardContent className="p-4">
+															{/* Header: type + default + edit */}
 															<div className="flex items-center justify-between mb-2">
-																<div className="flex items-center space-x-2">
-																	<Badge variant="secondary">{address.type}</Badge>
-																	{address.isDefault && (
+																<div className="flex items-center space-x-2 capitalize">
+																	<Badge variant="secondary">{address?.addressType}</Badge>
+																	{address?.isDefault && (
 																		<Badge className="bg-green-100 text-green-700 border-0">Default</Badge>
 																	)}
 																</div>
-																<Button variant="ghost" size="sm">
-																	<Edit className="h-3 w-3" />
+																<Button variant="ghost" size="sm" onClick={() => handelDeleteAddress(address?._id)}>
+																	<Trash className="h-3 w-3 text-red-500" />
 																</Button>
 															</div>
-															<div className="space-y-1">
-																<div className="font-medium">{address.name}</div>
-																<div className="text-sm text-muted-foreground">{address.address}</div>
-																<div className="text-sm text-muted-foreground">
-																	{address.city}, {address.state} - {address.pincode}
+
+															{/* Main details */}
+															<div className="space-y-1 text-sm text-muted-foreground">
+																<div className="text-base text-foreground">
+																	{address?.name}
+																	{address?.mobile && <span>&nbsp;-&nbsp;{address?.mobile}</span>}
 																</div>
-																<div className="text-sm text-muted-foreground">{address.phone}</div>
+																<div>{address?.address},&nbsp;
+																	{address?.landMark && <span>{address?.landMark}</span>}
+																	{address?.city},&nbsp;
+																	{address?.state} -
+																	{address?.pincode}
+																</div>{address?.street && <div>Street: {address?.street}</div>}
+
+																<div className="flex">
+																	{address?.companyName && <div>Company Name: {address?.companyName}</div>}
+																	{address?.gstin && <div>&nbsp;| GSTIN: {address?.gstin}</div>}
+																</div>
 															</div>
 														</CardContent>
 													</Card>
 												</Label>
 											</div>
+
 										))}
 									</div>
 								</RadioGroup>
 							</CardContent>
 						</Card>
+
+
+						{/* <Address /> */}
 					</div>
 
 					<BookingSummary
@@ -327,8 +254,8 @@ export default function Schedule() {
 							price: addon.price || 0
 						})) || []}
 						bookingFlow={bookingFlow}
-						selectedDate={selectedDate}
-						selectedTime={selectedTime}
+						selectedDate={dateTime?.eventDate || ''}
+						selectedTime={dateTime?.eventTime || ''}
 						selectedAddress={selectedAddress}
 						addresses={addresses}
 						onContinue={handleContinue}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import {
@@ -26,99 +26,76 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import BookingSummary from "../BookingSummary"
+import { useDispatch, useSelector } from "react-redux"
+import { getToCart, order } from "@/store/features/Purchase-slice"
+
+const paymentOptions = [
+	{
+		id: "card",
+		name: "Credit/Debit Card",
+		description: "Pay securely with your card",
+		icon: <CreditCard className="h-5 w-5" />,
+		popular: true,
+	},
+	{
+		id: "upi",
+		name: "UPI Payment",
+		description: "Pay using UPI apps like GPay, PhonePe, Paytm",
+		icon: <Smartphone className="h-5 w-5" />,
+		popular: true,
+	},
+	{
+		id: "netbanking",
+		name: "Net Banking",
+		description: "Pay directly from your bank account",
+		icon: <Wallet className="h-5 w-5" />,
+		popular: false,
+	},
+	{
+		id: "wallet",
+		name: "Digital Wallet",
+		description: "Paytm, PhonePe, Amazon Pay",
+		icon: <Wallet className="h-5 w-5" />,
+		popular: false,
+	},
+	{
+		id: "CASE",
+		name: "Offline Payment",
+		description: "Pay amount before event organized",
+		icon: <Banknote className="h-5 w-5" />,
+		popular: false,
+	},
+]
 
 export default function Payment() {
 	const params = useParams()
-	const searchParams = useSearchParams()
 	const route = useRouter();
-	const eventId = params.id
+	const dispatch = useDispatch();
 	const { toast } = useToast()
-	const eventTitle = localStorage.getItem("eventTitle");
 	const [ paymentMethod, setPaymentMethod ] = useState("")
 	const [ agreeToTerms, setAgreeToTerms ] = useState(false)
 	const [ processing, setProcessing ] = useState(false)
 
-	// Get booking details from URL params
-	const selectedTheme = searchParams.get("theme")
-	const selectedDate = searchParams.get("date")
-	const selectedTime = searchParams.get("time")
-	const selectedAddress = searchParams.get("address")
+	const decodedURL = atob(decodeURIComponent(params.ids));
+	let [ eventId, bookingId ] = decodedURL.split(":");
+	console.log("Event ID:", eventId);
+	console.log("Booking ID:", bookingId);
 
-	const basePrice = 8999
-	const themePrice =
-		selectedTheme === "frozen-princess"
-			? 500
-			: selectedTheme === "unicorn-princess"
-				? 750
-				: selectedTheme === "fairy-princess"
-					? 600
-					: selectedTheme === "royal-princess"
-						? 800
-						: selectedTheme === "mermaid-princess"
-							? 700
-							: 0
+	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
+	console.log("bookingFlow on payment-", bookingFlow)
 
-	const subtotal = basePrice + themePrice
-	const tax = Math.round(subtotal * 0.18) // 18% GST
-	const totalPrice = subtotal + tax
-
-	const paymentOptions = [
-		{
-			id: "card",
-			name: "Credit/Debit Card",
-			description: "Pay securely with your card",
-			icon: <CreditCard className="h-5 w-5" />,
-			popular: true,
-		},
-		{
-			id: "upi",
-			name: "UPI Payment",
-			description: "Pay using UPI apps like GPay, PhonePe, Paytm",
-			icon: <Smartphone className="h-5 w-5" />,
-			popular: true,
-		},
-		{
-			id: "netbanking",
-			name: "Net Banking",
-			description: "Pay directly from your bank account",
-			icon: <Wallet className="h-5 w-5" />,
-			popular: false,
-		},
-		{
-			id: "wallet",
-			name: "Digital Wallet",
-			description: "Paytm, PhonePe, Amazon Pay",
-			icon: <Wallet className="h-5 w-5" />,
-			popular: false,
-		},
-		{
-			id: "cod",
-			name: "Offline Payment",
-			description: "Pay amount before event organized",
-			icon: <Banknote className="h-5 w-5" />,
-			popular: false,
-		},
-	]
-
-	const formatDate = (dateString) => {
-		if (!dateString) return "Not selected"
-		const date = new Date(dateString)
-		return date.toLocaleDateString("en-US", {
-			weekday: "long",
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		})
-	}
+	useEffect(() => {
+		dispatch(getToCart(bookingId))
+	}, [ dispatch, bookingId ])
 
 	const handlePayment = async () => {
 		if (!paymentMethod) {
 			toast({
-				title: "Payment Method Required",
+				title: "Select Payment Method",
 				description: "Please select a payment method to continue.",
 				variant: "destructive",
 			})
-			return
+			return;
 		}
 
 		if (!agreeToTerms) {
@@ -127,40 +104,53 @@ export default function Payment() {
 				description: "Please accept the terms and conditions to proceed.",
 				variant: "destructive",
 			})
-			return
+			return;
 		}
-
-		setProcessing(true)
 
 		// Simulate payment processing
-		if (paymentMethod === "cod") {
-			toast({
-				title: "Booking Confirmed",
-				description: "Your booking has been confirmed. You can pay cash on delivery.",
-			})
-		} else {
-			toast({
-				title: "Processing Payment",
-				description: "Please wait while we process your payment...",
-			})
+		// if (paymentMethod === "CASE") {
+		// 	toast({
+		// 		title: "Booking Confirmed",
+		// 		description: "Your booking has been confirmed. You can pay cash on delivery.",
+		// 	})
+		// } else {
+		// 	toast({
+		// 		title: "Processing Payment",
+		// 		description: "Please wait while we process your payment...",
+		// 	})
+		// }
+
+		const data = {
+			cartId: bookingId,
+			paymentMethod: "CASE",
+			agreeToTerms: agreeToTerms
 		}
 
-		setTimeout(
-			() => {
-				// Navigate to success page
-				// window.location.href = `/booking/${eventId}/success?${searchParams.toString()}&payment=${paymentMethod}`
-				route.push(`/birthday/booking/${eventId}/success`)
-			},
-			paymentMethod === "cod" ? 1000 : 2000,
-		)
+		try {
+			setProcessing(true)
+			const res = await dispatch(order(data)).unwrap();
+			console.log(res);
+			if (res.status === 200) {
+				route.push(`/birthday/booking/${params.ids}/success`)
+				toast({
+					title: "Booking Confirmed",
+					description: "Your booking has been confirmed.",
+				})
+			}
+		} catch (error) {
+			console.log("Error on schedule:", error);
+			toast({ variant: "destructive", title: "Payment failed", description: error?.message || "Your Payment failed!, Please try again" });
+		} finally {
+			setProcessing(false);
+		}
 	}
 
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
-		{ name: eventTitle, href: `/birthday/details/${eventId}` },
-		{ name: 'Choose Theme', href: '/birthday/booking/1/themes' },
-		{ name: 'Date & Address', href: '/birthday/booking/1/schedule' },
+		{ name: bookingFlow?.data?.event?.title, href: `/birthday/details/${eventId}` },
+		{ name: 'Add-Ons', href: `/birthday/booking/${params.ids}/add-ons` },
+		{ name: 'Date & Address', href: `/birthday/booking/${params.ids}/schedule` },
 		{ name: 'Payment', href: '' },
 	];
 
@@ -192,7 +182,7 @@ export default function Payment() {
 				<div className="flex items-center justify-between mb-6">
 					<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20" onClick={() => route.back()}>
 						<ArrowLeft className="mr-2 h-4 w-4" />
-						Back to Date & Time
+						Back to Date & Time	
 					</Button>
 					<div className="text-sm text-muted-foreground">Step 4 of 4: Payment</div>
 				</div>
@@ -276,7 +266,7 @@ export default function Payment() {
 									</div>
 								)}
 
-								{paymentMethod === "cod" && (
+								{paymentMethod === "CASE" && (
 									<div className="mt-6 p-6 border rounded-lg bg-orange-50 dark:bg-orange-900/20">
 										<div className="flex items-center space-x-3 mb-3">
 											<Banknote className="h-5 w-5 text-orange-600" />
@@ -324,16 +314,14 @@ export default function Payment() {
 					{/* Compact Sidebar */}
 					<div className="lg:col-span-1">
 						<BookingSummary
-							selectedAddOns={[]}
-							bookingFlow={{ data: { eventTitle: eventTitle, itemTotal: basePrice } }}
-							selectedDate={selectedDate}
-							selectedTime={selectedTime}
-							selectedAddress={selectedAddress}
+							bookingFlow={bookingFlow}
+							// selectedDate={selectedDate}
+							// selectedTime={selectedTime}
+							// selectedAddress={selectedAddress}
 							addresses={[]}
-							selectedTheme={selectedTheme}
 							onContinue={handlePayment}
-							buttonText={processing ? "Processing..." : paymentMethod === "cod" ? "Confirm Booking" : `Pay ₹${totalPrice.toLocaleString()}`}
-							isLoading={processing || !paymentMethod || !agreeToTerms}
+							buttonText={processing ? "Processing..." : paymentMethod === "CASE" ? "Confirm Booking" : `Pay ₹ ${bookingFlow?.data?.itemTotal?.toLocaleString()}`}
+							// isLoading={processing || !paymentMethod || !agreeToTerms}
 							showSchedule={true}
 							showAddress={false}
 						/>

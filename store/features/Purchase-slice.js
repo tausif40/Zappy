@@ -4,7 +4,7 @@ import apiClient from "@/lib/apiClient";
 export const addToCart = createAsyncThunk("purchase/addToCart", async (data, thunkAPI) => {
 	try {
 		const response = await apiClient.post("/cart/items", data);
-		console.log(response);
+		// console.log(response);
 		if (response.status === 200) {
 			thunkAPI.dispatch(getToCart());
 		}
@@ -17,7 +17,7 @@ export const addToCart = createAsyncThunk("purchase/addToCart", async (data, thu
 export const UpdateToCart = createAsyncThunk("purchase/UpdateToCart", async (data, thunkAPI) => {
 	try {
 		const response = await apiClient.patch(`/cart/items/${id}`, data);
-		console.log(response);
+		// console.log(response);
 		if (response.status === 200) {
 			thunkAPI.dispatch(getToCart());
 		}
@@ -30,7 +30,7 @@ export const UpdateToCart = createAsyncThunk("purchase/UpdateToCart", async (dat
 export const getToCart = createAsyncThunk("purchase/getToCart", async (bookingId, thunkAPI) => {
 	try {
 		const response = await apiClient.get(`/cart/items/${bookingId}`);
-		console.log(response);
+		// console.log(response);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -48,10 +48,52 @@ export const updateToCart = createAsyncThunk("purchase/getToCart", async (data, 
 		return thunkAPI.rejectWithValue(error);
 	}
 });
+export const addAddresses = createAsyncThunk("purchase/addAddresses", async (addresses, thunkAPI) => {
+	try {
+		const response = await apiClient.post(`/users/me/addresses`, addresses);
+		// console.log(response);
+		if (response.status === 201) thunkAPI.dispatch(getAddresses())
+		return { status: response.status, data: response.data, };
+	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error);
+	}
+});
+export const getAddresses = createAsyncThunk("purchase/getAddresses", async (addresses, thunkAPI) => {
+	try {
+		const response = await apiClient.get(`/users/me/addresses`, addresses);
+		// console.log(response);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error);
+	}
+});
+export const deleteAddresses = createAsyncThunk("purchase/getAddresses", async (id, thunkAPI) => {
+	try {
+		const response = await apiClient.delete(`/users/me/addresses/${id}`);
+		if (response.status === 200) thunkAPI.dispatch(getAddresses())
+		return { status: response.status, data: response.data, };
+	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error);
+	}
+});
+export const order = createAsyncThunk("purchase/getAddresses", async (data, thunkAPI) => {
+	try {
+		const response = await apiClient.post(`/orders`, data);
+		console.log(response);
+		return { status: response.status, data: response.data, };
+	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error);
+	}
+});
 
 const initialState = {
 	cartItem: { data: [], isLoading: false, error: null },
 	bookingFlow: { data: [], isLoading: false, error: null },
+	addresses: { data: [], isLoading: false, error: null },
 };
 
 const purchaseSlice = createSlice({
@@ -99,6 +141,20 @@ const purchaseSlice = createSlice({
 			.addCase(getToCart.rejected, (state, action) => {
 				state.bookingFlow.isLoading = false;
 				state.bookingFlow.error = action.payload;
+			})
+			// addresses
+			.addCase(getAddresses.pending, (state) => {
+				state.addresses.isLoading = true;
+				state.addresses.error = null;
+			})
+			.addCase(getAddresses.fulfilled, (state, action) => {
+				state.addresses.isLoading = false;
+				state.addresses.error = null;
+				state.addresses.data = action.payload;
+			})
+			.addCase(getAddresses.rejected, (state, action) => {
+				state.addresses.isLoading = false;
+				state.addresses.error = action.payload;
 			})
 	}
 });

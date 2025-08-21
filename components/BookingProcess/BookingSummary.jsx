@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 
 function BookingSummary({
-	selectedAddOns = [],
+	// selectedAddOns = [],
 	bookingFlow = {},
 	selectedDate = null,
 	selectedTime = null,
@@ -19,24 +19,31 @@ function BookingSummary({
 	showAddress = true,
 }) {
 
+
+	const selectedAddOns = bookingFlow?.data?.addOnIds?.map(addon => ({
+		_id: addon.id,
+		name: addon.name || "Add-on",
+		price: addon.price || 0
+	})) || []
+
 	// Calculate total price
-	const basePrice = bookingFlow?.data?.selectedTierId?.price || 0
+	const basePrice = bookingFlow?.data?.discountedPrice || 0
 	const addOnsTotal = selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0) || 0
 
 	const totalPrice = basePrice + addOnsTotal
 
 	// Get selected address details
-	const selectedAddressDetails = addresses?.find(addr => addr.id.toString() === selectedAddress)
+	const selectedAddressDetails = addresses?.find(addr => addr._id === selectedAddress)
 
 	// Format date
+	console.log("selectedDate:", selectedDate);
 	const formatDate = (dateString) => {
 		if (!dateString) return null
 		const date = new Date(dateString)
-		return date.toLocaleDateString("en-US", {
-			weekday: "long",
-			year: "numeric",
-			month: "long",
+		return date.toLocaleDateString("en-GB", {
 			day: "numeric",
+			month: "short",
+			year: "numeric",
 		})
 	}
 
@@ -55,16 +62,15 @@ function BookingSummary({
 						<div className="flex items-center space-x-2">
 							<Package className="h-4 w-4 text-purple-500" />
 							{/* <h5 className="font-semibold text-sm" title={bookingFlow?.data?.event?.title}>{bookingFlow?.data?.event?.title?.substring(0, 30)}</h5> */}
-							<h5 className="font-semibold text-sm" title={bookingFlow?.data?.event?.title}>
-								{bookingFlow?.data?.event?.title?.length > 30
-									? bookingFlow?.data?.event?.title?.substring(0, 30) + "..." : bookingFlow?.data?.event?.title}
+							<h5 className="font-semibold text-sm truncate" title={bookingFlow?.data?.event?.title}>
+								{bookingFlow?.data?.event?.title}
 							</h5>
 
 						</div>
 						<div className="pl-6 space-y-2">
 							<div className="flex justify-between text-sm">
 								<span className="capitalize">{bookingFlow?.data?.eventTitle || "Event Package"}</span>
-								<span className="font-medium">₹{basePrice.toLocaleString()}</span>
+								<span className="font-medium">₹{bookingFlow?.data?.discountedPrice?.toLocaleString()}</span>
 							</div>
 						</div>
 					</div>
@@ -78,11 +84,11 @@ function BookingSummary({
 							</div>
 							<div className="pl-6 space-y-2">
 								{selectedAddOns.map((addon) => (
-									<div key={addon?._id} className="flex justify-between text-sm">
-										<span title={addon?.name} className="text-muted-foreground">
-											{addon?.name?.length > 21 ? addon?.name?.substring(0, 21) + "..." : addon?.name}
+									<div key={addon?._id} className="flex justify-between items-center gap-2 text-sm">
+										<span title={addon?.name} className="truncate text-muted-foreground">
+											{addon?.name}
 										</span>
-										<span className="text-emerald-600">+ ₹{(addon?.price || 0).toLocaleString()}</span>
+										<span className="text-emerald-600 min-w-max">+ ₹{(addon?.price || 0).toLocaleString()}</span>
 									</div>
 								))}
 							</div>
@@ -123,7 +129,7 @@ function BookingSummary({
 							<div className="pl-6 space-y-2">
 								<div className="text-sm">
 									<div className="flex items-center space-x-2 mb-1">
-										<Badge variant="secondary" className="text-xs">{selectedAddressDetails.type}</Badge>
+										<Badge variant="secondary" className="text-xs">{selectedAddressDetails.addressType}</Badge>
 										{selectedAddressDetails.isDefault && (
 											<Badge className="bg-green-100 text-green-700 border-0 text-xs">Default</Badge>
 										)}
@@ -146,7 +152,8 @@ function BookingSummary({
 					<div className="space-y-2">
 						<div className="flex justify-between text-sm">
 							<span>Package price</span>
-							<span>₹{basePrice.toLocaleString()}</span>
+							<span>₹{bookingFlow?.data?.discountedPrice?.toLocaleString()}</span>
+							{/* <span>₹{basePrice.toLocaleString()}</span> */}
 						</div>
 
 						{selectedAddOns && selectedAddOns.length > 0 && (
@@ -165,10 +172,12 @@ function BookingSummary({
 					</div>
 
 					{/* Continue Button */}
+					{/* bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 */}
 					{onContinue && (
 						<Button
 							onClick={onContinue}
-							className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700"
+							variant='highlight'
+							className="w-full"
 							disabled={isLoading}
 						>
 							{buttonText}&nbsp;

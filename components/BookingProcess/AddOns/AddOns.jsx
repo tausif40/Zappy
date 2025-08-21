@@ -115,10 +115,8 @@ export default function AddOns() {
 				route.push(`/birthday/booking/${params.ids}/schedule`)
 			}
 		} catch (error) {
-			console.log("Error adding to cart:", error);
-			if (error?.status === 401) {
-				toast({ variant: "destructive", title: "Please Login", description: "If you are already account, Signup" });
-			}
+			console.log("Error on addOns:", error);
+			toast({ variant: "destructive", title: "Error to continue", description: error?.message || "Something went wrong, Please try again" });
 		} finally {
 			setIsAddingToCart(false);
 		}

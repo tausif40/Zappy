@@ -145,6 +145,12 @@
 	}
 }
 
+.required::after {
+	content: " *";
+	color: red;
+	margin-left: 0.1rem;
+}
+
 .animate-float {
 	animation: float 6s ease-in-out infinite;
 }

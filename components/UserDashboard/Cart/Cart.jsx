@@ -348,10 +348,10 @@ export default function UserCart() {
 											<span>-₹{promoDiscount.toLocaleString()}</span>
 										</div>
 									)}
-									<div className="flex justify-between">
+									{/* <div className="flex justify-between">
 										<span className="text-muted-foreground">Taxes & Fees (18%)</span>
 										<span className="font-medium">₹{taxes.toLocaleString()}</span>
-									</div>
+									</div> */}
 									<Separator />
 									<div className="flex justify-between text-lg font-bold">
 										<span>Total</span>
