@@ -36,13 +36,17 @@ export default function Schedule() {
 
 	const decodedURL = atob(decodeURIComponent(params.ids));
 	let [ eventId, bookingId ] = decodedURL.split(":");
-	console.log("Event ID:", eventId);
-	console.log("Booking ID:", bookingId);
+	// console.log("Event ID:", eventId);
+	// console.log("Booking ID:", bookingId);
 
 	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
 	const addressesList = useSelector((state) => state.purchaseSlice?.addresses);
 	console.log("bookingFlow on schedule-", bookingFlow)
 	// console.log("addressesList-", addressesList)
+
+	useEffect(() => {
+		setSelectedAddress(bookingFlow?.data?.addressId?._id)
+	}, [ bookingFlow ])
 
 	useEffect(() => {
 		setAddresses(addressesList?.data?.addresses)
@@ -243,7 +247,6 @@ export default function Schedule() {
 							</CardContent>
 						</Card>
 
-
 						{/* <Address /> */}
 					</div>
 
@@ -254,14 +257,14 @@ export default function Schedule() {
 							price: addon.price || 0
 						})) || []}
 						bookingFlow={bookingFlow}
-						selectedDate={dateTime?.eventDate || ''}
-						selectedTime={dateTime?.eventTime || ''}
+						selectedDate={dateTime?.eventDate || bookingFlow?.data?.eventDate}
+						selectedTime={dateTime?.eventTime || bookingFlow?.data?.eventTime}
 						selectedAddress={selectedAddress}
 						addresses={addresses}
 						onContinue={handleContinue}
 						buttonText="Continue to Payment"
 						showSchedule={true}
-						showAddress={true}
+						// showAddress={true}
 					/>
 
 				</div>

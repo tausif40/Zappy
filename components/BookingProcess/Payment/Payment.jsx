@@ -27,7 +27,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import BookingSummary from "../BookingSummary"
 import { useDispatch, useSelector } from "react-redux"
-import { getToCart, order } from "@/store/features/Purchase-slice"
+import { getAddresses, getToCart, order } from "@/store/features/Purchase-slice"
 
 const paymentOptions = [
 	{
@@ -72,21 +72,35 @@ export default function Payment() {
 	const route = useRouter();
 	const dispatch = useDispatch();
 	const { toast } = useToast()
+	const [ selectedAddress, setSelectedAddress ] = useState('')
+	const [ addresses, setAddresses ] = useState([])
 	const [ paymentMethod, setPaymentMethod ] = useState("")
 	const [ agreeToTerms, setAgreeToTerms ] = useState(false)
 	const [ processing, setProcessing ] = useState(false)
 
 	const decodedURL = atob(decodeURIComponent(params.ids));
 	let [ eventId, bookingId ] = decodedURL.split(":");
-	console.log("Event ID:", eventId);
-	console.log("Booking ID:", bookingId);
+	// console.log("Event ID:", eventId);
+	// console.log("Booking ID:", bookingId);
 
 	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
+	const addressesList = useSelector((state) => state.purchaseSlice?.addresses);
 	console.log("bookingFlow on payment-", bookingFlow)
+	console.log("addressesList-", addressesList)
+
+	useEffect(() => {
+		setSelectedAddress(bookingFlow?.data?.addressId?._id)
+	}, [ bookingFlow ])
+
+	useEffect(() => {
+		setAddresses(addressesList?.data?.addresses)
+	}, [ addressesList ])
 
 	useEffect(() => {
 		dispatch(getToCart(bookingId))
+		dispatch(getAddresses())
 	}, [ dispatch, bookingId ])
+
 
 	const handlePayment = async () => {
 		if (!paymentMethod) {
@@ -182,7 +196,7 @@ export default function Payment() {
 				<div className="flex items-center justify-between mb-6">
 					<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20" onClick={() => route.back()}>
 						<ArrowLeft className="mr-2 h-4 w-4" />
-						Back to Date & Time	
+						Back to Date & Time
 					</Button>
 					<div className="text-sm text-muted-foreground">Step 4 of 4: Payment</div>
 				</div>
@@ -314,11 +328,16 @@ export default function Payment() {
 					{/* Compact Sidebar */}
 					<div className="lg:col-span-1">
 						<BookingSummary
+							selectedAddOns={bookingFlow?.data?.addOnIds?.map(addon => ({
+								_id: addon.id,
+								name: addon.name || "Add-on",
+								price: addon.price || 0
+							})) || []}
 							bookingFlow={bookingFlow}
-							// selectedDate={selectedDate}
-							// selectedTime={selectedTime}
-							// selectedAddress={selectedAddress}
-							addresses={[]}
+							selectedDate={bookingFlow?.data?.eventDate}
+							selectedTime={bookingFlow?.data?.eventTime}
+							selectedAddress={selectedAddress}
+							addresses={addresses}
 							onContinue={handlePayment}
 							buttonText={processing ? "Processing..." : paymentMethod === "CASE" ? "Confirm Booking" : `Pay ₹ ${bookingFlow?.data?.itemTotal?.toLocaleString()}`}
 							// isLoading={processing || !paymentMethod || !agreeToTerms}
@@ -327,10 +346,10 @@ export default function Payment() {
 						/>
 
 						{/* Security Notice */}
-						<div className="mt-3 flex items-center justify-center space-x-2 text-xs text-muted-foreground">
+						{/* <div className="mt-3 flex items-center justify-center space-x-2 text-xs text-muted-foreground">
 							<Lock className="h-3 w-3" />
 							<span>Secure & encrypted</span>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

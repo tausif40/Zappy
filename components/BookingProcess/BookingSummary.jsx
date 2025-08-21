@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ArrowRight, Calendar, Clock, MapPin, Package, Plus, LoaderCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 
 function BookingSummary({
-	// selectedAddOns = [],
+	selectedAddOns = [],
 	bookingFlow = {},
 	selectedDate = null,
 	selectedTime = null,
@@ -16,15 +16,8 @@ function BookingSummary({
 	isLoading = false,
 	buttonText = "Continue",
 	showSchedule = true,
-	showAddress = true,
+	// showAddress = true,
 }) {
-
-
-	const selectedAddOns = bookingFlow?.data?.addOnIds?.map(addon => ({
-		_id: addon.id,
-		name: addon.name || "Add-on",
-		price: addon.price || 0
-	})) || []
 
 	// Calculate total price
 	const basePrice = bookingFlow?.data?.discountedPrice || 0
@@ -34,9 +27,15 @@ function BookingSummary({
 
 	// Get selected address details
 	const selectedAddressDetails = addresses?.find(addr => addr._id === selectedAddress)
+	console.log("addresses:", addresses);
+	console.log("selectedAddress:", selectedAddress);
+	console.log("selectedAddressDetails:", selectedAddressDetails);
+
+	useEffect(() => {
+
+	}, [])
 
 	// Format date
-	console.log("selectedDate:", selectedDate);
 	const formatDate = (dateString) => {
 		if (!dateString) return null
 		const date = new Date(dateString)
@@ -119,8 +118,7 @@ function BookingSummary({
 						</div>
 					)}
 
-
-					{showAddress && selectedAddressDetails && (
+					{selectedAddressDetails && (
 						<div className="space-y-3">
 							<div className="flex items-center space-x-2">
 								<MapPin className="h-4 w-4 text-red-500" />
