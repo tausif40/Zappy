@@ -29,7 +29,7 @@ export default function Success() {
 	const searchParams = useSearchParams()
 	const eventId = params.id
 	const { toast } = useToast()
-
+	const [ isVendor, setIsVendor ] = useState(false)
 	// Get booking details from URL params
 	const selectedTheme = searchParams.get("theme")
 	const selectedDate = searchParams.get("date")
@@ -41,31 +41,9 @@ export default function Success() {
 	const [ bookingId ] = useState(() => `ZAP${Date.now().toString().slice(-6)}`)
 
 	const basePrice = 8999
-	const themePrice =
-		selectedTheme === "frozen-princess"
-			? 500
-			: selectedTheme === "unicorn-princess"
-				? 750
-				: selectedTheme === "fairy-princess"
-					? 600
-					: selectedTheme === "royal-princess"
-						? 800
-						: selectedTheme === "mermaid-princess"
-							? 700
-							: 0
 
-	const subtotal = basePrice + themePrice
-	const tax = Math.round(subtotal * 0.18)
-	const totalPrice = subtotal + tax
-
-	const themeNames = {
-		"classic-princess": "Classic Princess",
-		"frozen-princess": "Frozen Princess",
-		"unicorn-princess": "Unicorn Princess",
-		"fairy-princess": "Fairy Princess",
-		"royal-princess": "Royal Princess",
-		"mermaid-princess": "Mermaid Princess",
-	}
+	const subtotal = basePrice
+	const totalPrice = subtotal
 
 	const paymentMethodNames = {
 		card: "Credit/Debit Card",
@@ -96,11 +74,10 @@ export default function Success() {
 
 	const handleShare = () => {
 		const shareText = `🎉 My princess party is booked with Zappy! 
-Booking ID: ${bookingId}
-Date: ${formatDate(selectedDate)} at ${selectedTime}
-Theme: ${themeNames[ selectedTheme ] || selectedTheme}
-
-Book your events at Zappy.com`
+			Booking ID: ${bookingId}
+			Date: ${formatDate(selectedDate)} at ${selectedTime}
+			
+			Book your events at Zappy.com`
 
 		if (navigator.share) {
 			navigator.share({
@@ -178,19 +155,6 @@ Book your events at Zappy.com`
 												</div>
 											</div>
 										</div>
-
-										<div>
-											<h3 className="font-semibold text-purple-600 mb-2">Theme Selected</h3>
-											<div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-												<div className="font-medium">
-													{/* {themeNames[ selectedTheme ] || selectedTheme} */}
-													Classic Princess
-												</div>
-												{themePrice > 0 && (
-													<div className="text-sm text-muted-foreground">+₹{themePrice.toLocaleString()}</div>
-												)}
-											</div>
-										</div>
 									</div>
 
 									<div className="space-y-4">
@@ -200,16 +164,6 @@ Book your events at Zappy.com`
 												<div className="flex justify-between text-sm">
 													<span>Base Package</span>
 													<span>₹{basePrice.toLocaleString()}</span>
-												</div>
-												{themePrice > 0 && (
-													<div className="flex justify-between text-sm">
-														<span>Theme Upgrade</span>
-														<span>+₹{themePrice.toLocaleString()}</span>
-													</div>
-												)}
-												<div className="flex justify-between text-sm">
-													<span>GST (18%)</span>
-													<span>₹{tax.toLocaleString()}</span>
 												</div>
 												<Separator />
 												<div className="flex justify-between font-semibold">
@@ -298,16 +252,16 @@ Book your events at Zappy.com`
 										<Share2 className="mr-2 h-4 w-4" />
 										Share Booking
 									</Button>
-									<Button variant="outline" className="w-full justify-start">
+									{/* <Button variant="outline" className="w-full justify-start">
 										<MessageCircle className="mr-2 h-4 w-4" />
 										Chat with Vendor
-									</Button>
+									</Button> */}
 								</div>
 							</CardContent>
 						</Card>
 
 						{/* Vendor Contact */}
-						<Card className="border-0 shadow">
+						{isVendor && <Card className="border-0 shadow">
 							<CardContent className="p-6">
 								<h3 className="font-semibold mb-4">Vendor Contact</h3>
 								<div className="space-y-3">
@@ -330,12 +284,12 @@ Book your events at Zappy.com`
 									</div>
 								</div>
 							</CardContent>
-						</Card>
+						</Card>}
 
 						{/* Support */}
 						<Card className="border-0 shadow">
 							<CardContent className="p-6">
-								<h3 className="font-semibold mb-4">Need Help?</h3>
+								<h3 className="font-semibold mb-2">Need Help?</h3>
 								<div className="space-y-3">
 									<p className="text-sm text-muted-foreground">
 										Our customer support team is here to help you with any questions or concerns.

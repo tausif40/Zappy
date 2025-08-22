@@ -144,7 +144,7 @@ export default function Payment() {
 			setProcessing(true)
 			const res = await dispatch(order(data)).unwrap();
 			console.log(res);
-			if (res.status === 200) {
+			if (res.status === 201) {
 				route.push(`/birthday/booking/${params.ids}/success`)
 				toast({
 					title: "Booking Confirmed",
