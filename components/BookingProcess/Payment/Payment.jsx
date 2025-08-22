@@ -131,8 +131,9 @@ export default function Payment() {
 			setProcessing(true)
 			const res = await dispatch(order(data)).unwrap();
 			console.log(res);
+			console.log("id-", res?.data?.id);
 			if (res.status === 201) {
-				const id = encodeURIComponent(btoa(`${res?.data?.data?.id}`));
+				const id = encodeURIComponent(btoa(`${res?.data?.id}`));
 				route.push(`/birthday/booking/${id}/success`)
 				toast({
 					title: "Booking Confirmed",

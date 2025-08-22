@@ -21,10 +21,20 @@ export default function Success() {
 	const [ isVendor, setIsVendor ] = useState(false)
 	const [ orderDetails, setOrderDetails ] = useState([])
 
-	const bookingId = atob(decodeURIComponent(params.id));
+	const safeAtob = (str) => {
+		try {
+			return atob(str);
+		} catch (e) {
+			console.error("Invalid Base64:", str, e);
+			return null;
+		}
+	};
+
+	const bookingId = safeAtob(decodeURIComponent(params.id));
+	console.log("params.id- ", params.id);
+	console.log("bookingId- ", bookingId);
 
 	const orderedData = useSelector((state) => state.purchaseSlice?.orderDetails);
-	console.log("bookingId- ", bookingId);
 	console.log("orderedData- ", orderedData);
 
 	useEffect(() => {
@@ -48,17 +58,6 @@ export default function Success() {
 		netbanking: "Net Banking",
 		wallet: "Digital Wallet",
 		cod: "Cash on Delivery",
-	}
-
-	const formatDate = (dateString) => {
-		if (!dateString) return "Not selected"
-		const date = new Date(dateString)
-		return date.toLocaleDateString("en-GB", {
-			weekday: "long",
-			day: "numeric",
-			month: "long",
-			year: "numeric",
-		}).replace(/(\w+)\s/, "$1, ")
 	}
 
 	const handleCopyBookingId = () => {

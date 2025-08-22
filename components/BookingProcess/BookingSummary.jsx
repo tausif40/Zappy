@@ -27,13 +27,9 @@ function BookingSummary({
 
 	// Get selected address details
 	const selectedAddressDetails = addresses?.find(addr => addr._id === selectedAddress)
-	console.log("addresses:", addresses);
-	console.log("selectedAddress:", selectedAddress);
-	console.log("selectedAddressDetails:", selectedAddressDetails);
-
-	useEffect(() => {
-
-	}, [])
+	// console.log("addresses:", addresses);
+	// console.log("selectedAddress:", selectedAddress);
+	// console.log("selectedAddressDetails:", selectedAddressDetails);
 
 	// Format date
 	const formatDate = (dateString) => {
