@@ -228,3 +228,24 @@
 .swiper-button-next {
 	display: none !important;
 }
+
+.product-img {
+	width: 100%;
+	height: 380px;
+	object-fit: cover;
+	border-radius: 10px;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+	cursor: pointer;
+}
+
+@media (max-width: 768px) {
+	.responsive-img {
+		height: 280px;
+	}
+}
+
+@media (max-width: 480px) {
+	.responsive-img {
+		height: 200px;
+	}
+}

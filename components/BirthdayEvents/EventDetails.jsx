@@ -52,6 +52,7 @@ export default function EventDetails() {
 	const [ event, setEvent ] = useState([]);
 
 	const birthdayEventDetails = useSelector((state) => state.event.birthdayEventDetails);
+	// console.log("event details - ", birthdayEventDetails?.data?.event);	
 
 	useEffect(() => {
 		setEvent(birthdayEventDetails?.data?.event || [])
@@ -61,7 +62,6 @@ export default function EventDetails() {
 		dispatch(getBirthdayEventDetails(eventId))
 	}, [ eventId, dispatch ]);
 
-	// console.log("event details - ", event);
 
 	const getAgeGroupText = (age) => {
 		const group = ageGroups.find((item) => item.id === age);
@@ -125,7 +125,7 @@ export default function EventDetails() {
 
 			</div>
 
-			<div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+			<div className="container mx-auto px-1 sm:px-3 md:px-6 lg:px-8 pt-8 pb-16">
 				{/* Header */}
 				<div className="flex items-center justify-between mb-6">
 					<Link href="/birthday">
@@ -154,11 +154,11 @@ export default function EventDetails() {
 									</Badge>
 								}
 								<Gallery images={birthdayEventDetails?.data?.event?.banner} />
-								<div className="px-8 py-6">
+								<div className="px-4 md:px-8 py-6">
 									<div className="flex items-start justify-between mb-6">
 										<div>
 											<h1 className="text-3xl font-bold text-foreground mb-2">{event?.title}</h1>
-											<div className="flex items-center space-x-4 text-muted-foreground">
+											<div className="flex items-center flex-wrap gap-4 text-muted-foreground">
 												<div className="flex items-center">
 													<MapPin className="h-4 w-4 mr-1" />
 													{event?.city}
@@ -172,6 +172,7 @@ export default function EventDetails() {
 													<Clock className="h-4 w-4 mr-1" />
 													{event?.duration} Hours
 												</div>
+												<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">{guist} persons</Badge>
 											</div>
 										</div>
 										<div className="text-muted-foreground hover:text-red-500">
@@ -179,7 +180,7 @@ export default function EventDetails() {
 										</div>
 									</div>
 
-									<div className="flex items-center space-x-2 mb-6">
+									<div className="flex items-center space-x-2">
 										{event?.rating > 0 &&
 											<div className="flex items-center">
 												<Star className="h-5 w-5 text-yellow-400 fill-current" />
@@ -187,13 +188,16 @@ export default function EventDetails() {
 												<span className="ml-1 text-muted-foreground">({event?.reviews} reviews)</span>
 											</div>
 										}
-										<div>
+										{/* <div>
 											Max Guests: &nbsp;
-											<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">{guist} persons</Badge>
-										</div>
+										</div> */}
 									</div>
 
-									<p className="text-muted-foreground leading-relaxed mb-6">{event?.description}</p>
+									<div className="lg:hidden">
+										<EventsPlan event={event?.tiers} discount={event?.discount} guist={setGuist} />
+									</div>
+
+									<p className="text-muted-foreground leading-relaxed mb-6 mt-10 lg:mt-0">{event?.description}</p>
 
 									<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 										{event?.tiers?.map((tier) => {
@@ -235,8 +239,9 @@ export default function EventDetails() {
 
 					{/* Sidebar */}
 					<div className="space-y-6 lg:col-span-2  sticky top-24 ">
-						<EventsPlan event={event?.tiers} discount={event?.discount} guist={setGuist} />
-
+						<div className="hidden lg:block">
+							<EventsPlan event={event?.tiers} discount={event?.discount} guist={setGuist} />
+						</div>
 
 						{/* Safety Features */}
 						<Card className="shadow">

@@ -41,16 +41,19 @@ const Gallery = ({ images }) => {
   if (!images || images.length === 0) {
     return (
       <div style={{ padding: 16 }} className='bg-slate-50'>
-        <div style={{
-          width: '100%',
-          height: 380,
-          background: '#f3f3f3',
-          borderRadius: 8,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#666'
-        }}>
+        <div
+          // style={{
+          //   width: '100%',
+          //   height: 380,
+          //   background: '#f3f3f3',
+          //   borderRadius: 8,
+          //   display: 'flex',
+          //   alignItems: 'center',
+          //   justifyContent: 'center',
+          //   color: '#666'
+          // }}
+          className="w-full h-[380px] bg-gray-100 rounded-lg flex items-center justify-center text-gray-500"
+        >
           No images available
         </div>
       </div>
@@ -90,14 +93,15 @@ const Gallery = ({ images }) => {
             <img
               src={images[ selectedImageIndex ]}
               alt="Main"
-              style={{
-                width: '100%',
-                height: 380,
-                objectFit: 'cover',
-                borderRadius: 10,
-                boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-                cursor: 'pointer'
-              }}
+              // style={{
+              //   width: '100%',
+              //   height: 380,
+              //   objectFit: 'cover',
+              //   borderRadius: 10,
+              //   boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+              //   cursor: 'pointer'
+              // }}
+              className="w-full md:h-[380px] h-[240px] object-cover rounded-lg shadow-lg cursor-pointer"
             />
           </PhotoView>
 
@@ -107,25 +111,26 @@ const Gallery = ({ images }) => {
               {/* Previous button */}
               <button
                 onClick={goToPrevious}
-                style={{
-                  position: 'absolute',
-                  left: 10,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'rgba(0, 0, 0, 0.4)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '50%',
-                  width: 36,
-                  height: 36,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  transition: 'all 0.2s ease',
-                  zIndex: 10
-                }}
+                // style={{
+                //   position: 'absolute',
+                //   left: 10,
+                //   top: '50%',
+                //   transform: 'translateY(-50%)',
+                //   background: 'rgba(0, 0, 0, 0.4)',
+                //   color: 'white',
+                //   border: 'none',
+                //   borderRadius: '50%',
+                //   width: 36,
+                //   height: 36,
+                //   cursor: 'pointer',
+                //   display: 'flex',
+                //   alignItems: 'center',
+                //   justifyContent: 'center',
+                //   fontSize: '24px',
+                //   transition: 'all 0.2s ease',
+                //   zIndex: 10
+                // }}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full w-9 h-9 flex items-center justify-center text-2xl transition duration-200 hover:bg-black/80 hover:scale-110 z-10"
                 onMouseEnter={(e) => {
                   e.target.style.background = 'rgba(0, 0, 0, 0.8)';
                   e.target.style.transform = 'translateY(-50%) scale(1.1)';
@@ -141,25 +146,26 @@ const Gallery = ({ images }) => {
               {/* Next button */}
               <button
                 onClick={goToNext}
-                style={{
-                  position: 'absolute',
-                  right: 10,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'rgba(0, 0, 0, 0.4)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '50%',
-                  width: 36,
-                  height: 36,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  transition: 'all 0.2s ease',
-                  zIndex: 10
-                }}
+                // style={{
+                //   position: 'absolute',
+                //   right: 10,
+                //   top: '50%',
+                //   transform: 'translateY(-50%)',
+                //   background: 'rgba(0, 0, 0, 0.4)',
+                //   color: 'white',
+                //   border: 'none',
+                //   borderRadius: '50%',
+                //   width: 36,
+                //   height: 36,
+                //   cursor: 'pointer',
+                //   display: 'flex',
+                //   alignItems: 'center',
+                //   justifyContent: 'center',
+                //   fontSize: '24px',
+                //   transition: 'all 0.2s ease',
+                //   zIndex: 10
+                // }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full w-9 h-9 flex items-center justify-center text-2xl transition duration-200 hover:bg-black/80 hover:scale-110 z-10"
                 onMouseEnter={(e) => {
                   e.target.style.background = 'rgba(0, 0, 0, 0.8)';
                   e.target.style.transform = 'translateY(-50%) scale(1.1)';
@@ -173,17 +179,20 @@ const Gallery = ({ images }) => {
               </button>
 
               {/* Image counter */}
-              <div style={{
-                position: 'absolute',
-                bottom: 10,
-                right: 10,
-                background: 'rgba(0, 0, 0, 0.6)',
-                color: 'white',
-                padding: '4px 8px',
-                borderRadius: 12,
-                fontSize: '12px',
-                fontWeight: '500'
-              }}>
+              <div
+                // style={{
+                //   position: 'absolute',
+                //   bottom: 10,
+                //   right: 10,
+                //   background: 'rgba(0, 0, 0, 0.6)',
+                //   color: 'white',
+                //   padding: '4px 8px',
+                //   borderRadius: 12,
+                //   fontSize: '12px',
+                //   fontWeight: '500'
+                // }}
+                className="absolute bottom-2 right-2 bg-black/60 text-white px-2 py-1 rounded-lg text-xs font-medium"
+              >
                 {selectedImageIndex + 1} / {images.length}
               </div>
             </>
@@ -201,16 +210,17 @@ const Gallery = ({ images }) => {
                 <img
                   src={img}
                   alt={`thumb-${idx}`}
-                  style={{
-                    width: 140,
-                    height: 80,
-                    objectFit: 'cover',
-                    borderRadius: 8,
-                    background: '#f3f3f3',
-                    cursor: 'pointer',
-                    border: idx === selectedImageIndex ? '3px solid #db2777' : '0px solid transparent',
-                    transition: 'all 0.2s ease'
-                  }}
+                  // style={{
+                  //   width: 140,
+                  //   height: 80,
+                  //   objectFit: 'cover',
+                  //   borderRadius: 8,
+                  //   background: '#f3f3f3',
+                  //   cursor: 'pointer',
+                  //   border: idx === selectedImageIndex ? '3px solid #db2777' : '0px solid transparent',
+                  //   transition: 'all 0.2s ease'
+                  // }}
+                  className={`lg:w-[140px] lg:h-[80px] sm:w-[110px] sm:h-[65px] w-[90px] h-[55px] object-cover rounded-md bg-gray-100 cursor-pointer transition-all duration-200 ${idx === selectedImageIndex ? 'ring-2 ring-pink-600' : ''}`}
                 />
               </div>
             ))}

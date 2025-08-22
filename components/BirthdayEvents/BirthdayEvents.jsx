@@ -307,53 +307,56 @@ export default function BirthdayEvents() {
 													{event?.duration} hour
 												</div>
 											</div>
-											<CardContent className="px-5 pt-3">
 
-												<Link href={`/birthday/details/${event?._id}`}>
-													<h3 className="text-xl font-semibold text-gray-800 hover:text-blue-800 transition-all dark:text-white mb-1 line-clamp-1 cursor-pointer capitalize">{event?.title}</h3>
-												</Link>
-												<p className="text-muted-foreground text-sm mb-3 line-clamp-2">{event?.description}</p>
+											<CardContent className="px-5 pt-3 flex flex-col justify-between">
+												<div className="">
+													<Link href={`/birthday/details/${event?._id}`}>
+														<h3 className="text-xl font-semibold text-gray-800 hover:text-blue-800 transition-all dark:text-white mb-1 line-clamp-1 cursor-pointer capitalize">{event?.title}</h3>
+													</Link>
+													<p className="text-muted-foreground text-sm mb-3 line-clamp-2">{event?.description}</p>
 
-												<div className="flex items-center justify-between mb-2">
-													{/* <Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badbar> */}
-													<div className="text-right flex gap-2 items-baseline">
-														<p className="text-2xl font-semibold text-gray-800">₹ </p>
-														<span className="text-xl font-bold text-purple-600">{getDiscountedPrice(event?.tiers[ 0 ]?.price, event?.discount)}</span>
-														{event?.discount > 0 && <div className="text-sm text-muted-foreground line-through">{event?.tiers[ 0 ]?.price}</div>}
-													</div>
-													{/* <div className="bg-black/70 text-white px-2 py-1 rounded text-xs">
+													<div className="flex items-center justify-between mb-2">
+														{/* <Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badbar> */}
+														<div className="text-right flex gap-2 items-baseline">
+															<p className="text-2xl font-semibold text-gray-800">₹ </p>
+															<span className="text-xl font-bold text-purple-600">{getDiscountedPrice(event?.tiers[ 0 ]?.price, event?.discount)}</span>
+															{event?.discount > 0 && <div className="text-sm text-muted-foreground line-through">{event?.tiers[ 0 ]?.price}</div>}
+														</div>
+														{/* <div className="bg-black/70 text-white px-2 py-1 rounded text-xs">
 												{event.time}
 											</div> */}
-													{event?.discount > 0 && <Badge className="bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
-												</div>
-
-
-												<div className="flex items-center justify-between mb-3">
-													<div className="flex items-center text-sm text-muted-foreground">
-														<Users className="h-3 w-3 mr-1 text-purple-600" />
-														<span className="font-semibold">Age:&nbsp;</span> {getAgeGroupText(event?.ageGroup)}
+														{event?.discount > 0 && <Badge className="bg-green-500 text-white border-0">{event?.discount}% OFF</Badge>}
 													</div>
-													{event?.rating > 0 && <div className="flex items-center">
-														<Star className="h-4 w-4 text-yellow-400 fill-current" />
-														<span className="ml-1 font-medium text-sm">{event?.rating}</span>
-														<span className="ml-1 text-xs text-muted-foreground">({event?.reviews})</span>
-													</div>}
+
+
+													<div className="flex items-center justify-between mb-3">
+														<div className="flex items-center text-sm text-muted-foreground">
+															<Users className="h-3 w-3 mr-1 text-purple-600" />
+															<span className="font-semibold">Age:&nbsp;</span> {getAgeGroupText(event?.ageGroup)}
+														</div>
+														{event?.rating > 0 && <div className="flex items-center">
+															<Star className="h-4 w-4 text-yellow-400 fill-current" />
+															<span className="ml-1 font-medium text-sm">{event?.rating}</span>
+															<span className="ml-1 text-xs text-muted-foreground">({event?.reviews})</span>
+														</div>}
+													</div>
+
+													<div className="space-y-2">
+														{event?.tiers[ 0 ]?.features?.slice(0, 3).map((option, i) => (
+															<div key={i} className="flex text-muted-foreground items-center text-sm">
+																<Check className="w-4 h-4 mr-2 text-green-500" />
+																{option}
+															</div>
+														))}
+
+														{event?.options?.length > 3 && (
+															<div className="flex text-primary hover:text-purple-600 cursor-pointer text-sm">
+																+{event?.options.length - 3} more features
+															</div>
+														)}
+													</div>
 												</div>
 
-												<div className="space-y-2">
-													{event?.tiers[ 0 ]?.features?.slice(0, 3).map((option, i) => (
-														<div key={i} className="flex text-muted-foreground items-center text-sm">
-															<Check className="w-4 h-4 mr-2 text-green-500" />
-															{option}
-														</div>
-													))}
-
-													{event?.options?.length > 3 && (
-														<div className="flex text-primary hover:text-purple-600 cursor-pointer text-sm">
-															+{event?.options.length - 3} more features
-														</div>
-													)}
-												</div>
 												<div className="flex gap-2 mt-4 w-full">
 													<Button variant="outline" className="w-10 h-10 flex items-center justify-center">
 														<Heart className="h-4 w-4 text-muted-foreground" />
@@ -365,7 +368,6 @@ export default function BirthdayEvents() {
 														</Button>
 													</Link>
 												</div>
-
 											</CardContent>
 										</Card>
 									))

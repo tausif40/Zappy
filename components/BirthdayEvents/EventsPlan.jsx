@@ -106,7 +106,7 @@ function EventsPlan({ event, discount, guist }) {
 								<button
 									key={tier?.name}
 									onClick={() => setSelected(tier?.name)}
-									className={`flex-1 p-4 rounded-xl border  ${selected === tier?.name ? selectedPlanData?.color : "border-border"}`}
+									className={`flex-1 p-3 md:p-4 rounded-xl border  ${selected === tier?.name ? selectedPlanData?.color : "border-border"}`}
 								>
 									<div className="text-lg font-semibold capitalize">{tier?.name}</div>
 									<div className="text-sm text-muted-foreground">{tierPlanData?.subtitle}</div>

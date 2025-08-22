@@ -35,12 +35,14 @@ export default function AddOns() {
 	const category = useSelector((state) => state.addOnsSlice?.category);
 	const addonsList = useSelector((state) => state.addOnsSlice?.addons);
 	const bookingFlow = useSelector((state) => state.purchaseSlice?.bookingFlow);
+	const birthdayEventDetails = useSelector((state) => state.event.birthdayEventDetails);
+	console.log("event details - ", birthdayEventDetails?.data?.event);
 
 	const isLoading = !category?.data || !addonsList?.data?.results;
 	const hasError = category?.error || addonsList?.error;
 
 	console.log("bookingFlow on addons-", bookingFlow)
-	console.log("addOnIds-", bookingFlow?.data?.addOnIds)
+	// console.log("addOnIds-", bookingFlow?.data?.addOnIds)
 
 	useEffect(() => {
 		dispatch(getCategory())
