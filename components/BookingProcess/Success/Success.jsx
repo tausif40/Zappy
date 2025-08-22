@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { CheckCircle, Calendar, Clock, MapPin, Download, Share2, MessageCircle, Phone, Mail, Home, Star, Copy } from "lucide-react"
+import { CheckCircle, Calendar, Clock, MapPin, Download, Share2, MessageCircle, Phone, Mail, Home, Star, Copy, Package, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -21,18 +21,7 @@ export default function Success() {
 	const [ isVendor, setIsVendor ] = useState(false)
 	const [ orderDetails, setOrderDetails ] = useState([])
 
-	const safeAtob = (str) => {
-		try {
-			return atob(str);
-		} catch (e) {
-			console.error("Invalid Base64:", str, e);
-			return null;
-		}
-	};
-
-	const bookingId = safeAtob(decodeURIComponent(params.id));
-	console.log("params.id- ", params.id);
-	console.log("bookingId- ", bookingId);
+	const bookingId = atob(decodeURIComponent(params.ids));
 
 	const orderedData = useSelector((state) => state.purchaseSlice?.orderDetails);
 	console.log("orderedData- ", orderedData);
@@ -47,10 +36,10 @@ export default function Success() {
 
 	console.log("orderDetails-", orderDetails);
 
-	const basePrice = 8999
+	// const basePrice = bookingFlow?.data?.discountedPrice || 0
+	// const addOnsTotal = selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0) || 0
 
-	const subtotal = basePrice
-	const totalPrice = subtotal
+	// const totalPrice = basePrice + addOnsTotal
 
 	const paymentMethodNames = {
 		card: "Credit/Debit Card",
@@ -122,7 +111,7 @@ export default function Success() {
 										<Badge className="bg-green-100 text-green-700 border-0">Confirmed</Badge>
 										<Button variant="ghost" size="sm" onClick={handleCopyBookingId}>
 											<Copy className="h-4 w-4 mr-1" />
-											{bookingId}
+											{orderDetails?.orderNumber?.split("-").pop()}
 										</Button>
 									</div>
 								</div>
@@ -156,15 +145,47 @@ export default function Success() {
 									<div className="space-y-4">
 										<div>
 											<h3 className="font-semibold text-purple-600 mb-2">Payment Details</h3>
-											<div className="space-y-2">
-												<div className="flex justify-between text-sm">
-													<span>Base Package</span>
-													<span>₹{basePrice.toLocaleString()}</span>
+
+											<div className="space-y-2 mb-2">
+												<div className="flex items-center space-x-2">
+													<Package className="h-4 w-4 text-purple-500" />
+													{/* <h5 className="font-semibold text-sm" title={bookingFlow?.data?.event?.title}>{bookingFlow?.data?.event?.title?.substring(0, 30)}</h5> */}
+													<h5 className="font-semibold text-sm truncate" title={orderDetails?.event?.title}>
+														{orderDetails?.event?.title}
+													</h5>
 												</div>
+												<div className="pl-6 space-y-2">
+													<div className="flex justify-between text-sm">
+														<span className="capitalize">{orderDetails?.selectedTier?.name || "Package"}</span>
+														<span className="font-medium">₹{orderDetails?.discountedPrice?.toLocaleString()}</span>
+													</div>
+												</div>
+											</div>
+
+											{orderDetails?.addOns?.length > 0 && (
+												<div className="space-y-2">
+													<div className="flex items-center space-x-2">
+														<Plus className="h-4 w-4 text-emerald-500" />
+														<h5 className="font-medium text-sm">Add-ons</h5>
+													</div>
+													<div className="pl-6 space-y-2">
+														{orderDetails?.addOns?.map((addon) => (
+															<div key={addon?._id} className="flex justify-between items-center gap-2 text-sm">
+																<span title={addon?.name} className="truncate text-muted-foreground">
+																	{addon?.name}
+																</span>
+																<span className="text-emerald-600 min-w-max">+ ₹{(addon?.price || 0).toLocaleString()}</span>
+															</div>
+														))}
+													</div>
+												</div>
+											)}
+
+											<div className="mt-2">
 												<Separator />
-												<div className="flex justify-between font-semibold">
+												<div className="flex justify-between font-semibold mt-2">
 													<span>Total Paid</span>
-													<span className="text-green-600">₹{totalPrice.toLocaleString()}</span>
+													<span className="text-green-600">₹{orderDetails?.itemTotal?.toLocaleString()}</span>
 												</div>
 											</div>
 										</div>

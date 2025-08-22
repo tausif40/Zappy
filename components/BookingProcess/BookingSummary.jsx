@@ -64,7 +64,7 @@ function BookingSummary({
 						</div>
 						<div className="pl-6 space-y-2">
 							<div className="flex justify-between text-sm">
-								<span className="capitalize">{bookingFlow?.data?.eventTitle || "Event Package"}</span>
+								<span className="capitalize">{bookingFlow?.data?.eventTitle || "Package"}</span>
 								<span className="font-medium">₹{bookingFlow?.data?.discountedPrice?.toLocaleString()}</span>
 							</div>
 						</div>
