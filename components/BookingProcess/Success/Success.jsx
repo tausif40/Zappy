@@ -1,44 +1,41 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useParams, useSearchParams } from "next/navigation"
-import {
-	CheckCircle,
-	Calendar,
-	Clock,
-	MapPin,
-	Download,
-	Share2,
-	MessageCircle,
-	Phone,
-	Mail,
-	Home,
-	Star,
-	Copy,
-} from "lucide-react"
-
+import { useParams } from "next/navigation"
+import { CheckCircle, Calendar, Clock, MapPin, Download, Share2, MessageCircle, Phone, Mail, Home, Star, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
+import { useDispatch, useSelector } from "react-redux"
+import moment from 'moment';
+import { getOrderDetails } from "@/store/features/Purchase-slice"
+
 
 export default function Success() {
 	const params = useParams()
-	const searchParams = useSearchParams()
-	const eventId = params.id
+	const dispatch = useDispatch();
 	const { toast } = useToast()
 	const [ isVendor, setIsVendor ] = useState(false)
-	// Get booking details from URL params
-	const selectedTheme = searchParams.get("theme")
-	const selectedDate = searchParams.get("date")
-	const selectedTime = searchParams.get("time")
-	const selectedAddress = searchParams.get("address")
-	const paymentMethod = searchParams.get("payment")
+	const [ orderDetails, setOrderDetails ] = useState([])
 
-	// Generate booking ID
-	const [ bookingId ] = useState(() => `ZAP${Date.now().toString().slice(-6)}`)
+	const bookingId = atob(decodeURIComponent(params.id));
+
+	const orderedData = useSelector((state) => state.purchaseSlice?.orderDetails);
+	console.log("bookingId- ", bookingId);
+	console.log("orderedData- ", orderedData);
+
+	useEffect(() => {
+		setOrderDetails(orderedData?.data)
+	}, [ orderedData ]);
+
+	useEffect(() => {
+		dispatch(getOrderDetails(bookingId))
+	}, [ dispatch, bookingId ]);
+
+	console.log("orderDetails-", orderDetails);
 
 	const basePrice = 8999
 
@@ -56,12 +53,12 @@ export default function Success() {
 	const formatDate = (dateString) => {
 		if (!dateString) return "Not selected"
 		const date = new Date(dateString)
-		return date.toLocaleDateString("en-US", {
+		return date.toLocaleDateString("en-GB", {
 			weekday: "long",
-			year: "numeric",
-			month: "long",
 			day: "numeric",
-		})
+			month: "long",
+			year: "numeric",
+		}).replace(/(\w+)\s/, "$1, ")
 	}
 
 	const handleCopyBookingId = () => {
@@ -75,7 +72,7 @@ export default function Success() {
 	const handleShare = () => {
 		const shareText = `🎉 My princess party is booked with Zappy! 
 			Booking ID: ${bookingId}
-			Date: ${formatDate(selectedDate)} at ${selectedTime}
+			Date: ${moment(selectedDate).format("dddd, D MMMM YYYY")} at ${selectedTime}
 			
 			Book your events at Zappy.com`
 
@@ -139,14 +136,14 @@ export default function Success() {
 												<div className="flex items-center space-x-2">
 													<Calendar className="h-4 w-4 text-muted-foreground" />
 													<span className="text-sm">
-														{/* {formatDate(selectedDate)} */}
-														Tuesday, August 5, 2025</span>
+														{/* {formatDate(orderDetails?.eventBookingDate)} */}
+														{moment(orderDetails?.eventBookingDate).format("dddd, D MMMM YYYY")}
+													</span>
 												</div>
 												<div className="flex items-center space-x-2">
 													<Clock className="h-4 w-4 text-muted-foreground" />
 													<span className="text-sm">
-														{/* {selectedTime} */}
-														11:00 AM
+														{moment(orderDetails?.eventBookingDate).format("hh:mm A")}
 													</span>
 												</div>
 												<div className="flex items-center space-x-2">

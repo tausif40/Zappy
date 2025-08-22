@@ -79,11 +79,21 @@ export const deleteAddresses = createAsyncThunk("purchase/getAddresses", async (
 		return thunkAPI.rejectWithValue(error);
 	}
 });
-export const order = createAsyncThunk("purchase/getAddresses", async (data, thunkAPI) => {
+export const order = createAsyncThunk("purchase/order", async (data, thunkAPI) => {
 	try {
 		const response = await apiClient.post(`/orders`, data);
-		console.log(response);
+		// console.log(response);
 		return { status: response.status, data: response.data, };
+	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error);
+	}
+});
+export const getOrderDetails = createAsyncThunk("purchase/getOrderDetails", async (id, thunkAPI) => {
+	try {
+		const response = await apiClient.get(`/orders/${id}`);
+		// console.log(response);
+		return response.data;
 	} catch (error) {
 		console.log(error);
 		return thunkAPI.rejectWithValue(error);
@@ -94,6 +104,7 @@ const initialState = {
 	cartItem: { data: [], isLoading: false, error: null },
 	bookingFlow: { data: [], isLoading: false, error: null },
 	addresses: { data: [], isLoading: false, error: null },
+	orderDetails: { data: [], isLoading: false, error: null },
 };
 
 const purchaseSlice = createSlice({
@@ -155,6 +166,20 @@ const purchaseSlice = createSlice({
 			.addCase(getAddresses.rejected, (state, action) => {
 				state.addresses.isLoading = false;
 				state.addresses.error = action.payload;
+			})
+			// orderDetails
+			.addCase(getOrderDetails.pending, (state) => {
+				state.orderDetails.isLoading = true;
+				state.orderDetails.error = null;
+			})
+			.addCase(getOrderDetails.fulfilled, (state, action) => {
+				state.orderDetails.isLoading = false;
+				state.orderDetails.error = null;
+				state.orderDetails.data = action.payload;
+			})
+			.addCase(getOrderDetails.rejected, (state, action) => {
+				state.orderDetails.isLoading = false;
+				state.orderDetails.error = action.payload;
 			})
 	}
 });

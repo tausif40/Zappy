@@ -36,12 +36,10 @@ const planSubdata = [
 
 function EventsPlan({ event, discount, guist }) {
 	const params = useParams();
-	const eventId = params.id;
 	const route = useRouter();
 	const dispatch = useDispatch();
 	const { toast } = useToast();
-
-	const cartItem = useSelector((state) => state.purchaseSlice.cartItem)
+	const eventId = atob(decodeURIComponent(params.id));
 
 	const [ selected, setSelected ] = useState("silver");
 	const [ plans, setPlans ] = useState([]);

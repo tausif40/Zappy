@@ -121,19 +121,6 @@ export default function Payment() {
 			return;
 		}
 
-		// Simulate payment processing
-		// if (paymentMethod === "CASE") {
-		// 	toast({
-		// 		title: "Booking Confirmed",
-		// 		description: "Your booking has been confirmed. You can pay cash on delivery.",
-		// 	})
-		// } else {
-		// 	toast({
-		// 		title: "Processing Payment",
-		// 		description: "Please wait while we process your payment...",
-		// 	})
-		// }
-
 		const data = {
 			cartId: bookingId,
 			paymentMethod: "CASE",
@@ -145,7 +132,8 @@ export default function Payment() {
 			const res = await dispatch(order(data)).unwrap();
 			console.log(res);
 			if (res.status === 201) {
-				route.push(`/birthday/booking/${params.ids}/success`)
+				const id = encodeURIComponent(btoa(`${res?.data?.data?.id}`));
+				route.push(`/birthday/booking/${id}/success`)
 				toast({
 					title: "Booking Confirmed",
 					description: "Your booking has been confirmed.",

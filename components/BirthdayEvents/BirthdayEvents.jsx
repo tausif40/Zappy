@@ -60,10 +60,6 @@ export default function BirthdayEvents() {
 		setBirthdayEvents(birthdayEvent?.data)
 	}, [ birthdayEvent ]);
 
-	// console.log("lenght: ", birthdayEvent?.data?.totalResults);
-	// console.log("store: ", birthdayEvent);
-	// console.log("useEffect: ", birthdayEvents);
-
 	useEffect(() => {
 		console.log("birthdayFilter: ", birthdayFilter);
 		dispatch(getBirthdayEvent(birthdayFilter))
@@ -89,17 +85,7 @@ export default function BirthdayEvents() {
 		}));
 	};
 
-
-	// useEffect(() => {
-	// 	dispatch(setFilter({
-	// 		...birthdayFilter,
-	// 		ageGroup: activeButton,
-	// 		subCategory: selectedKidsOption
-	// 	}))
-	// }, [ activeButton, selectedKidsOption ])
-
 	const handleChangeFilter = (key, value) => {
-		// console.log(`[${key} ]: ${value},`)
 		if (key === 'ageGroup') {
 			dispatch(setFilter({
 				...birthdayFilter,
@@ -286,7 +272,7 @@ export default function BirthdayEvents() {
 											className="group hover:shadow-md transition-all duration-300 overflow-hidden bg-white dark:bg-card"
 										>
 											<div className="relative">
-												<Link href={`/birthday/details/${event?._id}`}>
+												<Link href={`/birthday/details/${encodeURIComponent(btoa(event?._id))}`}>
 													<Image
 														src={event?.banner[ 0 ] || "/placeholder.svg"}
 														alt={event?.title}
@@ -310,7 +296,7 @@ export default function BirthdayEvents() {
 
 											<CardContent className="px-5 pt-3 flex flex-col justify-between">
 												<div className="">
-													<Link href={`/birthday/details/${event?._id}`}>
+													<Link href={`/birthday/details/${encodeURIComponent(btoa(event?._id))}`}>
 														<h3 className="text-xl font-semibold text-gray-800 hover:text-blue-800 transition-all dark:text-white mb-1 line-clamp-1 cursor-pointer capitalize">{event?.title}</h3>
 													</Link>
 													<p className="text-muted-foreground text-sm mb-3 line-clamp-2">{event?.description}</p>
@@ -362,7 +348,7 @@ export default function BirthdayEvents() {
 														<Heart className="h-4 w-4 text-muted-foreground" />
 													</Button>
 
-													<Link href={`/birthday/details/${event?._id}`} className="flex-1">
+													<Link href={`/birthday/details/${encodeURIComponent(btoa(event?._id))}`} className="flex-1">
 														<Button className="w-full text-sm px-4 py-1 font-normal cursor-pointer">
 															Book Now
 														</Button>

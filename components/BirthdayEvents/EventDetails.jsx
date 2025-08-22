@@ -46,10 +46,10 @@ const ageGroups = [
 export default function EventDetails() {
 	const params = useParams();
 	const dispatch = useDispatch()
-	const eventId = params.id
 	const { toast } = useToast()
 	const [ guist, setGuist ] = useState('');
 	const [ event, setEvent ] = useState([]);
+	const eventId = atob(decodeURIComponent(params.id));
 
 	const birthdayEventDetails = useSelector((state) => state.event.birthdayEventDetails);
 	// console.log("event details - ", birthdayEventDetails?.data?.event);	
@@ -217,7 +217,7 @@ export default function EventDetails() {
 														<Badge variant="secondary">{tier?.guest} Guests</Badge>
 														<ul className="space-y-2 mt-4">
 															{tier?.features?.map((feature, idx) => (
-																<li key={idx} className="flex items-center text-sm">
+																<li key={idx} className="flex items-start text-sm">
 																	<CheckCircle className={`w-4 h-4 mr-2 ${style.color}`} />
 																	<p className="text-muted-foreground">{feature}</p>
 																</li>
