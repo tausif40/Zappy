@@ -176,13 +176,14 @@ export default function UserBookings() {
 				</div>
 
 				{/* Filters */}
-				<Card className="border-0 shadow-lg mb-8">
-					<CardContent className="p-6">
+				<Card className="mb-8 border-0 shadow-none">
+					<CardContent className="p-0">
 						<div className="flex flex-col md:flex-row gap-4">
 							<div className="flex-1">
 								<div className="relative">
 									<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 									<Input
+										type="search"
 										placeholder="Search bookings..."
 										value={searchQuery}
 										onChange={(e) => setSearchQuery(e.target.value)}
@@ -202,10 +203,10 @@ export default function UserBookings() {
 									<SelectItem value="cancelled">Cancelled</SelectItem>
 								</SelectContent>
 							</Select>
-							<Button variant="outline" className="flex items-center">
+							{/* <Button variant="outline" className="flex items-center">
 								<RefreshCw className="h-4 w-4 mr-2" />
 								Refresh
-							</Button>
+							</Button> */}
 						</div>
 					</CardContent>
 				</Card>
@@ -226,7 +227,7 @@ export default function UserBookings() {
 					<TabsContent value="upcoming">
 						<div className="space-y-6">
 							{upcomingBookings.map((booking) => (
-								<Card key={booking.id} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+								<Card key={booking.id} className="border shadow hover:shadow-md transition-all duration-300">
 									<CardContent className="p-6">
 										<div className="flex flex-col lg:flex-row gap-6">
 											{/* Image */}
@@ -353,7 +354,7 @@ export default function UserBookings() {
 					<TabsContent value="past">
 						<div className="space-y-6">
 							{pastBookings.map((booking) => (
-								<Card key={booking.id} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+								<Card key={booking.id} className="border shadow hover:shadow-md transition-all duration-300">
 									<CardContent className="p-6">
 										<div className="flex flex-col lg:flex-row gap-6">
 											{/* Image */}

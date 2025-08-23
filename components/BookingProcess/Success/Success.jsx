@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { CheckCircle, Calendar, Clock, MapPin, Download, Share2, MessageCircle, Phone, Mail, Home, Star, Copy, Package, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -18,6 +18,7 @@ import ShareDrawer from "@/components/ShereOption/ShareDrawer"
 
 export default function Success() {
 	const params = useParams()
+	const route = useRouter();
 	const dispatch = useDispatch();
 	const { toast } = useToast()
 	const currentUrl = useCurrentUrl();
@@ -38,20 +39,29 @@ export default function Success() {
 		dispatch(getOrderDetails(bookingId))
 	}, [ dispatch, bookingId ]);
 
-	console.log("orderDetails-", orderDetails);
+	// useEffect(() => {
+	// 	const handlePopState = () => {
+	// 		route.replace("/birthday")
+	// 	}
+
+	// 	window.addEventListener("popstate", handlePopState)
+	// 	return () => {
+	// 		window.removeEventListener("popstate", handlePopState)
+	// 	}
+	// }, [ route ])
 
 	// const basePrice = bookingFlow?.data?.discountedPrice || 0
 	// const addOnsTotal = selectedAddOns?.reduce((sum, addOn) => sum + (addOn?.price || 0), 0) || 0
 
 	// const totalPrice = basePrice + addOnsTotal
 
-	const paymentMethodNames = {
-		card: "Credit/Debit Card",
-		upi: "UPI Payment",
-		netbanking: "Net Banking",
-		wallet: "Digital Wallet",
-		cod: "Cash on Delivery",
-	}
+	// const paymentMethodNames = {
+	// 	card: "Credit/Debit Card",
+	// 	upi: "UPI Payment",
+	// 	netbanking: "Net Banking",
+	// 	wallet: "Digital Wallet",
+	// 	cod: "Cash on Delivery",
+	// }
 
 	const handleCopyBookingId = () => {
 		navigator.clipboard.writeText(bookingId)

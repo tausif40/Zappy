@@ -80,12 +80,12 @@ export default function EventDetails() {
 		},
 		gold: {
 			borderColor: "border-purple-400",
-			textColor: "text-yellow-600",
+			textColor: "text-yellow-500",
 			color: "text-yellow-600"
 		},
 		platinum: {
 			borderColor: "border-[#8B5E3C]",
-			textColor: "text-[#8B5E3C]",
+			textColor: "text-[#bd573e]",
 			color: "text-[#c36953]"
 		}
 	};
@@ -218,7 +218,7 @@ export default function EventDetails() {
 														<ul className="space-y-2 mt-4">
 															{tier?.features?.map((feature, idx) => (
 																<li key={idx} className="flex items-start text-sm">
-																	<CheckCircle className={`w-4 h-4 mr-2 ${style.color}`} />
+																	<CheckCircle className={`w-4 h-4 mr-2 mt-1 ${style.color}`} />
 																	<p className="text-muted-foreground">{feature}</p>
 																</li>
 															))}
