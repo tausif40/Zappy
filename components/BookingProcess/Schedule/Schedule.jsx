@@ -140,7 +140,7 @@ export default function Schedule() {
 				</div>
 			</div>
 
-			<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+			<div className="container mx-auto px-3 sm:px-6 lg:px-8 py-6">
 				{/* Header */}
 				<div className="flex items-center justify-between mb-6">
 					<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20" onClick={() => route.back()}>
@@ -166,26 +166,28 @@ export default function Schedule() {
 
 						{/* Address Selection */}
 						<Card className="border-0 shadow">
-							<CardContent className="p-8">
-								<div className="flex items-center justify-between mb-6">
-									<div className="flex items-center space-x-3">
+							<CardContent className="p-4 md:p-8">
+								<div className="w-full md:flex items-center justify-between mb-6">
+									<div className="flex items-center space-x-3 mb-4 md:mb-0">
 										<MapPin className="h-6 w-6 text-purple-500" />
-										<h2 className="text-2xl font-bold">Event Address</h2>
+										<h2 className="text-xl md:text-2xl font-bold">Event Address</h2>
 									</div>
-									<Dialog open={showAddAddress} onOpenChange={setShowAddAddress}>
-										<DialogTrigger asChild>
-											<Button variant="outline">
-												<Plus className="mr-2 h-4 w-4" />
-												Add New Address
-											</Button>
-										</DialogTrigger>
-										<DialogContent className="">
-											<p className="text-2xl font-bold text-muted-foreground">Add Address</p>
-											<ScrollArea className="h-[80vh]">
-												<Address popup={setShowAddAddress} />
-											</ScrollArea>
-										</DialogContent>
-									</Dialog>
+									<div className="flex justify-end">
+										<Dialog open={showAddAddress} onOpenChange={setShowAddAddress} className=''>
+											<DialogTrigger asChild>
+												<Button variant="outline">
+													<Plus className="mr-2 h-4 w-4" />
+													Add New Address
+												</Button>
+											</DialogTrigger>
+											<DialogContent className="">
+												<p className="text-2xl font-bold text-muted-foreground">Add Address</p>
+												<ScrollArea className="h-[80vh]">
+													<Address popup={setShowAddAddress} />
+												</ScrollArea>
+											</DialogContent>
+										</Dialog>
+									</div>
 								</div>
 
 								<RadioGroup value={selectedAddress} onValueChange={setSelectedAddress}>
@@ -219,21 +221,23 @@ export default function Schedule() {
 															</div>
 
 															{/* Main details */}
-															<div className="space-y-1 text-sm text-muted-foreground">
+															<div className="space-y-1 font-normal text-xs md:text-sm text-muted-foreground">
 																<div className="text-base text-foreground">
 																	{address?.name}
 																	{address?.mobile && <span>&nbsp;-&nbsp;{address?.mobile}</span>}
 																</div>
-																<div>{address?.address},&nbsp;
+																<div className="line-clamp-2"
+																	title={`${address?.address}, ${address?.landMark}, ${address?.city}, ${address?.state}, ${address?.pincode}`}>
+																	{address?.address},&nbsp;
 																	{address?.landMark && <span>{address?.landMark}</span>}
 																	{address?.city},&nbsp;
 																	{address?.state} -
 																	{address?.pincode}
-																</div>{address?.street && <div>Street: {address?.street}</div>}
-
-																<div className="flex">
+																</div>
+																{address?.street && <div>Street: {address?.street}</div>}
+																<div className="md:flex hidden md:block">
 																	{address?.companyName && <div>Company Name: {address?.companyName}</div>}
-																	{address?.gstin && <div>&nbsp;| GSTIN: {address?.gstin}</div>}
+																	{address?.gstin && <div><span className="hidden md:block">&nbsp;|&nbsp;</span> GSTIN: {address?.gstin}</div>}
 																</div>
 															</div>
 														</CardContent>

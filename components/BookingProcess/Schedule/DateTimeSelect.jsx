@@ -71,7 +71,7 @@ export default function DateTimeSelect({ dateTime }) {
 
 	return (
 		<section className='border-t shadow rounded-lg bg-card'>
-			<div className="mx-auto py-6 px-8 space-y-4">
+			<div className="mx-auto py-6 px-4 md:px-8 space-y-4">
 				<p className='font-semibold text-lg flex gap-2 items-center'>
 					<CalendarDays className="h-6 w-6 text-purple-500" /> Select Date :
 				</p>
@@ -133,7 +133,7 @@ export default function DateTimeSelect({ dateTime }) {
 										}
 									}}
 									className={clsx(
-										'h-10 w-full rounded-md text-sm font-medium transition',
+										'h-8 md:h-10 w-full rounded-sm md:rounded-md text-sm font-medium transition',
 										isPast && 'bg-gray-200 dark:bg-gray-200/80 text-gray-400 dark:text-gray-600 cursor-not-allowed',
 										!isPast && isUnavailable && 'bg-red-200 dark:bg-red-200/70 text-gray-700 dark:text-gray-900 cursor-not-allowed',
 										!isPast && !isUnavailable && 'bg-green-200 dark:bg-green-200/70 text-gray-700 dark:text-gray-900 hover:brightness-110',
@@ -149,7 +149,7 @@ export default function DateTimeSelect({ dateTime }) {
 			</div>
 
 			{/* Time Selection */}
-			<div className="space-y-4 mx-auto py-6 px-8">
+			<div className="space-y-4 mx-auto py-6 px-4 md:px-8">
 				<p className='font-semibold text-lg flex gap-2 items-center'>
 					<Clock4 className="h-6 w-6 text-purple-500" /> Select Time :
 				</p>

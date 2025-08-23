@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { CheckCircle, Calendar, Clock, MapPin, Download, Share2, MessageCircle, Phone, Mail, Home, Star, Copy, Package, Plus } from "lucide-react"
@@ -12,12 +12,16 @@ import { useToast } from "@/hooks/use-toast"
 import { useDispatch, useSelector } from "react-redux"
 import moment from 'moment';
 import { getOrderDetails } from "@/store/features/Purchase-slice"
+import { useCurrentUrl } from "@/lib/useCurrentUrl"
+import ShareDrawer from "@/components/ShereOption/ShareDrawer"
 
 
 export default function Success() {
 	const params = useParams()
 	const dispatch = useDispatch();
 	const { toast } = useToast()
+	const currentUrl = useCurrentUrl();
+	const shareRef = useRef(null);
 	const [ isVendor, setIsVendor ] = useState(false)
 	const [ orderDetails, setOrderDetails ] = useState([])
 
@@ -87,7 +91,7 @@ export default function Success() {
 
 	return (
 		<div className="min-h-screen pt-16 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20">
-			<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			<div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-8">
 				{/* Success Header */}
 				<div className="text-center mb-8">
 					<div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
@@ -104,9 +108,9 @@ export default function Success() {
 					<div className="lg:col-span-2 space-y-6">
 						{/* Booking Details */}
 						<Card className="border-0 shadow">
-							<CardContent className="p-8">
-								<div className="flex items-center justify-between mb-6">
-									<h2 className="text-2xl font-bold">Booking Details</h2>
+							<CardContent className="p-6 md:p-8">
+								<div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+									<h2 className="text-xl md:text-2xl font-bold">Booking Details</h2>
 									<div className="flex items-center space-x-2">
 										<Badge className="bg-green-100 text-green-700 border-0">Confirmed</Badge>
 										<Button variant="ghost" size="sm" onClick={handleCopyBookingId}>
@@ -134,9 +138,16 @@ export default function Success() {
 														{moment(orderDetails?.eventBookingDate).format("hh:mm A")}
 													</span>
 												</div>
-												<div className="flex items-center space-x-2">
-													<MapPin className="h-4 w-4 text-muted-foreground" />
-													<span className="text-sm">Address confirmed</span>
+												<div className="flex items-start space-x-2">
+													<MapPin className="min-h-4 min-w-4 text-muted-foreground" />
+													{orderDetails?.eventAddress && <span className="text-sm">{`
+													${orderDetails?.eventAddress?.companyName},
+													${orderDetails?.eventAddress?.address},
+													 ${orderDetails?.eventAddress?.city},
+													  ${orderDetails?.eventAddress?.state} 
+														(${orderDetails?.eventAddress?.pincode}), 
+														${orderDetails?.eventAddress?.landMark}
+													`}</span>}
 												</div>
 											</div>
 										</div>
@@ -209,8 +220,8 @@ export default function Success() {
 
 						{/* Next Steps */}
 						<Card className="border-0 shadow">
-							<CardContent className="p-8">
-								<h2 className="text-2xl font-bold mb-6">What Happens Next?</h2>
+							<CardContent className="p-6 md:p-8">
+								<h2 className="text-xl md:text-2xl font-bold mb-6">What Happens Next?</h2>
 								<div className="space-y-4">
 									<div className="flex items-start space-x-4">
 										<div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
@@ -265,7 +276,7 @@ export default function Success() {
 										<Download className="mr-2 h-4 w-4" />
 										Download Receipt
 									</Button>
-									<Button onClick={handleShare} variant="outline" className="w-full justify-start">
+									<Button onClick={() => shareRef.current?.openDrawer()} variant="outline" className="w-full justify-start">
 										<Share2 className="mr-2 h-4 w-4" />
 										Share Booking
 									</Button>
@@ -276,6 +287,12 @@ export default function Success() {
 								</div>
 							</CardContent>
 						</Card>
+
+						<ShareDrawer
+							ref={shareRef}
+							url={currentUrl}
+							text={`🎉 My ${orderDetails?.event?.title} is booked with Zappy! \n Check booking details`}
+						/>
 
 						{/* Vendor Contact */}
 						{isVendor && <Card className="border-0 shadow">

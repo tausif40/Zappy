@@ -4,8 +4,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { ArrowLeft, ArrowRight, CheckCircle, ChevronLast, ChevronRight, LoaderCircle, X } from "lucide-react"
-
+import { ArrowLeft, ArrowRight, CheckCircle, ChevronLast, ChevronRight, ChevronDown, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -17,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { getAddons, getCategory } from "@/store/features/addOns-slice"
 import { getToCart, updateToCart } from "@/store/features/Purchase-slice"
 import BookingSummary from "../BookingSummary"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, } from "@/components/ui/dropdown-menu"
+
 
 export default function AddOns() {
 	const params = useParams()
@@ -147,7 +148,7 @@ export default function AddOns() {
 				</div>
 			</div>
 
-			<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+			<div className="container mx-auto px-3 sm:px-6 lg:px-8 py-6">
 				<div className="flex items-center justify-between mb-6">
 					<Button variant="ghost" onClick={() => route.back()}>
 						<ArrowLeft className="mr-2 h-4 w-4" />
@@ -171,50 +172,49 @@ export default function AddOns() {
 					</div>
 				</div>
 
-				<div className="grid lg:grid-cols-4 gap-8 ">
-					<div className="lg:col-span-3 grid md:grid-cols-4 gap-6 p-4 bg-highlights rounded-lg">
-						<div className="col-span-1">
-							<h2 className="text-xl font-semibold pb-2">Category</h2>
-							<ScrollArea className="border py-2 pl-2 pr-3 rounded h-[80vh] min-w-xl">
-								{/* Loading State */}
-								{isLoading && (
-									<div className="text-center py-4 text-muted-foreground">
-										<p>Loading categories...</p>
-									</div>
-								)}
-
-								{/* Error State */}
-								{hasError && (
-									<div className="text-center py-4 text-red-500">
-										<p>Error loading data. Please refresh.</p>
-									</div>
-								)}
-
-								{/* All Categories Option */}
-								{!isLoading && !hasError && (
-									<p
-										className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${!selectedCategory ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
-											}`}
+				<div className="md:flex gap-8">
+					<div className="flex flex-col p-2 md:p-4 bg-highlights rounded-lg">
+						{/* Header with Category Dropdown */}
+						<div className="flex justify-between items-center mb-6">
+							<h2 className="text-xl font-semibold">Add-ons List</h2>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button
+										variant="outline"
+										className="flex items-center justify-between gap-2 w-52"
+									>
+										{selectedCategory || "📋 Chose Categories"}
+										<ChevronDown className="h-4 w-4 opacity-70" />
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end" className="w-52 space-y-1.5 px-2.5">
+									<DropdownMenuLabel>Categories List</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem
 										onClick={() => handleCategorySelect(null)}
+										className={`${!selectedCategory && "bg-purple-100 text-purple-600"} capitalize border`}
 									>
 										📋 All Categories
-									</p>
-								)}
+									</DropdownMenuItem>
 
-								{/* Category List */}
-								{!isLoading && !hasError && category?.data && Array.isArray(category.data) && category.data.map((cat) => (
-									<p
-										key={cat?.id || cat?._id || Math.random()}
-										className={`border p-2 rounded-md bg-background mb-2 cursor-pointer transition-colors ${selectedCategory === cat?.name ? 'bg-purple-100 border-purple-300' : 'hover:bg-gray-50'
-											}`}
-										onClick={() => handleCategorySelect(cat?.name)}
-									>
-										{cat?.name || 'Unnamed Category'}
-									</p>
-								))}
-							</ScrollArea>
+									{/* Dynamic Categories */}
+									{category?.data &&
+										Array.isArray(category.data) &&
+										category.data.map((cat) => (
+											<DropdownMenuItem
+												key={cat?.id || cat?._id || Math.random()}
+												onClick={() => handleCategorySelect(cat?.name)}
+												className={`${selectedCategory === cat?.name && "bg-purple-100 text-purple-600"} capitalize border`}
+											>
+												{cat?.name || "Unnamed Category"}
+											</DropdownMenuItem>
+										))}
+								</DropdownMenuContent>
+							</DropdownMenu>
 						</div>
-						<div className="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 !items-start gap-4 pt-8">
+
+						{/* Addons Grid */}
+						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 !items-start gap-4">
 							{/* Loading State */}
 							{isLoading && (
 								<div className="col-span-full text-center py-8 text-muted-foreground">
@@ -230,70 +230,78 @@ export default function AddOns() {
 							)}
 
 							{/* Addons Grid */}
-							{!isLoading && !hasError && filteredAddons?.map((addon) => (
-								<Label key={addon?._id || Math.random()} className="block">
-									<Card
-										onClick={() => handleAddOnToggle(addon?._id)}
-										className={`relative flex flex-col items-center border transition-all duration-200 rounded-xl overflow-hidden ${selectedAddOnIds.includes(addon?._id)
-											? "ring-2 ring-purple-500 shadow-lg"
-											: "hover:shadow-md"
-											}`}
-									>
-										{/* Selected Checkmark */}
-										{selectedAddOnIds.includes(addon?._id) && (
-											<div className="absolute top-2 left-2 bg-white rounded-full p-1 shadow z-20">
-												<CheckCircle className="text-purple-500 h-5 w-5" />
-											</div>
-										)}
-
-										<div className="flex gap-4 justify-end w-full absolute top-2 px-2">
-											{/* Popular Badge */}
-											{addon?.popular && (
-												<Badge className="bg-orange-500 text-white border-0 shadow z-10">
-													🔥 Popular
-												</Badge>
+							{!isLoading &&
+								!hasError &&
+								filteredAddons?.map((addon) => (
+									<Label key={addon?._id || Math.random()} className="block">
+										<Card
+											onClick={() => handleAddOnToggle(addon?._id)}
+											className={`relative flex flex-col items-center border transition-all duration-200 rounded-xl overflow-hidden ${selectedAddOnIds.includes(addon?._id)
+												? "ring-2 ring-purple-500 shadow-lg"
+												: "hover:shadow-md"
+												}`}
+										>
+											{/* Selected Checkmark */}
+											{selectedAddOnIds.includes(addon?._id) && (
+												<div className="absolute top-2 left-2 bg-white rounded-full p-1 shadow z-20">
+													<CheckCircle className="text-purple-500 h-5 w-5" />
+												</div>
 											)}
-											{/* Price Badge */}
-											<Badge className="bg-green-500 text-white border-0 shadow z-10">
-												+₹ {(addon?.price || 0).toLocaleString()}
-											</Badge>
-										</div>
 
-										{/* Image Section */}
-										<div className="w-full h-28 bg-gray-200">
-											<Image
-												src={addon?.banner && Array.isArray(addon.banner) && addon.banner.length > 0 ? addon.banner[ 0 ] : "/placeholder.svg"}
-												alt={addon?.name || "Addon"}
-												width={400}
-												height={200}
-												className="object-cover w-full h-full"
-											/>
-										</div>
-
-										{/* Content */}
-										<CardContent className="w-full px-4 py-2">
-											<h3 className="text-lg font-semibold">{addon?.name || "Addon Name"}</h3>
-											<p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-												{addon?.description || "No description available"}
-											</p>
-											<div className="flex justify-between items-center mt-2">
-												<span className="text-xs text-muted-foreground border px-2 rounded-md bg-gray-100">
-													{addon?.duration || "Duration not specified"}
-												</span>
-												<p
-													className="text-blue-500 text-xs cursor-pointer hover:underline"
-													onClick={(e) => {
-														e.stopPropagation()
-														handleMoreDetails(addon)
-													}}
-												>
-													more details
-												</p>
+											<div className="flex gap-4 justify-end w-full absolute top-2 px-2">
+												{/* Popular Badge */}
+												{addon?.popular && (
+													<Badge className="bg-orange-500 text-white border-0 shadow z-10">
+														🔥 Popular
+													</Badge>
+												)}
+												{/* Price Badge */}
+												<Badge className="bg-green-500 text-white border-0 shadow z-10">
+													+₹ {(addon?.price || 0).toLocaleString()}
+												</Badge>
 											</div>
-										</CardContent>
-									</Card>
-								</Label>
-							))}
+
+											{/* Image Section */}
+											<div className="w-full h-28 bg-gray-200">
+												<Image
+													src={
+														addon?.banner &&
+															Array.isArray(addon.banner) &&
+															addon.banner.length > 0
+															? addon.banner[ 0 ]
+															: "/placeholder.svg"
+													}
+													alt={addon?.name || "Addon"}
+													width={400}
+													height={200}
+													className="object-cover w-full h-full"
+												/>
+											</div>
+
+											{/* Content */}
+											<CardContent className="w-full px-4 py-2">
+												<h3 className="text-lg font-semibold">{addon?.name || "Addon Name"}</h3>
+												<p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+													{addon?.description || "No description available"}
+												</p>
+												<div className="flex justify-between items-center mt-2 ">
+													<span className="text-xs text-muted-foreground border px-2 rounded-md bg-gray-100">
+														{addon?.duration || "Duration not specified"}
+													</span>
+													<p
+														className="text-blue-500 text-xs cursor-pointer hover:underline"
+														onClick={(e) => {
+															e.stopPropagation()
+															handleMoreDetails(addon)
+														}}
+													>
+														more details
+													</p>
+												</div>
+											</CardContent>
+										</Card>
+									</Label>
+								))}
 
 							{/* No addons message */}
 							{!isLoading && !hasError && filteredAddons?.length === 0 && (
@@ -305,7 +313,7 @@ export default function AddOns() {
 					</div>
 
 					{/* Cart Summary */}
-					<div className="lg:col-span-1">
+					<div className="min-w-72 mt-10 md:mt-0">
 						<BookingSummary
 							selectedAddOns={selectedAddOns}
 							bookingFlow={bookingFlow}

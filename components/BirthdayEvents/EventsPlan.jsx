@@ -34,7 +34,7 @@ const planSubdata = [
 	},
 ];
 
-function EventsPlan({ event, discount, guist }) {
+function EventsPlan({ event, discount }) {
 	const params = useParams();
 	const route = useRouter();
 	const dispatch = useDispatch();
@@ -52,9 +52,9 @@ function EventsPlan({ event, discount, guist }) {
 	const selectedTier = plans?.find((tier) => tier?.name === selected);
 	const selectedPlanData = planSubdata?.find((plan) => plan?.name === selected);
 
-	useEffect(() => {
-		guist(selectedTier?.guest)
-	}, [ selectedTier ])
+	// useEffect(() => {
+	// 	guist(selectedTier?.guest)
+	// }, [ selectedTier ])
 
 	// console.log("event-", event);
 

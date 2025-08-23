@@ -180,14 +180,14 @@ export default function Payment() {
 			</div>
 
 
-			<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+			<div className="container mx-auto px-3 sm:px-6 lg:px-8 py-6">
 				{/* Header */}
 				<div className="flex items-center justify-between mb-6">
 					<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20" onClick={() => route.back()}>
 						<ArrowLeft className="mr-2 h-4 w-4" />
 						Back to Date & Time
 					</Button>
-					<div className="text-sm text-muted-foreground">Step 4 of 4: Payment</div>
+					<div className="text-sm text-muted-foreground hidden md:block">Step 4 of 4: Payment</div>
 				</div>
 
 				<div className="mb-8">
@@ -202,16 +202,16 @@ export default function Payment() {
 					<div className="lg:col-span-3 space-y-8">
 						{/* Payment Methods */}
 						<Card className="border-0 shadow">
-							<CardContent className="p-8">
+							<CardContent className="p-4 md:p-8">
 								<div className="flex items-center space-x-3 mb-6">
 									<CreditCard className="h-6 w-6 text-purple-500" />
-									<h2 className="text-2xl font-bold">Choose Payment Method</h2>
+									<h2 className="text-lg md:text-2xl font-semibold md:font-bold">Choose Payment Method</h2>
 								</div>
 
 								<RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
 									<div className="grid md:grid-cols-2 gap-4">
 										{paymentOptions.map((option) => (
-											<div key={option.id} className="flex items-center space-x-3">
+											<div key={option.id} className="flex items-start md:space-x-3">
 												<RadioGroupItem value={option.id} id={option.id} className="sr-only" />
 												<Label htmlFor={option.id} className="flex-1 cursor-pointer">
 													<Card
@@ -221,12 +221,12 @@ export default function Payment() {
 															}`}
 													>
 														<CardContent className="p-4">
-															<div className="flex items-center justify-between">
-																<div className="flex items-center space-x-3">
+															<div className="flex items-start justify-between">
+																<div className="flex items-start space-x-3">
 																	<div className="text-purple-500">{option.icon}</div>
 																	<div>
-																		<div className="font-medium">{option.name}</div>
-																		<div className="text-sm text-muted-foreground">{option.description}</div>
+																		<div className="font-medium mb-1">{option.name}</div>
+																		<div className="text-xs md:text-sm text-muted-foreground">{option.description}</div>
 																	</div>
 																</div>
 																{option.popular && (
@@ -287,13 +287,14 @@ export default function Payment() {
 						</Card>
 
 						{/* Terms & Conditions */}
-						<Card className="border-0 shadow-lg">
+						<Card className="border shadow">
 							<CardContent className="p-6">
-								<div className="flex items-center space-x-2">
+								<div className="flex items-start md:items-center space-x-2">
 									<Checkbox
 										id="terms"
 										checked={agreeToTerms}
 										onCheckedChange={(checked) => setAgreeToTerms(checked)}
+										className="mt-1 md:mt-0"
 									/>
 									<Label htmlFor="terms" className="text-sm">
 										I agree to the{" "}

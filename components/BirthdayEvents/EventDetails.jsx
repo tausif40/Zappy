@@ -51,12 +51,12 @@ export default function EventDetails() {
 	const dispatch = useDispatch()
 	const { toast } = useToast()
 	const currentUrl = useCurrentUrl();
-	const [ guist, setGuist ] = useState('');
+	// const [ guist, setGuist ] = useState('');
 	const [ event, setEvent ] = useState([]);
 	const eventId = atob(decodeURIComponent(params.id));
 
 	const birthdayEventDetails = useSelector((state) => state.event.birthdayEventDetails);
-	console.log("params - ", params);
+	// console.log("params - ", params);
 
 	useEffect(() => {
 		setEvent(birthdayEventDetails?.data?.event || [])
@@ -70,13 +70,6 @@ export default function EventDetails() {
 	const getAgeGroupText = (age) => {
 		const group = ageGroups.find((item) => item.id === age);
 		return group?.text;
-	}
-
-	const handleShare = () => {
-		toast({
-			title: "Link Copied!",
-			description: "Event link copied to clipboard.",
-		})
 	}
 
 	const tierStyles = {
@@ -201,7 +194,7 @@ export default function EventDetails() {
 									</div>
 
 									<div className="lg:hidden">
-										<EventsPlan event={event?.tiers} discount={event?.discount} guist={setGuist} />
+										<EventsPlan event={event?.tiers} discount={event?.discount} />
 									</div>
 
 									<p className="text-muted-foreground leading-relaxed mb-6 mt-10 lg:mt-0">{event?.description}</p>
@@ -247,7 +240,7 @@ export default function EventDetails() {
 					{/* Sidebar */}
 					<div className="space-y-6 lg:col-span-2  sticky top-24 ">
 						<div className="hidden lg:block">
-							<EventsPlan event={event?.tiers} discount={event?.discount} guist={setGuist} />
+							<EventsPlan event={event?.tiers} discount={event?.discount} />
 						</div>
 
 						{/* Safety Features */}
