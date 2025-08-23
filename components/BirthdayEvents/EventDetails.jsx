@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux"
 import Gallery from "./Gallery"
 import { getDiscountedPrice } from "@/lib/utils"
 import { Input } from "../ui/input"
+import ShareDrawer, { ShareDrawerRef } from "@/components/ShereOption/ShareDrawer";
+import { useCurrentUrl } from "@/lib/useCurrentUrl";
 
 const ageGroups = [
 	{
@@ -45,14 +47,16 @@ const ageGroups = [
 
 export default function EventDetails() {
 	const params = useParams();
+	const shareRef = useRef(null);
 	const dispatch = useDispatch()
 	const { toast } = useToast()
+	const currentUrl = useCurrentUrl();
 	const [ guist, setGuist ] = useState('');
 	const [ event, setEvent ] = useState([]);
 	const eventId = atob(decodeURIComponent(params.id));
 
 	const birthdayEventDetails = useSelector((state) => state.event.birthdayEventDetails);
-	// console.log("event details - ", birthdayEventDetails?.data?.event);	
+	console.log("params - ", params);
 
 	useEffect(() => {
 		setEvent(birthdayEventDetails?.data?.event || [])
@@ -83,24 +87,21 @@ export default function EventDetails() {
 		},
 		gold: {
 			borderColor: "border-purple-400",
-			textColor: "text-purple-500",
-			color: "text-purple-600"
+			textColor: "text-yellow-600",
+			color: "text-yellow-600"
 		},
 		platinum: {
-			borderColor: "border-yellow-400",
-			textColor: "text-yellow-500",
-			color: "text-yellow-600"
+			borderColor: "border-[#8B5E3C]",
+			textColor: "text-[#8B5E3C]",
+			color: "text-[#c36953]"
 		}
 	};
-
 
 	const breadcrumb = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Birthday', href: '/birthday' },
 		{ name: event?.title, href: `/birthday/details/${eventId}` },
 	];
-
-
 
 	return (
 		<div className="min-h-screen pt-16 bg-background">
@@ -134,11 +135,17 @@ export default function EventDetails() {
 							Back to Events
 						</Button>
 					</Link>
-					<Button variant="ghost" onClick={handleShare} className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+					<Button variant="ghost" onClick={() => shareRef.current?.openDrawer()} className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
 						<Share2 className="mr-2 h-4 w-4" />
 						Share
 					</Button>
 				</div>
+
+				<ShareDrawer
+					ref={shareRef}
+					url={currentUrl}
+					text="🔥 Check out this post!"
+				/>
 
 				<div className="grid lg:grid-cols-5 gap-8">
 					{/* Main Content */}
@@ -172,7 +179,7 @@ export default function EventDetails() {
 													<Clock className="h-4 w-4 mr-1" />
 													{event?.duration} Hours
 												</div>
-												<Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">{guist} persons</Badge>
+												{/* <Badge variant="secondary" className="py-1 px-2 bg-gray-200 dark:bg-gray-800">{guist} persons</Badge> */}
 											</div>
 										</div>
 										<div className="text-muted-foreground hover:text-red-500">

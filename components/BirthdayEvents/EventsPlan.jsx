@@ -22,14 +22,14 @@ const planSubdata = [
 		name: "gold",
 		subtitle: "Enhanced",
 		text: "text-yellow-600",
-		color: "border-yellow-400 bg-yellow-50 dark:bg-[#2e1400]",
+		color: "border-yellow-400 bg-yellow-50 dark:bg-[#7a3702]/50",
 		buttonColor: "bg-yellow-500 hover:bg-yellow-600",
 	},
 	{
 		name: "platinum",
 		subtitle: "Premium",
 		text: "text-[#8B5E3C]",
-		color: "bg-[#fff0eb] border-[#bd573e] dark:bg-[#731f03]",
+		color: "bg-[#fff0eb] border-[#bd573e] dark:bg-[#330e02]/50",
 		buttonColor: "bg-[#c36953] hover:bg-[#bd573e]",
 	},
 ];

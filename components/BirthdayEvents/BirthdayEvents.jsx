@@ -49,10 +49,10 @@ const ageGroups = [
 
 export default function BirthdayEvents() {
 	const dispatch = useDispatch()
+
 	const [ birthdayEvents, setBirthdayEvents ] = useState([])
 	const [ activeButton, setActiveButton ] = useState('');
-	const [ selectedKidsOption, setSelectedKidsOption ] = useState('All-time Classics');
-
+	const [ selectedKidsOption, setSelectedKidsOption ] = useState('');
 	const birthdayEvent = useSelector((state) => state.event.birthdayEvent);
 	const birthdayFilter = useSelector((state) => state.event.birthdayEventFilter);
 
@@ -152,10 +152,10 @@ export default function BirthdayEvents() {
 									<Button
 										key={button.id}
 										onClick={() => {
-											setActiveButton(button.id)
-											handleChangeFilter('ageGroup', button.id);
+											setActiveButton(() => isActive ? '' : button.id)
+											handleChangeFilter('ageGroup', isActive ? '' : button.id);
 										}}
-										className={`${isActive ? 'bg-purple-400 text-white shadow-md' : 'bg-white text-purple-600 border border-purple-300 hover:bg-purple-50 hover:border-purple-400'}`}
+										className={`${isActive ? 'bg-purple-400 text-white shadow-md' : 'bg-background text-primary border border-purple-300 hover:bg-secondary hover:border-purple-400'}`}
 									>
 										<button.icon className="w-5 h-5 md:w-6 md:h-6" />
 										<span>{button.text}</span>
@@ -173,12 +173,12 @@ export default function BirthdayEvents() {
 											key={option.key}
 											size="sm"
 											onClick={() => {
-												setSelectedKidsOption(option.key);
-												handleChangeFilter('subCategory', option.key);
+												setSelectedKidsOption(() => selectedKidsOption === option.key ? '' : option.key);
+												handleChangeFilter('subCategory', selectedKidsOption === option.key ? '' : option.key);
 											}}
 											className={`${selectedKidsOption === option.key
 												? 'bg-purple-500 text-white border-purple-500 shadow'
-												: 'bg-white backdrop-blur-sm border border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300'
+												: 'bg-background backdrop-blur-sm border border-purple-200 text-primary hover:bg-secondary hover:border-purple-300'
 												}`}
 										>
 											{option.name}
@@ -243,14 +243,14 @@ export default function BirthdayEvents() {
 									<BirthdaySkeleton key={ind} />
 								))}</>
 								: birthdayEvents?.results && birthdayEvents?.results?.length === 0
-									? <div className="col-span-full text-center py-16 bg-slate-50 rounded-md">
+									? <div className="col-span-full text-center py-16 bg-secondary rounded-md">
 										<div className="max-w-md mx-auto">
-											<div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+											<div className="w-24 h-24 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
 												<svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
 												</svg>
 											</div>
-											<h3 className="text-xl font-semibold text-gray-900 mb-2">No Events Available</h3>
+											<h3 className="text-xl font-semibold text-foreground mb-2">No Events Available</h3>
 											<p className="text-gray-500 mb-6">We couldn't find any events matching your current filters. Try adjusting your search criteria.</p>
 											{/* <Button
 													variant="outline"
@@ -304,7 +304,7 @@ export default function BirthdayEvents() {
 													<div className="flex items-center justify-between mb-2">
 														{/* <Badge variant='outline' className="border-0 font-medium bg-pink-200 text-pink-800">{event?.time}</Badbar> */}
 														<div className="text-right flex gap-2 items-baseline">
-															<p className="text-2xl font-semibold text-gray-800">₹ </p>
+															<p className="text-2xl font-semibold text-foreground">₹ </p>
 															<span className="text-xl font-bold text-purple-600">{getDiscountedPrice(event?.tiers[ 0 ]?.price, event?.discount)}</span>
 															{event?.discount > 0 && <div className="text-sm text-muted-foreground line-through">{event?.tiers[ 0 ]?.price}</div>}
 														</div>

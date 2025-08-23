@@ -77,7 +77,7 @@ const Gallery = ({ images }) => {
   };
 
   return (
-    <div style={{ padding: 16 }} className='bg-slate-50'>
+    <div style={{ padding: 16 }} className='bg-primary-foreground'>
       {/* Large banner/main image */}
       <PhotoProvider
         key={`${galleryId}-${images?.length}-${JSON.stringify(images)}`} // Unique key that changes with images
