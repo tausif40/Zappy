@@ -65,7 +65,7 @@ export default function Address({ popup }) {
 	}
 
 	return (
-		<section className="w-full max-w-2xl pr-3">
+		<section className="w-full max-w-2xl pr-3 ">
 			<div>
 				<form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
 					{/* Name */}

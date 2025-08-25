@@ -45,7 +45,9 @@ export default function Schedule() {
 	// console.log("addressesList-", addressesList)
 
 	useEffect(() => {
-		setSelectedAddress(bookingFlow?.data?.addressId?._id)
+		if (bookingFlow?.data?.addressId) {
+			setSelectedAddress(bookingFlow?.data?.addressId?._id)
+		}
 	}, [ bookingFlow ])
 
 	useEffect(() => {
@@ -142,7 +144,7 @@ export default function Schedule() {
 
 			<div className="container mx-auto px-3 sm:px-6 lg:px-8 py-6">
 				{/* Header */}
-				<div className="flex items-center justify-between mb-6">
+				<div className="flex items-center justify-between mb-6 w-full">
 					<Button variant="ghost" className="hover:bg-purple-50 dark:hover:bg-purple-900/20" onClick={() => route.back()}>
 						<ArrowLeft className="mr-2 h-4 w-4" />
 						Back to Add-ons
@@ -158,14 +160,14 @@ export default function Schedule() {
 					</p>
 				</div>
 
-				<div className="grid lg:grid-cols-4 gap-8">
+				<div className="md:flex gap-8">
 					{/* Main Content */}
-					<div className="lg:col-span-3 space-y-8">
+					<div className="space-y-8 w-full">
 						{/* Date & Time Selection */}
 						<DateTimeSelect dateTime={setDateTime} />
 
 						{/* Address Selection */}
-						<Card className="border-0 shadow">
+						<Card className="border">
 							<CardContent className="p-4 md:p-8">
 								<div className="w-full md:flex items-center justify-between mb-6">
 									<div className="flex items-center space-x-3 mb-4 md:mb-0">
@@ -254,22 +256,24 @@ export default function Schedule() {
 						{/* <Address /> */}
 					</div>
 
-					<BookingSummary
-						selectedAddOns={bookingFlow?.data?.addOnIds?.map(addon => ({
-							_id: addon.id,
-							name: addon.name || "Add-on",
-							price: addon.price || 0
-						})) || []}
-						bookingFlow={bookingFlow}
-						selectedDate={dateTime?.eventDate || bookingFlow?.data?.eventDate}
-						selectedTime={dateTime?.eventTime || bookingFlow?.data?.eventTime}
-						selectedAddress={selectedAddress}
-						addresses={addresses}
-						onContinue={handleContinue}
-						buttonText="Continue to Payment"
-						showSchedule={true}
-						showAddress={true}
-					/>
+					<div className="min-w-72 mt-10 md:mt-0">
+						<BookingSummary
+							selectedAddOns={bookingFlow?.data?.addOnIds?.map(addon => ({
+								_id: addon.id,
+								name: addon.name || "Add-on",
+								price: addon.price || 0
+							})) || []}
+							bookingFlow={bookingFlow}
+							selectedDate={dateTime?.eventDate || bookingFlow?.data?.eventDate}
+							selectedTime={dateTime?.eventTime || bookingFlow?.data?.eventTime}
+							selectedAddress={selectedAddress}
+							addresses={addresses}
+							onContinue={handleContinue}
+							buttonText="Continue to Payment"
+							showSchedule={true}
+							showAddress={true}
+						/>
+					</div>
 
 				</div>
 			</div>

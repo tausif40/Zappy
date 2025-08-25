@@ -4,6 +4,7 @@ import registerVendorSlice from "@/store/vendor/vendorAuth-slice";
 import eventSlice from "@/store/features/event-slice";
 import addOnsSlice from "@/store/features/addOns-slice";
 import purchaseSlice from "@/store/features/Purchase-slice";
+import bookingSlice from "@/store/features/booking-slice";
 
 export const store = configureStore({
 	reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
 		registerVendor: registerVendorSlice,
 		event: eventSlice,
 		addOnsSlice: addOnsSlice,
-		purchaseSlice: purchaseSlice
+		purchaseSlice: purchaseSlice,
+		bookingSlice: bookingSlice
 	}
 });
 

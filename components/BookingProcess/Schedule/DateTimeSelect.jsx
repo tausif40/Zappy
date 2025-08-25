@@ -59,13 +59,12 @@ export default function DateTimeSelect({ dateTime }) {
 	};
 
 	useEffect(() => {
-		if (selectedDate && hour && minute && ampm) {
-			const formattedTime = `${hour}:${minute.padStart(2, '0')} ${ampm}`;
-			const result = {
-				eventTime: formattedTime,
-				eventDate: selectedDate,
-			};
-			dateTime(result)
+		const formattedTime = `${hour}:${minute.padStart(2, '0')} ${ampm}`;
+		if (selectedDate) {
+			dateTime((pre) => ({ ...pre, eventDate: selectedDate }))
+			if (hour && minute && ampm) {
+				dateTime((pre) => ({ ...pre, eventTime: formattedTime }))
+			}
 		}
 	}, [ selectedDate, hour, minute, ampm ]);
 

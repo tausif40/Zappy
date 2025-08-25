@@ -24,73 +24,151 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
+import { useDispatch } from "react-redux"
+
+// const [ cartItems, setCartItems ] = useState([
+// 	{
+// 		id: 1,
+// 		title: "Princess Theme Party",
+// 		vendor: "Magic Moments Events",
+// 		price: 8999,
+// 		originalPrice: 12999,
+// 		quantity: 1,
+// 		image: "/placeholder.svg?height=120&width=180",
+// 		rating: 4.9,
+// 		reviews: 156,
+// 		duration: "4 hours",
+// 		ageGroup: "3-8 years",
+// 		services: [ "Decorations", "Entertainment", "Photography", "Catering" ],
+// 		selectedDate: "2024-02-15",
+// 		selectedTime: "2:00 PM",
+// 		guests: 15,
+// 		location: "Home Service",
+// 		addedDate: "2024-01-20",
+// 		discount: 31,
+// 	},
+// 	{
+// 		id: 2,
+// 		title: "Science Explorer Workshop",
+// 		vendor: "Curious Minds",
+// 		price: 7499,
+// 		originalPrice: 9999,
+// 		quantity: 1,
+// 		image: "/placeholder.svg?height=120&width=180",
+// 		rating: 4.7,
+// 		reviews: 89,
+// 		duration: "3 hours",
+// 		ageGroup: "6-12 years",
+// 		services: [ "Experiments", "Materials", "Instructor", "Certificate" ],
+// 		selectedDate: "2024-02-20",
+// 		selectedTime: "10:00 AM",
+// 		guests: 12,
+// 		location: "Home Service",
+// 		addedDate: "2024-01-18",
+// 		discount: 25,
+// 	},
+// 	{
+// 		id: 3,
+// 		title: "Sports Adventure Camp",
+// 		vendor: "Active Kids",
+// 		price: 8499,
+// 		originalPrice: 10999,
+// 		quantity: 1,
+// 		image: "/placeholder.svg?height=120&width=180",
+// 		rating: 4.8,
+// 		reviews: 67,
+// 		duration: "5 hours",
+// 		ageGroup: "5-14 years",
+// 		services: [ "Sports Equipment", "Coaching", "Snacks", "Medals" ],
+// 		selectedDate: "2024-02-25",
+// 		selectedTime: "9:00 AM",
+// 		guests: 20,
+// 		location: "Outdoor Venue",
+// 		addedDate: "2024-01-15",
+// 		discount: 23,
+// 	},
+// ])
 
 export default function UserCart() {
-	const [ cartItems, setCartItems ] = useState([
-		{
-			id: 1,
-			title: "Princess Theme Party",
-			vendor: "Magic Moments Events",
-			price: 8999,
-			originalPrice: 12999,
-			quantity: 1,
-			image: "/placeholder.svg?height=120&width=180",
-			rating: 4.9,
-			reviews: 156,
-			duration: "4 hours",
-			ageGroup: "3-8 years",
-			services: [ "Decorations", "Entertainment", "Photography", "Catering" ],
-			selectedDate: "2024-02-15",
-			selectedTime: "2:00 PM",
-			guests: 15,
-			location: "Home Service",
-			addedDate: "2024-01-20",
-			discount: 31,
-		},
-		{
-			id: 2,
-			title: "Science Explorer Workshop",
-			vendor: "Curious Minds",
-			price: 7499,
-			originalPrice: 9999,
-			quantity: 1,
-			image: "/placeholder.svg?height=120&width=180",
-			rating: 4.7,
-			reviews: 89,
-			duration: "3 hours",
-			ageGroup: "6-12 years",
-			services: [ "Experiments", "Materials", "Instructor", "Certificate" ],
-			selectedDate: "2024-02-20",
-			selectedTime: "10:00 AM",
-			guests: 12,
-			location: "Home Service",
-			addedDate: "2024-01-18",
-			discount: 25,
-		},
-		{
-			id: 3,
-			title: "Sports Adventure Camp",
-			vendor: "Active Kids",
-			price: 8499,
-			originalPrice: 10999,
-			quantity: 1,
-			image: "/placeholder.svg?height=120&width=180",
-			rating: 4.8,
-			reviews: 67,
-			duration: "5 hours",
-			ageGroup: "5-14 years",
-			services: [ "Sports Equipment", "Coaching", "Snacks", "Medals" ],
-			selectedDate: "2024-02-25",
-			selectedTime: "9:00 AM",
-			guests: 20,
-			location: "Outdoor Venue",
-			addedDate: "2024-01-15",
-			discount: 23,
-		},
-	])
+	const dispatch = useDispatch();
 
-	const [ promoCode, setPromoCode ] = useState("")
+	const [ promoCode, setPromoCode ] = useState("");
 	const [ appliedPromo, setAppliedPromo ] = useState(null)
+
+	const [ cartItems, setCartItems ] = useState([
+	{
+		id: 1,
+		title: "Princess Theme Party",
+		vendor: "Magic Moments Events",
+		price: 8999,
+		originalPrice: 12999,
+		quantity: 1,
+		image: "/placeholder.svg?height=120&width=180",
+		rating: 4.9,
+		reviews: 156,
+		duration: "4 hours",
+		ageGroup: "3-8 years",
+		services: [ "Decorations", "Entertainment", "Photography", "Catering" ],
+		selectedDate: "2024-02-15",
+		selectedTime: "2:00 PM",
+		guests: 15,
+		location: "Home Service",
+		addedDate: "2024-01-20",
+		discount: 31,
+	},
+	{
+		id: 2,
+		title: "Science Explorer Workshop",
+		vendor: "Curious Minds",
+		price: 7499,
+		originalPrice: 9999,
+		quantity: 1,
+		image: "/placeholder.svg?height=120&width=180",
+		rating: 4.7,
+		reviews: 89,
+		duration: "3 hours",
+		ageGroup: "6-12 years",
+		services: [ "Experiments", "Materials", "Instructor", "Certificate" ],
+		selectedDate: "2024-02-20",
+		selectedTime: "10:00 AM",
+		guests: 12,
+		location: "Home Service",
+		addedDate: "2024-01-18",
+		discount: 25,
+	},
+	{
+		id: 3,
+		title: "Sports Adventure Camp",
+		vendor: "Active Kids",
+		price: 8499,
+		originalPrice: 10999,
+		quantity: 1,
+		image: "/placeholder.svg?height=120&width=180",
+		rating: 4.8,
+		reviews: 67,
+		duration: "5 hours",
+		ageGroup: "5-14 years",
+		services: [ "Sports Equipment", "Coaching", "Snacks", "Medals" ],
+		selectedDate: "2024-02-25",
+		selectedTime: "9:00 AM",
+		guests: 20,
+		location: "Outdoor Venue",
+		addedDate: "2024-01-15",
+		discount: 23,
+	},
+])
+
+	// const bookingData = useSelector((state) => state.bookingSlice.bookingHistory)
+	// console.log(bookingData?.data?.results);
+
+	// useEffect(() => {
+	// 	setBookings(bookingData?.data?.results || [])
+	// }, [ bookingData ])
+
+	// useEffect(() => {
+	// 	dispatch(getBookingHistory())
+	// }, [ dispatch ])
+
 
 	const updateQuantity = (id, newQuantity) => {
 		if (newQuantity < 1) return

@@ -214,14 +214,7 @@ export default function AddOns() {
 						</div>
 
 						{/* Addons Grid */}
-						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 !items-start gap-4">
-							{/* Loading State */}
-							{isLoading && (
-								<div className="col-span-full text-center py-8 text-muted-foreground">
-									<p>Loading addons...</p>
-								</div>
-							)}
-
+						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 !items-start gap-4">
 							{/* Error State */}
 							{hasError && (
 								<div className="col-span-full text-center py-8 text-red-500">
@@ -236,10 +229,7 @@ export default function AddOns() {
 									<Label key={addon?._id || Math.random()} className="block">
 										<Card
 											onClick={() => handleAddOnToggle(addon?._id)}
-											className={`relative flex flex-col items-center border transition-all duration-200 rounded-xl overflow-hidden ${selectedAddOnIds.includes(addon?._id)
-												? "ring-2 ring-purple-500 shadow-lg"
-												: "hover:shadow-md"
-												}`}
+											className={`relative flex flex-col items-center border transition-all duration-200 rounded-xl overflow-hidden ${selectedAddOnIds.includes(addon?._id) ? "ring-2 ring-purple-500 shadow-lg" : "hover:shadow-md" }`}
 										>
 											{/* Selected Checkmark */}
 											{selectedAddOnIds.includes(addon?._id) && (
@@ -264,13 +254,7 @@ export default function AddOns() {
 											{/* Image Section */}
 											<div className="w-full h-28 bg-gray-200">
 												<Image
-													src={
-														addon?.banner &&
-															Array.isArray(addon.banner) &&
-															addon.banner.length > 0
-															? addon.banner[ 0 ]
-															: "/placeholder.svg"
-													}
+													src={addon?.banner && Array.isArray(addon.banner) && addon.banner.length > 0 ? addon.banner[ 0 ] : "/placeholder.svg"}
 													alt={addon?.name || "Addon"}
 													width={400}
 													height={200}
@@ -280,7 +264,7 @@ export default function AddOns() {
 
 											{/* Content */}
 											<CardContent className="w-full px-4 py-2">
-												<h3 className="text-lg font-semibold">{addon?.name || "Addon Name"}</h3>
+												<h3 title={addon?.name} className="text-lg font-semibold line-clamp-1">{addon?.name || "Addon Name"}</h3>
 												<p className="text-xs text-muted-foreground mt-1 line-clamp-2">
 													{addon?.description || "No description available"}
 												</p>

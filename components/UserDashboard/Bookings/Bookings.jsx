@@ -1,23 +1,7 @@
 "use client"
 import Image from "next/image"
-import { useState } from "react"
-import {
-	Calendar,
-	MapPin,
-	Star,
-	Users,
-	Clock,
-	CheckCircle,
-	AlertCircle,
-	XCircle,
-	Eye,
-	Phone,
-	MessageSquare,
-	Download,
-	Search,
-	RefreshCw,
-} from "lucide-react"
-
+import { useEffect, useState } from "react"
+import { Calendar, MapPin, Star, Users, Clock, CheckCircle, AlertCircle, XCircle, Eye, Phone, MessageSquare, Download, Search, Check, } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -25,103 +9,119 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getBookingHistory } from "@/store/features/booking-slice"
+import { useDispatch, useSelector } from "react-redux"
+import moment from 'moment';
+
+const bookings = [
+	{
+		id: "BK001",
+		title: "Princess Theme Party",
+		vendor: "Magic Moments Events",
+		vendorAvatar: "/placeholder.svg?height=40&width=40",
+		date: "2024-02-15",
+		time: "2:00 PM",
+		status: "confirmed",
+		amount: "₹ 8,999",
+		image: "/placeholder.svg?height=100&width=150",
+		guests: 15,
+		location: "Home, Bandra West",
+		bookingDate: "2024-01-20",
+		vendorPhone: "+91 98765 43210",
+		vendorRating: 4.9,
+		description: "Complete princess theme party setup with decorations, games, and entertainment.",
+		services: [ "Decorations", "Games", "Entertainment", "Photography" ],
+	},
+	{
+		id: "BK002",
+		title: "Superhero Adventure",
+		vendor: "Hero Events Co.",
+		vendorAvatar: "/placeholder.svg?height=40&width=40",
+		date: "2024-01-28",
+		time: "11:00 AM",
+		status: "completed",
+		amount: "₹ 9,499",
+		image: "/placeholder.svg?height=100&width=150",
+		guests: 20,
+		location: "Community Hall, Andheri",
+		bookingDate: "2024-01-10",
+		vendorPhone: "+91 98765 43211",
+		vendorRating: 4.8,
+		description: "Action-packed superhero themed party with costumes and activities.",
+		services: [ "Costumes", "Activities", "Decorations", "Catering" ],
+	},
+	{
+		id: "BK003",
+		title: "Jungle Safari Party",
+		vendor: "Wild Celebrations",
+		vendorAvatar: "/placeholder.svg?height=40&width=40",
+		date: "2024-01-10",
+		time: "3:00 PM",
+		status: "completed",
+		amount: "₹ 7,999",
+		image: "/placeholder.svg?height=100&width=150",
+		guests: 12,
+		location: "Garden Area, Powai",
+		bookingDate: "2023-12-25",
+		vendorPhone: "+91 98765 43212",
+		vendorRating: 4.7,
+		description: "Jungle themed adventure party with animal decorations and safari games.",
+		services: [ "Decorations", "Games", "Face Painting", "Music" ],
+	},
+	{
+		id: "BK004",
+		title: "Space Explorer Mission",
+		vendor: "Cosmic Kids",
+		vendorAvatar: "/placeholder.svg?height=40&width=40",
+		date: "2024-03-05",
+		time: "10:00 AM",
+		status: "pending",
+		amount: "₹ 12,499",
+		image: "/placeholder.svg?height=100&width=150",
+		guests: 25,
+		location: "School Auditorium, Malad",
+		bookingDate: "2024-02-01",
+		vendorPhone: "+91 98765 43213",
+		vendorRating: 4.9,
+		description: "Interactive space exploration party with planetarium show and activities.",
+		services: [ "Planetarium Show", "Activities", "Decorations", "Goodie Bags" ],
+	},
+	{
+		id: "BK005",
+		title: "Art & Craft Workshop",
+		vendor: "Creative Minds",
+		vendorAvatar: "/placeholder.svg?height=40&width=40",
+		date: "2024-01-05",
+		time: "4:00 PM",
+		status: "cancelled",
+		amount: "₹ 5,999",
+		image: "/placeholder.svg?height=100&width=150",
+		guests: 10,
+		location: "Home, Juhu",
+		bookingDate: "2023-12-20",
+		vendorPhone: "+91 98765 43214",
+		vendorRating: 4.6,
+		description: "Creative art and craft workshop for kids with all materials included.",
+		services: [ "Art Supplies", "Instructor", "Take-home Crafts", "Snacks" ],
+	},
+]
 
 export default function UserBookings() {
+	const dispatch = useDispatch();
 	const [ searchQuery, setSearchQuery ] = useState("")
+	const [ bookings, setBookings ] = useState([])
 	const [ statusFilter, setStatusFilter ] = useState("all")
 
-	const bookings = [
-		{
-			id: "BK001",
-			title: "Princess Theme Party",
-			vendor: "Magic Moments Events",
-			vendorAvatar: "/placeholder.svg?height=40&width=40",
-			date: "2024-02-15",
-			time: "2:00 PM",
-			status: "confirmed",
-			amount: "₹8,999",
-			image: "/placeholder.svg?height=100&width=150",
-			guests: 15,
-			location: "Home, Bandra West",
-			bookingDate: "2024-01-20",
-			vendorPhone: "+91 98765 43210",
-			vendorRating: 4.9,
-			description: "Complete princess theme party setup with decorations, games, and entertainment.",
-			services: [ "Decorations", "Games", "Entertainment", "Photography" ],
-		},
-		{
-			id: "BK002",
-			title: "Superhero Adventure",
-			vendor: "Hero Events Co.",
-			vendorAvatar: "/placeholder.svg?height=40&width=40",
-			date: "2024-01-28",
-			time: "11:00 AM",
-			status: "completed",
-			amount: "₹9,499",
-			image: "/placeholder.svg?height=100&width=150",
-			guests: 20,
-			location: "Community Hall, Andheri",
-			bookingDate: "2024-01-10",
-			vendorPhone: "+91 98765 43211",
-			vendorRating: 4.8,
-			description: "Action-packed superhero themed party with costumes and activities.",
-			services: [ "Costumes", "Activities", "Decorations", "Catering" ],
-		},
-		{
-			id: "BK003",
-			title: "Jungle Safari Party",
-			vendor: "Wild Celebrations",
-			vendorAvatar: "/placeholder.svg?height=40&width=40",
-			date: "2024-01-10",
-			time: "3:00 PM",
-			status: "completed",
-			amount: "₹7,999",
-			image: "/placeholder.svg?height=100&width=150",
-			guests: 12,
-			location: "Garden Area, Powai",
-			bookingDate: "2023-12-25",
-			vendorPhone: "+91 98765 43212",
-			vendorRating: 4.7,
-			description: "Jungle themed adventure party with animal decorations and safari games.",
-			services: [ "Decorations", "Games", "Face Painting", "Music" ],
-		},
-		{
-			id: "BK004",
-			title: "Space Explorer Mission",
-			vendor: "Cosmic Kids",
-			vendorAvatar: "/placeholder.svg?height=40&width=40",
-			date: "2024-03-05",
-			time: "10:00 AM",
-			status: "pending",
-			amount: "₹12,499",
-			image: "/placeholder.svg?height=100&width=150",
-			guests: 25,
-			location: "School Auditorium, Malad",
-			bookingDate: "2024-02-01",
-			vendorPhone: "+91 98765 43213",
-			vendorRating: 4.9,
-			description: "Interactive space exploration party with planetarium show and activities.",
-			services: [ "Planetarium Show", "Activities", "Decorations", "Goodie Bags" ],
-		},
-		{
-			id: "BK005",
-			title: "Art & Craft Workshop",
-			vendor: "Creative Minds",
-			vendorAvatar: "/placeholder.svg?height=40&width=40",
-			date: "2024-01-05",
-			time: "4:00 PM",
-			status: "cancelled",
-			amount: "₹5,999",
-			image: "/placeholder.svg?height=100&width=150",
-			guests: 10,
-			location: "Home, Juhu",
-			bookingDate: "2023-12-20",
-			vendorPhone: "+91 98765 43214",
-			vendorRating: 4.6,
-			description: "Creative art and craft workshop for kids with all materials included.",
-			services: [ "Art Supplies", "Instructor", "Take-home Crafts", "Snacks" ],
-		},
-	]
+	const bookingData = useSelector((state) => state.bookingSlice.bookingHistory)
+	console.log(bookingData?.data?.results);
+
+	useEffect(() => {
+		setBookings(bookingData?.data?.results || [])
+	}, [ bookingData ])
+
+	useEffect(() => {
+		dispatch(getBookingHistory())
+	}, [ dispatch ])
 
 	const getStatusColor = (status) => {
 		switch (status) {
@@ -153,16 +153,16 @@ export default function UserBookings() {
 		}
 	}
 
-	const filteredBookings = bookings.filter((booking) => {
-		const matchesSearch =
-			booking.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			booking.vendor.toLowerCase().includes(searchQuery.toLowerCase())
-		const matchesStatus = statusFilter === "all" || booking.status === statusFilter
-		return matchesSearch && matchesStatus
-	})
+	// const filteredBookings = bookings.filter((booking) => {
+	// 	const matchesSearch =
+	// 		booking.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+	// 		booking.vendor.toLowerCase().includes(searchQuery.toLowerCase())
+	// 	const matchesStatus = statusFilter === "all" || booking.status === statusFilter
+	// 	return matchesSearch && matchesStatus
+	// })
 
-	const upcomingBookings = filteredBookings.filter((b) => b.status === "confirmed" || b.status === "pending")
-	const pastBookings = filteredBookings.filter((b) => b.status === "completed" || b.status === "cancelled")
+	// const upcomingBookings = filteredBookings.filter((b) => b.status === "confirmed" || b.status === "pending")
+	// const pastBookings = filteredBookings.filter((b) => b.status === "completed" || b.status === "cancelled")
 
 	return (
 		<div className="min-h-screen">
@@ -216,102 +216,113 @@ export default function UserBookings() {
 					<TabsList className="grid w-full grid-cols-2 lg:w-96">
 						<TabsTrigger value="upcoming" className="flex items-center">
 							<Calendar className="h-4 w-4 mr-2" />
-							Upcoming ({upcomingBookings.length})
+							Upcoming ({bookings.length})
 						</TabsTrigger>
 						<TabsTrigger value="past" className="flex items-center">
 							<Clock className="h-4 w-4 mr-2" />
-							Past ({pastBookings.length})
+							Past ({bookings.length})
 						</TabsTrigger>
 					</TabsList>
 
 					<TabsContent value="upcoming">
 						<div className="space-y-6">
-							{upcomingBookings.map((booking) => (
-								<Card key={booking.id} className="border shadow hover:shadow-md transition-all duration-300">
+							{bookings?.map((booking) => (
+								<Card key={booking?._id} className="border shadow hover:shadow-md transition-all duration-300">
 									<CardContent className="p-6">
 										<div className="flex flex-col lg:flex-row gap-6">
 											{/* Image */}
 											<div className="relative">
 												<Image
-													src={booking.image || "/placeholder.svg"}
-													alt={booking.title}
+													src={booking?.event?.banner[ 0 ] || "/placeholder.svg"}
+													alt={booking?.title}
 													width={150}
 													height={100}
 													className="rounded-lg object-cover w-full lg:w-48 h-32"
 												/>
-												<Badge className={`absolute top-2 left-2 ${getStatusColor(booking.status)} border`}>
-													{getStatusIcon(booking.status)}
-													<span className="ml-1 capitalize">{booking.status}</span>
+												<Badge className={`absolute top-2 left-2 ${getStatusColor(booking?.status)} border`}>
+													{getStatusIcon(booking?.status)}
+													<span className="ml-1 capitalize">{booking?.status}</span>
 												</Badge>
 											</div>
 
 											{/* Content */}
 											<div className="flex-1">
-												<div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4">
+												<div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-2">
 													<div>
-														<h3 className="text-xl font-bold mb-2">{booking.title}</h3>
+														<h3 className="text-xl font-bold mb-2">{booking?.event?.title}</h3>
 														<div className="flex items-center space-x-2 mb-2">
 															<Avatar className="w-6 h-6">
-																<AvatarImage src={booking.vendorAvatar || "/placeholder.svg"} />
+																<AvatarImage src={booking?.vendorAvatar || "/placeholder.svg"} />
 																<AvatarFallback className="text-xs">
-																	{booking.vendor
-																		.split(" ")
-																		.map((n) => n[ 0 ])
-																		.join("")}
+																	{booking?.vendor?.split(" ")?.map((n) => n[ 0 ])?.join("")}
 																</AvatarFallback>
 															</Avatar>
-															<span className="text-sm text-muted-foreground">by {booking.vendor}</span>
+															<span className="text-sm text-muted-foreground">by {booking?.vendor || 'Zappy Event'}</span>
 															<div className="flex items-center">
 																<Star className="h-3 w-3 text-yellow-400 fill-current mr-1" />
-																<span className="text-xs">{booking.vendorRating}</span>
+																<span className="text-xs">{booking?.vendorRating || 4.5}</span>
 															</div>
 														</div>
 													</div>
 													<div className="text-right">
-														<div className="text-2xl font-bold text-purple-600 mb-1">{booking.amount}</div>
-														<div className="text-sm text-muted-foreground">Booking ID: {booking.id}</div>
+														<div className="text-2xl font-bold text-purple-600 mb-1">₹ {booking?.itemTotal?.toLocaleString()}</div>
+														<div className="text-sm text-muted-foreground">Booking ID: {booking?.orderNumber?.split("-").pop()}</div>
 													</div>
 												</div>
 
-												<p className="text-sm text-muted-foreground mb-4">{booking.description}</p>
+												<p className="text-sm text-muted-foreground mb-4">{booking?.selectedTier?.description}</p>
 
 												{/* Services */}
 												<div className="flex flex-wrap gap-2 mb-4">
-													{booking.services.map((service, index) => (
+													{/* {booking?.selectedTier?.features?.map((service, index) => (
 														<Badge key={index} variant="secondary" className="text-xs">
 															{service}
 														</Badge>
+													))} */}
+													{booking?.selectedTier?.features?.slice(0, 3).map((option, i) => (
+														<Badge key={i} variant="secondary" className="text-sm font-light">
+															<div className="flex text-muted-foreground items-center">
+																<Check className="w-4 h-4 mr-2 text-green-500" />
+																{option}
+															</div>
+														</Badge>
 													))}
+
+													{booking?.options?.length > 3 && (
+														<div className="flex text-primary hover:text-purple-600 cursor-pointer text-sm">
+															+{booking?.options.length - 3} more features
+														</div>
+													)}
 												</div>
 
 												{/* Details Grid */}
-												<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+												<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 													<div className="flex items-center text-sm">
 														<Calendar className="h-4 w-4 mr-2 text-blue-500" />
 														<div>
-															<div className="font-medium">{booking.date}</div>
-															<div className="text-muted-foreground">{booking.time}</div>
+															<div className="font-medium">{moment(booking?.eventBookingDate).format("D MMM, YYYY")}</div>
+															<div className="text-muted-foreground">{moment(booking?.eventBookingDate).format("hh:mm A")}</div>
 														</div>
 													</div>
 													<div className="flex items-center text-sm">
 														<MapPin className="h-4 w-4 mr-2 text-red-500" />
 														<div>
 															<div className="font-medium">Location</div>
-															<div className="text-muted-foreground">{booking.location}</div>
+															<div className="text-muted-foreground line-clamp-1">{booking?.eventAddress?.city}, {booking?.eventAddress?.state}</div>
 														</div>
 													</div>
 													<div className="flex items-center text-sm">
 														<Users className="h-4 w-4 mr-2 text-green-500" />
 														<div>
-															<div className="font-medium">{booking.guests} Guests</div>
-															<div className="text-muted-foreground">Expected</div>
+															<div className="font-medium">Guests</div>
+															<div className="text-muted-foreground">{booking?.selectedTier?.guest} Persons</div>
 														</div>
 													</div>
 													<div className="flex items-center text-sm">
 														<Clock className="h-4 w-4 mr-2 text-purple-500" />
 														<div>
 															<div className="font-medium">Booked on</div>
-															<div className="text-muted-foreground">{booking.bookingDate}</div>
+															<div className="text-muted-foreground">{moment(booking?.updatedAt).format("D MMM, YYYY")}</div>
 														</div>
 													</div>
 												</div>
@@ -337,7 +348,7 @@ export default function UserBookings() {
 														<Download className="h-3 w-3 mr-1" />
 														Invoice
 													</Button>
-													{booking.status === "pending" && (
+													{booking?.status === "pending" && (
 														<Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50">
 															Cancel Booking
 														</Button>
@@ -353,11 +364,10 @@ export default function UserBookings() {
 
 					<TabsContent value="past">
 						<div className="space-y-6">
-							{pastBookings.map((booking) => (
+							{/* {bookings?.map((booking) => (
 								<Card key={booking.id} className="border shadow hover:shadow-md transition-all duration-300">
 									<CardContent className="p-6">
 										<div className="flex flex-col lg:flex-row gap-6">
-											{/* Image */}
 											<div className="relative">
 												<Image
 													src={booking.image || "/placeholder.svg"}
@@ -372,7 +382,6 @@ export default function UserBookings() {
 												</Badge>
 											</div>
 
-											{/* Content */}
 											<div className="flex-1">
 												<div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4">
 													<div>
@@ -402,7 +411,6 @@ export default function UserBookings() {
 
 												<p className="text-sm text-muted-foreground mb-4">{booking.description}</p>
 
-												{/* Details Grid */}
 												<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
 													<div className="flex items-center text-sm">
 														<Calendar className="h-4 w-4 mr-2 text-blue-500" />
@@ -434,7 +442,6 @@ export default function UserBookings() {
 													</div>
 												</div>
 
-												{/* Actions */}
 												<div className="flex flex-wrap gap-2">
 													<Button
 														size="sm"
@@ -471,11 +478,11 @@ export default function UserBookings() {
 										</div>
 									</CardContent>
 								</Card>
-							))}
+							))} */}
 						</div>
 					</TabsContent>
 				</Tabs>
 			</div>
-		</div>
+		</div >
 	)
 }

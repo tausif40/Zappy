@@ -44,7 +44,7 @@ function BookingSummary({
 
 	return (
 		<>
-			<Card className="shadow-md h-full">
+			<Card className="shadow">
 				<CardContent className="p-4 space-y-4">
 					{/* Header */}
 					<div className="text-center pb-2">
@@ -114,7 +114,7 @@ function BookingSummary({
 						</div>
 					)}
 
-
+					{/* showAddress */}
 					{showAddress && selectedAddressDetails && (
 						<div className="space-y-3">
 							<div className="flex items-center space-x-2">
@@ -130,10 +130,10 @@ function BookingSummary({
 										)}
 									</div>
 									<div className="text-muted-foreground text-xs leading-relaxed">
-										{selectedAddressDetails.name}<br />
+										{selectedAddressDetails.name} - {selectedAddressDetails.mobile}<br />
 										{selectedAddressDetails.address}<br />
 										{selectedAddressDetails.city}, {selectedAddressDetails.state} - {selectedAddressDetails.pincode}<br />
-										{selectedAddressDetails.phone}
+										
 									</div>
 								</div>
 							</div>

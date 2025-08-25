@@ -40,7 +40,7 @@ const paymentOptions = [
 	{
 		id: "upi",
 		name: "UPI Payment",
-		description: "Pay using UPI apps like GPay, PhonePe, Paytm",
+		description: "Pay using UPI apps like GPay, PhonePe...",
 		icon: <Smartphone className="h-5 w-5" />,
 		popular: true,
 	},
@@ -197,11 +197,11 @@ export default function Payment() {
 					</p>
 				</div>
 
-				<div className="grid lg:grid-cols-4 gap-8">
+				<div className="md:flex gap-8 ">
 					{/* Main Content */}
-					<div className="lg:col-span-3 space-y-8">
+					<div className="space-y-8 w-full">
 						{/* Payment Methods */}
-						<Card className="border-0 shadow">
+						<Card className="border-t shadow">
 							<CardContent className="p-4 md:p-8">
 								<div className="flex items-center space-x-3 mb-6">
 									<CreditCard className="h-6 w-6 text-purple-500" />
@@ -209,7 +209,7 @@ export default function Payment() {
 								</div>
 
 								<RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-									<div className="grid md:grid-cols-2 gap-4">
+									<div className="grid lg:grid-cols-2 gap-4">
 										{paymentOptions.map((option) => (
 											<div key={option.id} className="flex items-start md:space-x-3">
 												<RadioGroupItem value={option.id} id={option.id} className="sr-only" />
@@ -221,16 +221,16 @@ export default function Payment() {
 															}`}
 													>
 														<CardContent className="p-4">
-															<div className="flex items-start justify-between">
+															<div className="relative flex items-start justify-between">
 																<div className="flex items-start space-x-3">
 																	<div className="text-purple-500">{option.icon}</div>
 																	<div>
 																		<div className="font-medium mb-1">{option.name}</div>
-																		<div className="text-xs md:text-sm text-muted-foreground">{option.description}</div>
+																		<div title={option.description} className="text-xs  text-muted-foreground ">{option.description}</div>
 																	</div>
 																</div>
 																{option.popular && (
-																	<Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 text-xs">
+																	<Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 text-xs">
 																		Popular
 																	</Badge>
 																)}
@@ -316,7 +316,7 @@ export default function Payment() {
 					</div>
 
 					{/* Compact Sidebar */}
-					<div className="lg:col-span-1">
+					<div className="min-w-72 mt-10 md:mt-0">
 						<BookingSummary
 							selectedAddOns={bookingFlow?.data?.addOnIds?.map(addon => ({
 								_id: addon.id,
